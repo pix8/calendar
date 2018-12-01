@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="437px" height="571px" viewBox="0 0 437 571" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>logo__rollup</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="26.8242128%" y1="48.223605%" x2="67.5757079%" y2="55.3392985%" id="linearGradient-1">
+            <stop stop-color="#FF6533" offset="0%"></stop>
+            <stop stop-color="#FF5633" offset="15.73%"></stop>
+            <stop stop-color="#FF4333" offset="43.42%"></stop>
+            <stop stop-color="#FF3733" offset="71.42%"></stop>
+            <stop stop-color="#FF3333" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="20.450516%" y1="38.1333935%" x2="93.4857105%" y2="80.4322382%" id="linearGradient-2">
+            <stop stop-color="#BF3338" offset="0%"></stop>
+            <stop stop-color="#FF3333" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="32.292744%" y1="39.4968161%" x2="45.5565032%" y2="48.9138565%" id="linearGradient-3">
+            <stop stop-color="#FF6533" offset="0%"></stop>
+            <stop stop-color="#FF5633" offset="15.73%"></stop>
+            <stop stop-color="#FF4333" offset="43.42%"></stop>
+            <stop stop-color="#FF3733" offset="71.42%"></stop>
+            <stop stop-color="#FF3333" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="51.5640264%" y1="78.3445084%" x2="48.5175679%" y2="41.6629132%" id="linearGradient-4">
+            <stop stop-color="#FF6533" offset="0%"></stop>
+            <stop stop-color="#FF5633" offset="15.73%"></stop>
+            <stop stop-color="#FF4333" offset="43.42%"></stop>
+            <stop stop-color="#FF3733" offset="71.42%"></stop>
+            <stop stop-color="#FF3333" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="40.201202%" y1="47.2149397%" x2="53.9750286%" y2="54.5349307%" id="linearGradient-5">
+            <stop stop-color="#FBB040" offset="0%"></stop>
+            <stop stop-color="#FB8840" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="55.222378%" y1="5.88774885%" x2="40.926398%" y2="128.016386%" id="linearGradient-6">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="logo__rollup" fill-rule="nonzero">
+            <g id="XMLID_14_" transform="translate(59.000000, 60.000000)" fill="url(#linearGradient-1)">
+                <path d="M378,128 C378,94.4 369.2,62.9 353.7,35.6 C312.6,-6.7 223.2,-16.5 201,35.4 C178.2,88.6 239.3,147.8 266,143.1 C300,137.1 260,59.1 260,59.1 C312,157.1 300,127.1 206,217.1 C112,307.1 16,497 2,505 C1.4,505.4 0.8,505.7 0.1,506 L368.8,506 C375.3,506 379.5,499.1 376.6,493.3 L280.2,302.5 C278.1,298.4 279.6,293.3 283.6,291 C340,258.6 378,197.8 378,128 Z" id="XMLID_15_"></path>
+            </g>
+            <g id="XMLID_2_" transform="translate(59.000000, 60.000000)" fill="url(#linearGradient-2)">
+                <path d="M378,128 C378,94.4 369.2,62.9 353.7,35.6 C312.6,-6.7 223.2,-16.5 201,35.4 C178.2,88.6 239.3,147.8 266,143.1 C300,137.1 260,59.1 260,59.1 C312,157.1 300,127.1 206,217.1 C112,307.1 16,497 2,505 C1.4,505.4 0.8,505.7 0.1,506 L368.8,506 C375.3,506 379.5,499.1 376.6,493.3 L280.2,302.5 C278.1,298.4 279.6,293.3 283.6,291 C340,258.6 378,197.8 378,128 Z" id="XMLID_10_"></path>
+            </g>
+            <path d="M61,565 C75,557 171,367 265,277 C359,187 371,217 319,119 C319,119 120,398 48,536" id="XMLID_3_" fill="url(#linearGradient-3)"></path>
+            <g id="XMLID_7_" transform="translate(15.000000, 0.000000)" fill="url(#linearGradient-4)">
+                <path d="M74,315 C208.4,67.9 226,43 296,43 C332.8,43 369.9,59.6 393.9,89.1 C361.2,36.4 303.3,1.1 237,0.1 L8.7,0.1 C3.9,0.1 0,4 0,8.8 L0,190 L0,376 L0,469 C13.6,433.9 36.7,383.7 74,315 Z" id="XMLID_12_"></path>
+            </g>
+            <path d="M265,277 C171,367 75,557 61,565 C47,573 23.5,574 11,560 C-2.3,545.1 -23,521 89,315 C223.4,67.9 241,43 311,43 C347.8,43 384.9,59.6 408.9,89.1 C410.2,91.2 411.5,93.4 412.8,95.6 C371.7,53.3 282.3,43.5 260.1,95.4 C237.3,148.6 298.4,207.8 325.1,203.1 C359.1,197.1 319.1,119.1 319.1,119.1 C371,217 359,187 265,277 Z" id="XMLID_6_" fill="url(#linearGradient-5)"></path>
+            <path d="M100,326 C234.4,78.9 252,54 322,54 C352.3,54 382.8,65.3 406,85.7 C382,58.3 346.4,43 311,43 C241,43 223.4,67.9 89,315 C-23,521 -2.3,545.1 11,560 C12.9,562.1 15.1,563.9 17.4,565.4 C5.7,548.4 0.5,508.9 100,326 Z" id="XMLID_13_" fill="url(#linearGradient-6)" opacity="0.3"></path>
+        </g>
+    </g>
+</svg>
