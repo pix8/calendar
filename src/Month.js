@@ -1,25 +1,16 @@
 import _ from 'lodash';
 
 
-/* CLASS VARS
-*************************/
-export const STATICS = {
-	MONTHS: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-	MONTHNAME: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-	DAYNAME: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-
-	PUBLICHOLIDAYS: [],
-	BANKHOLIDAYS: [],
-	WEEKENDS: [],
-	CLOSED: []
-};
-
 export default class Month {
 
 	constructor(_epoch) {
 		//console.log("make me a month ", _epoch);
 
-		const MONTHS = [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+		const STATICS = {
+			MONTHS: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+			MONTHNAME: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+			DAYNAME: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+		};
 
 		var epoch = {
 			year: _epoch.utc().year(),		//_epoch.getUTCFullYear(),
@@ -34,14 +25,14 @@ export default class Month {
 		var yearday = 0;
 		for(var i=0, l=epoch.month, days; i < l; i++) {
 
-			days = MONTHS[i];
+			days = STATICS.MONTHS[i];
 			if(_.isArray(days)) days = days[this.isLeapYear(epoch.year) | 0];
 			//console.log(i, " :: ", days)
 
 			yearday += days;
 		};
 
-		var item = MONTHS[epoch.month];
+		var item = STATICS.MONTHS[epoch.month];
 		if(_.isArray(item)) item = item[this.isLeapYear(epoch.year) | 0];
 		while(day < item) {
 			month.push( (yearday + primer)%7 );

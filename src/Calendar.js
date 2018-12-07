@@ -17,22 +17,15 @@ import Month from 'Month'
 
 
 //DEVNOTE: objective - given a date will return the calendar day, week, month or year.
-// 						will always cache and supply the neighbouring next and previous day, week, month or year.
-
-/* CLASS VARS
-*************************/
-export const STATICS = {
-	MONTHS: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-	MONTHNAME: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-	DAYNAME: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-
-	PUBLICHOLIDAYS: [],
-	BANKHOLIDAYS: [],
-	WEEKENDS: [],
-	CLOSED: []
-};
+// 					ability to pre-cache(+ supply) the neighbouring day, week, month or year as a lookahead.
 
 class Pix8Calendar {
+
+	#STATICS = {
+		MONTHS: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+		MONTHNAME: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+		DAYNAME: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+	};
 
 	/* CONSTRUCTOR
 	*************************/
@@ -135,5 +128,14 @@ class Pix8Calendar {
 	//console.log("service >> ", this.calendar);
 	*/
 }
+
+
+/* CLASS VARS
+*************************/
+// Pix8Calendar.STATICS = {
+// 	MONTHS: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+// 	MONTHNAME: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+// 	DAYNAME: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+// };
 
 export default new Pix8Calendar();
