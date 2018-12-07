@@ -26,7 +26,6 @@
     "release:major": "npm run version:major && git push --follow-tags origin develop"
   },
   "dependencies": {
-    "lodash": "^4.17.10",
     "moment": "^2.22.2"
   },
   "devDependencies": {
