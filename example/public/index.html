@@ -5,7 +5,7 @@
 	<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-	<title>React UI Components Staging</title>
+	<title>@pix8/calendar Staging</title>
 	<meta name="description" content="">
 	<meta name="keywords" content="">
 
@@ -38,26 +38,23 @@
 	<header id="app--masthead" role="complementary">
 		<section class="foobar">
 			<div class="container">
-				<h1 class="style__text-primary-colour">Hello <span class="style__uppercase">Pogo</span>.lib</h1>
-				<h2 class="style__no-margin-top">Jump-start your library!</h2>
-				<p>An unopinionated stack for discerning development.</p>
+				<h1 class="style__text-primary-colour">@pix8/Calendar</h1>
+				<h2 class="style__no-margin-top">A fast simple provider of the Gregorian calendar</h2>
 			</div>
 
-			<div class="container ui__logo-grid">
-				<p>
-					<img class="grid__logo" src="./svg/logo__rollup.svg" />
-				</p>
-				<p>
-					<img class="grid__logo" src="./svg/logo__babel.svg" />
-					<img class="grid__logo" src="./svg/logo__react.svg" />
-					<img class="grid__logo" src="./svg/logo__vue.svg" />
-				</p>
-				<p>
-					<img class="grid__logo" src="./svg/logo__pug.svg" />
-					<img class="grid__logo" src="./svg/logo__sass.svg" />
-					<img class="grid__logo" src="./svg/logo__postcss.svg" />
-				</p>
-			</div>
+			<article id="input">
+				<div class="ui__field">
+					<label>Enter a date</label>
+					<div class="ui__control">
+						<input type="date" id="date" name="date" />
+					</div>
+				</div>
+			</article>
+
+			<article id="output">
+				<h2>Return calendar month for chosen entry:</h2>
+				<div id="payload" class="container"></div>
+			</article>
 		</section>
 	</header>
 

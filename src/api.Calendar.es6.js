@@ -1,17 +1,20 @@
 /**	@name			:
-*	@author			: j.brincat
+*	@author			:
 *	@build			:
-*	@description	: Simple Calendar service to return a range of dates given a source date(epoch). Methods accessors return a Promise.
+*	@description	:
 *
 *
 *	@dependencies	: lodash(or underscore -> isArray)
 * 	@heiracy		: pix8.Calendar
 *
 ********************************************/
-
-import _ from 'lodash'
+//es6
+import Lodash from 'lodash'
 import Moment from 'moment'
 
+//commonjs
+//const lodash = require('lodash');
+//const moment = require('moment');
 
 //DEVNOTE: objective - given a date will return the calendar day, week, month or year.
 // 						will always cache and supply the neighbouring next and previous day, week, month or year.
@@ -34,9 +37,11 @@ class Pix8Calendar {
 	/* CONSTRUCTOR
 	*************************/
 	constructor(epoch = new Date().toISOString(), config) {
-		console.log("|| Pix8.Calendar service instantiated ||");
+		//console.log("|| Pix8.Calendar service instantiated ||");
 		
-		let annum = Moment.utc().year(); //epoch.getUTCFullYear();		
+		let annum = Moment.utc().year(); //epoch.getUTCFullYear();
+		
+		//console.log("JB >> ", annum);
 	}
 
 	/* CLASS METHODS
@@ -215,16 +220,16 @@ class Year {
 
 			month.push(month1);
 		});
+	}
 
-		/* YEAR/CLASS METHODS - PRIVATE
-		*************************/
-		function setPrimer(y, m, d) {
+	/* YEAR/CLASS METHODS - PRIVATE
+	*************************/
+	static setPrimer(y, m, d) {
 
-			var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
-			y -= m < 3;
+		var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
+		y -= m < 3;
 
-			return (y + ~~(y/4) - ~~(y/100) + ~~(y/400) + t[m-1] + d) % 7;
-		}
+		return (y + ~~(y/4) - ~~(y/100) + ~~(y/400) + t[m-1] + d) % 7;
 	}
 
 	/* YEAR/CLASS METHODS - PUBLIC

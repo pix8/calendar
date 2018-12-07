@@ -20,9 +20,12 @@ npm start
 
 Secondary initialisation(examples directory)
 ```javascript
-cd my-library/example.react or cd my-library/example.vue
+cd my-library/example/react
+//or
+cd my-library/example/vue
 npm install
 npm link package-name
+//npm link package-name --preserve-symlinks ??
 npm start
 ```
 Note: both 'example' directories are just shells of their respective CLI derived host environments.

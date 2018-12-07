@@ -17,14 +17,16 @@
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
   "scripts": {
-    "build": "rollup -c",
     "start": "rollup -c -w ",
+    "storybook": "start-storybook -p 9001 -c .storybook",
+    "test": "jest --env=jsdom",
+    "build": "rollup -c",
     "release:patch": "npm run version:patch && git push --follow-tags origin develop",
     "release:minor": "npm run version:minor && git push --follow-tags origin develop",
     "release:major": "npm run version:major && git push --follow-tags origin develop"
   },
   "dependencies": {
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.10",
     "moment": "^2.22.2"
   },
   "devDependencies": {
@@ -36,7 +38,14 @@
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
+    "@storybook/react": "^4.0.12",
+    "@storybook/vue": "^4.0.12",
+    "babel-loader": "^8.0.4",
+    "babel-preset-vue": "^2.0.2",
     "chokidar": "^2.0.4",
+    "node-sass": "^4.10.0",
+    "pug": "^2.0.3",
+    "pug-plain-loader": "^1.0.0",
     "rollup": "^0.67.3",
     "rollup-plugin-alias": "^1.4.0",
     "rollup-plugin-babel": "^4.0.3",
@@ -44,10 +53,20 @@
     "rollup-plugin-includepaths": "^0.2.3",
     "rollup-plugin-json": "^3.1.0",
     "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-postcss": "^1.6.2",
+    "rollup-plugin-pug": "^1.1.0",
+    "rollup-plugin-scss": "^0.4.0",
+    "rollup-plugin-url": "^2.1.0",
     "rollup-plugin-vue": "^4.3.2",
+    "vue-loader": "^15.4.2",
     "vue-template-compiler": "^2.5.17"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "prop-types": "^15.5.4",
+    "react": "^0.14.9 || ^15.5.0 || ^16.0.0",
+    "react-dom": "^0.14.9 || ^15.0.0 || ^16.0.0",
+    "vue": "^2.0.0"
+  },
   "engines": {
     "node": ">= 8.0.0",
     "npm": ">= 5.0.0"

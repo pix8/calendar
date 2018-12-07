@@ -4,7 +4,7 @@
   "private": true,
   "license": "ISC",
   "scripts": {
-    "postinstall": "npm link @pix8/ui-react",
+    "postinstall": "npm link @pix8/pogo-example-module",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom"
@@ -15,6 +15,6 @@
     "react-dom": "^16.6.3"
   },
   "devDependencies": {
-    "react-scripts": "^2.1.1"
+    "react-scripts": "^1.1.5"
   }
 }
