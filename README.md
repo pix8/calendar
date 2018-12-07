@@ -1,72 +1,28 @@
-# Pogo Lib stack
+# @pix8/calendar
 
-Boilerplate tooling for the development and maintenance of libraries/Node.js modules.
+WIP
 
-Inspired by the excellent [React Modern Library Boilerplate](https://github.com/transitive-bullshit/react-modern-library-boilerplate) by Travis Fischer.
+## Overview
+
+A simple date factory for outputting a [Gregorian calendar](https://en.wikipedia.org/wiki/Gregorian_calendar) date range.
+
+Vanilla javascript consumed as a service. Dependency on Moment.js for obvious reasons and underscore. These are both convenience libraries so half-tempted to wean them out.
+
+### Gregorian calendar rules
+It took a while and a fair few attempts but the concept of 'time' is one of the earliest examples of global standardisation and successful assimilation. As is now commonly known the concept of time and date is based on the movement of the Earth around the Sun(solar calendar), however this period isn't a nice round number and there are fluctuations that need to be reconciled. The Gregorian calendar is the basis for our modern day calendar adopted worldwide that best fits this pattern. However it is not perfect hence it requires periodic re-alignment based on a mathemathetical formula that keeps it more or less in synch with the planet(and the seasons).
+
+* A day(leap day) is added to years exactly divisible by four(a leap year) +unless+ the year is also divisible by 100.
+* However if a centurial year is divisible by 400 an additional day(leap day) is added regardless.
 
 ## Getting Started
 
-**Warning here be dragons: I've literally just thrown this up if anybody was interested or it proved useful. It's not been groomed for public consumptions and I do not really have any plans to support it other than getting it in a coherent and tidy condition and then maintaing it for my needs. I would advise that this is not for general release until this message is removed.**
+## Usage
 
-Primary initialisation
-```javascript
-git clone git@github.com:pix8/pogo-lib.git my-library
-cd my-library
-rm -rf .git
-npm install
-npm link
-npm start
-```
+Data is returned as a promise. All data returned is raw/native format. So days of the week, months are represented in the standard JavaScript conventions for consumption. It is down to you to massage or convert these down further. Some static helper props are sent down the wire to assist but bear in mind such thoughts such as localisations.
 
-Secondary initialisation(examples directory)
-```javascript
-cd my-library/example/react
-//or
-cd my-library/example/vue
-npm install
-npm link package-name
-//npm link package-name --preserve-symlinks ??
-npm start
-```
-Note: both 'example' directories are just shells of their respective CLI derived host environments.
-Note: Remember you must reassert the npm symbolic links whenever you run an npm install to circumvent the public NPM registry and enforce your locally developed module in it's place.
+## Possible Enhancements
 
-## Structure
-
-* README.md
-* .editorconfig
-* .gitignore
-* .circleci (*continuous integration)
-* package.json
-* Rollup(rollup.config)
-	* Babel
-		* ES6/React/Vue
-		* HTML
-			* Pug/JSX
-		* CSS
-			* PostCSS
-			* SASS
-		* SVG
-		* Webfonts
-		* Static resources: Bitmaps/text/audio/video
-* Example/Sample
-* .babelrc
-* .eslintrc
-* .postcssrc
-* .storybook
-* (API server(server.api.js)\
-Mock/Services (stage: data-driven hydration/simulation)\
-API(working directory)) *Optional stage
-* Development
-Source (stage: development/maintenance)\
-Src(working directory)\
-`npm start`
-* Storybook (stage: review/validate/document)\
-Stories(working directory)\
-`npm run storybook`
-* Test (stage: quality assurance/intregity)\
-Test(working directory)\
-`npm run test`
-* Distribution (stage: release/deploy)\
-Dist(working directory)\
-`npm run deploy`
+* Remove moment.js dependency
+* Current treatment is ignorrant of time units which are distorted by local geographic conventions(which are non-standard, inconsistent and unreliable) - compensating for daylight saving poses a particular challenge and remains an unopened can of worms.
+* Public/bank holiday extension module
+* Localisation extension module

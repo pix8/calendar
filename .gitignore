@@ -2,6 +2,8 @@
 # Created by https://www.gitignore.io/api/windows,osx,linux,sublimetext,sass,bower,node,grunt,dropbox,less,yeoman,microsoftoffice
 # Modified pix8
 
+--examples
+
 ### SYSTEM - Windows ###
 # Windows image file caches
 Thumbs.db
