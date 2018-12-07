@@ -10,6 +10,8 @@ Vanilla javascript consumed as a service. Dependency on Moment.js for obvious re
 
 The prime difference between this library and other implementations is that this gets down and dirty and actually does the maths to calculates the date ranges rather than expediting proceedings with recursive conditional loops and increments(although they are written + documented far nicer than my shambolic attempts). In my mind these methods expose a lot of redundancy and expensive operations for what should be a trivial bean counting exercise. So in theory(at least in my head) this should make it superfast - although unproven - but I should really run some comparison tests at some point.
 
+Incidentally this is based on Sakamoto's methods which is an adaptation of the Zeller’s algorithm.
+
 ### Gregorian calendar rules
 It took a while and a fair few attempts but the concept of 'time' is one of the earliest examples of global standardisation and successful assimilation. As is now commonly known the concept of time and date is based on the movement of the Earth around the Sun(solar calendar), however this period isn't a nice round number and there are fluctuations that need to be reconciled. The Gregorian calendar is the basis for our modern day calendar adopted worldwide that best fits this pattern. However it is not perfect hence it requires periodic re-alignment based on a mathemathetical formula that keeps it more or less in synch with the planet(and the seasons).
 

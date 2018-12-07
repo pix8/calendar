@@ -18,13 +18,13 @@ input.addEventListener("change", (event) => { //OR old way .onchange = (event) =
 		document.getElementById("payload-getyear").innerHTML = JSON.stringify(data);
 	});
 
-	/*Calendar.getMonth(event.target.value).then(data => {
+	Calendar.getMonth(event.target.value).then(data => {
 		console.log("Month = ", data);
 		
 		document.getElementById("payload-getmonth").innerHTML = JSON.stringify(data);
 	});
 
-	Calendar.getWeek(event.target.value).then(data => {
+	/*Calendar.getWeek(event.target.value).then(data => {
 		console.log("Week = ", data);
 		
 		document.getElementById("payload-getweek").innerHTML = JSON.stringify(data);

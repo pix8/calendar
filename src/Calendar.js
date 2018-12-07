@@ -8,22 +8,19 @@
 * 	@heiracy		: pix8.Calendar
 *
 ********************************************/
+import 'Polyfills'
 import Moment from 'moment'
 
 import Year from 'Year'
 import Month from 'Month'
 
+import en from './locales/en'
+
 
 //DEVNOTE: objective - given a date will return the calendar day, week, month or year.
-// 					ability to pre-cache(+ supply) the neighbouring day, week, month or year as a lookahead.
+// 					ability to pre-fetch the neighbouring day, week, month or year as a lookahead.
 
 class Pix8Calendar {
-
-	/*#STATICS = {
-		MONTHS: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-		MONTHNAME: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-		DAYNAME: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-	}*/
 
 	/*	CONSTRUCTOR
 	*************************/
@@ -40,13 +37,14 @@ class Pix8Calendar {
 	*************************/
 	getYear(date = new Date().toISOString()) {
 		
-		let epoch = new Date(date), //check if valid date
-			annum = epoch.getUTCFullYear();
+		let epoch = new Date(date);
+
+		//VALIDATE: check if valid date
 
 		//returns JSON with a Year's worth of dates(relative to the epoch) supplied as months, weeks and dates
 		// PROMISE pattern 1
 		//return Promise.resolve(new Year(date)); //why is this broken? is the latest??
-		return Promise.resolve(new Year(annum));
+		return Promise.resolve(new Year(epoch));
 
 		// PROMISE pattern 2
 		// return new Promise(
@@ -148,13 +146,5 @@ class Pix8Calendar {
 	//console.log("service >> ", this.calendar);
 	*/
 }
-
-/* CLASS VARS
-*************************/
-Pix8Calendar.STATICS = {
-	MONTHS: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-	MONTHNAME: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-	DAYNAME: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-};
 
 export default new Pix8Calendar();

@@ -1,24 +1,29 @@
 import Moment from 'moment'
 
+import GregorianDay from 'SakamotoMethod'
+import en from './locales/en'
+
 
 export default class Year {
 
-	constructor(annum) {
+	constructor(_epoch) {
 
-		var _self = this;
+		this.epoch = {
+			year: parseInt(_epoch.getUTCFullYear(), 10),
+			month: parseInt(1, 10),
+			date: parseInt(1, 10)
+		}
 
-		this.year = annum;
-
-		var primer = setPrimer(this.year, 1, 1),
+		var primer = GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date),
 			yearday = 0;
+		console.log("YEAR init >> ", this.epoch.year, primer, " :: ", en.DAY[primer]);
 
 		var month = this.month = [];
 
-		console.log("YEAR >> ", annum);
+		Year.STATICS.LOOKUPTABLE.forEach((item, i, arr) => {
+			//console.log(en.MONTH[i]);
 
-		Year.STATICS.MONTHS.forEach((item, i, arr) => {
-
-			if(Array.isArray(item)) item = item[_self.isLeapYear | 0];
+			if(Array.isArray(item)) item = item[Year.isLeapYear];
 
 			var day = 0;
 
@@ -73,33 +78,21 @@ export default class Year {
 				'week': monthsweek
 			};
 
-			console.log("jb(month) >> ", month1);
+			//console.log("OUTPUT(month) >> ", month1);
 
 			month.push(month1);
 		});
-
-		/* YEAR/CLASS METHODS - PRIVATE
-		*************************/
-		function setPrimer(y, m, d) {
-
-			var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
-			y -= m < 3;
-
-			return (y + ~~(y/4) - ~~(y/100) + ~~(y/400) + t[m-1] + d) % 7;
-		}
 	}
 
-	/* YEAR/CLASS METHODS - PUBLIC
+	/* CLASS METHODS
 	*************************/
-	isLeapYear(year) {
-		return Boolean( (!(this.year%4) && this.year%100) || !(this.year%400) );
+	isLeapYear() {
+		return Boolean( (!(this.epoch.year%4) && this.epoch.year%100) || !(this.epoch.year%400) );
 	};
 }
 
 /* CLASS VARS
 *************************/
 Year.STATICS = {
-	MONTHS: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-	MONTHNAME: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-	DAYNAME: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+	LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 };
