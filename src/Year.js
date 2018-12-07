@@ -1,37 +1,31 @@
-import _ from 'lodash'
 import Moment from 'moment'
 
 
 export default class Year {
 
-	constructor(annum, active) {
-		const STATICS = {
-			MONTHS: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-			MONTHNAME: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-			DAYNAME: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-		};
+	constructor(annum) {
 
 		var _self = this;
 
 		this.year = annum;
-		this.active = active;
 
-		var primer = setPrimer(this.year, 1, 1);
-
-		var yearday = 0;
+		var primer = setPrimer(this.year, 1, 1),
+			yearday = 0;
 
 		var month = this.month = [];
 
-		//console.log("YEAR >> ", annum);
+		console.log("YEAR >> ", annum);
 
-		_.forEach(STATICS.MONTHS, (item, i, arr) => {
+		Year.STATICS.MONTHS.forEach((item, i, arr) => {
 
-			if(_.isArray(item)) item = item[_self.isLeapYear | 0];
+			if(Array.isArray(item)) item = item[_self.isLeapYear | 0];
 
 			var day = 0;
 
 			var month1 = [];
 			while(day < item) {
+				//console.log( yearday, primer );
+				
 				month1.push( (yearday + primer)%7 );
 				day++;
 				yearday++;
@@ -79,7 +73,7 @@ export default class Year {
 				'week': monthsweek
 			};
 
-			//console.log("jb(month) >> ", month1);
+			console.log("jb(month) >> ", month1);
 
 			month.push(month1);
 		});
@@ -101,3 +95,11 @@ export default class Year {
 		return Boolean( (!(this.year%4) && this.year%100) || !(this.year%400) );
 	};
 }
+
+/* CLASS VARS
+*************************/
+Year.STATICS = {
+	MONTHS: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+	MONTHNAME: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+	DAYNAME: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+};

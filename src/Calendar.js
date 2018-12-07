@@ -8,8 +8,6 @@
 * 	@heiracy		: pix8.Calendar
 *
 ********************************************/
-
-import _ from 'lodash'
 import Moment from 'moment'
 
 import Year from 'Year'
@@ -21,29 +19,36 @@ import Month from 'Month'
 
 class Pix8Calendar {
 
-	#STATICS = {
+	/*#STATICS = {
 		MONTHS: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
 		MONTHNAME: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 		DAYNAME: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-	};
+	}*/
 
-	/* CONSTRUCTOR
+	/*	CONSTRUCTOR
 	*************************/
 	constructor(epoch = new Date().toISOString(), config) {
 		console.log("|| Pix8.Calendar service instantiated ||");
 		
-		let annum = Moment.utc().year(); //epoch.getUTCFullYear();		
+		let annum = Moment.utc().year(); //epoch.getUTCFullYear();	
+
+		//TODO: check for invalid arg(date) and output empty JSON object in response
 	}
 
-	/* CLASS METHODS
+	/* 	CLASS METHODS
+	*	Defining API endpoints
 	*************************/
 	getYear(date = new Date().toISOString()) {
+		
 		let epoch = new Date(date), //check if valid date
 			annum = epoch.getUTCFullYear();
 
-		return Promise.resolve(new Year(date));
+		//returns JSON with a Year's worth of dates(relative to the epoch) supplied as months, weeks and dates
+		// PROMISE pattern 1
+		//return Promise.resolve(new Year(date)); //why is this broken? is the latest??
+		return Promise.resolve(new Year(annum));
 
-		// PROMISE
+		// PROMISE pattern 2
 		// return new Promise(
 		// 	(resolve, reject) => {
 		// 		//RESOLVE
@@ -59,8 +64,18 @@ class Pix8Calendar {
 		// 		}
 		// 	}
 		// );
+
+		// PROMISE pattern 3
+		// return new Promise( (resolve, reject) => {
+		// 	resolve(
+		// 	);
+
+		// 	reject(
+		// 	);
+		// });
 	};
 
+	//BUG: dates are 1 day off
 	getMonth(_epoch = new Date().toISOString()) {
 		//console.log("the epoch is >> ", _epoch);
 
@@ -82,22 +97,27 @@ class Pix8Calendar {
 
 		let epoch = Moment(_epoch);
 
+		//returns JSON with a Month's worth of dates(relative to the epoch) supplied as weeks and dates
 		return Promise.resolve({
 			month: new Month(epoch),
 			year: epoch.utc().year(), 			//epoch.getUTCFullYear(),
 			index: epoch.utc().month(), 		//epoch.getUTCMonth(), //0-based index
 			iso: epoch.utc().format(), 			//new Date(epoch.getUTCFullYear()+"-"+(epoch.getUTCMonth()+1)),
-			STATICS: STATICS
+			//STATICS: Pix8Calendar.STATICS
 		});
 	};
 
 	getWeek(epoch = new Date().toISOString()) {
+
+		//returns JSON with a Month's worth of dates(relative to the epoch) supplied as dates
 		return Promise.resolve([0, 1, 2, 3, 4, 5, 6]);
 	};
 
-	getDay(epoch = new Date().toISOString()) {
+	/*getDay(epoch = new Date().toISOString()) {
+
+		//returns JSON with a Day's worth of times(relative to the epoch) supplied as hours, minutes and seconds
 		return Promise.resolve([0])
-	};
+	};*/
 
 
 	//creates calendar object
@@ -129,13 +149,12 @@ class Pix8Calendar {
 	*/
 }
 
-
 /* CLASS VARS
 *************************/
-// Pix8Calendar.STATICS = {
-// 	MONTHS: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-// 	MONTHNAME: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-// 	DAYNAME: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-// };
+Pix8Calendar.STATICS = {
+	MONTHS: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+	MONTHNAME: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+	DAYNAME: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+};
 
 export default new Pix8Calendar();

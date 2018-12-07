@@ -27,6 +27,10 @@
 		#app--footer {
 			background-color: rgb(167,197,93); /*#A7C55D;*/
 		}
+
+		p {
+			font-size: 1.6rem;
+		}
 	</style>
 </head>
 
@@ -40,21 +44,23 @@
 			<div class="container">
 				<h1 class="style__text-primary-colour">@pix8/Calendar</h1>
 				<h2 class="style__no-margin-top">A fast simple provider of the Gregorian calendar</h2>
-			</div>
 
-			<article id="input">
-				<div class="ui__field">
-					<label>Enter a date</label>
-					<div class="ui__control">
-						<input type="date" id="date" name="date" />
+				<article id="input">
+					<div class="ui__field">
+						<label>Enter a date</label>
+						<div class="ui__control">
+							<input type="date" id="date" name="date" />
+						</div>
 					</div>
-				</div>
-			</article>
+				</article>
 
-			<article id="output">
-				<h2>Return calendar month for chosen entry:</h2>
-				<div id="payload" class="container"></div>
-			</article>
+				<article id="output">
+					<h2>Return calendar month for chosen entry:</h2>
+					<p id="payload-getyear"></p>
+					<p id="payload-getmonth"></p>
+					<p id="payload-getweek"></p>
+				</article>
+			</div>
 		</section>
 	</header>
 
