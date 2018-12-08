@@ -21,7 +21,7 @@ It took a while and a fair few attempts but the concept of 'time' is one of the 
 
 ## Getting Started
 
-Terminal window 1
+Terminal
 ```sh
 $ npm install @pix8/calendar
 # use either --save or --save-dev flag depending on your needs
@@ -35,6 +35,8 @@ import Calendar from '@pix8/calendar'
 ## Usage
 
 All calls are handled as promises and return a JSON representation of the date query. All data returned is raw/native format. So days of the week and months are represented in the standard JavaScript conventions for consumption(i.e. zero-based where applicable). It is down to you to massage or convert these down further. Some static helper props are sent down the wire to assist but bear in mind thoughts such as localisations + I will more than likely remove/separate this feature because of that overhead and peeps can simply leverage this similarly as an imported ES6 module to suit their individual use case.
+
+### API
 
 ```javascript
 getYear(date)
@@ -50,8 +52,6 @@ getMonth(date)
 getWeek(date)
 
 ```
-
-## Return
 
 ## Possible Enhancements
 
