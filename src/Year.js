@@ -84,15 +84,11 @@ export default class Year {
 		});
 	}
 
-	/* CLASS METHODS
-	*************************/
 	isLeapYear() {
 		return Boolean( (!(this.epoch.year%4) && this.epoch.year%100) || !(this.epoch.year%400) );
 	};
 }
 
-/* CLASS VARS
-*************************/
 Year.STATICS = {
 	LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 };

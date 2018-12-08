@@ -56,6 +56,7 @@ getWeek(date)
 ## Possible Enhancements
 
 * Remove moment.js dependency
+* Ability to lookahead and pre-fetch neighbouring weeks, months or years so there is minimal lag in the user experience
 * Current treatment is ignorrant of time units which are distorted by local geographic conventions(which are non-standard, inconsistent and unreliable) - compensating for daylight saving poses a particular challenge and remains an unopened can of worms.
 * Public/bank holiday extension module
 * Localisation extension module

@@ -9,9 +9,6 @@ export default class Week {
 	}
 }
 
-
-/* CLASS VARS
-*************************/
 Week.STATICS = {
 	LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 };

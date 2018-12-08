@@ -42,15 +42,11 @@ export default class Month {
 		return month;
 	}
 
-	/* CLASS METHODS
-	*************************/
 	isLeapYear(year) {
 		return Boolean( (!(year%4) && year%100) || !(year%400) );
 	};
 }
 
-/* CLASS VARS
-*************************/
 Month.STATICS = {
 	LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 };
