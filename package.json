@@ -8,7 +8,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git@bitbucket.org:pix8/npm.calendar.git"
   },
   "files": [
     "dist"

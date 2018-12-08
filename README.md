@@ -1,10 +1,11 @@
 # @pix8/calendar
 
-WIP
+[![npm (scoped)](https://img.shields.io/npm/v/@pix8/calendar.svg)](https://www.npmjs.com/package/@pix8/calendar)
+[![CircleCI](https://circleci.com/bb/pix8/npm.calendar.svg?style=svg&circle-token=6a94ff0d0a7d7557a3d3438d87501d980e932ce2)](https://circleci.com/bb/pix8/npm.calendar)
 
 ## Overview
 
-A simple date factory for outputting a [Gregorian calendar](https://en.wikipedia.org/wiki/Gregorian_calendar) date range.
+A simple date factory for outputting a [Gregorian calendar](https://en.wikipedia.org/wiki/Gregorian_calendar) date range given a target date.
 
 Vanilla javascript consumed as a service. Dependency on Moment.js for obvious reasons but half-tempted to wean it out unless the convenience + added value proves strictly necessary.
 
@@ -19,6 +20,17 @@ It took a while and a fair few attempts but the concept of 'time' is one of the 
 * However if a centurial year is divisible by 400 an additional day(leap day) is added regardless.
 
 ## Getting Started
+
+Terminal window 1
+```sh
+$ npm install @pix8/calendar
+# use either --save or --save-dev flag depending on your needs
+```
+
+Import module into your script as desired and consume.
+```javascript
+import Calendar from '@pix8/calendar'
+```
 
 ## Usage
 
