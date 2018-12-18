@@ -3,11 +3,11 @@
 *	@description	: Simple Calendar service to return a range of dates given a target date(epoch). Methods accessors return a Promise.
 *
 ********************************************/
-import 'Polyfills'
+import './Polyfills'
 import Moment from 'moment'
 
-import Year from 'Year'
-import Month from 'Month'
+import Year from './Year'
+import Month from './Month'
 
 import en from './locales/en'
 

@@ -1,4 +1,4 @@
-import GregorianDay from 'SakamotoMethod'
+import GregorianDay from './SakamotoMethod'
 import en from './locales/en'
 
 
@@ -23,14 +23,14 @@ export default class Month {
 		for(var i=0, l=this.epoch.month, days; i < l; i++) {
 
 			days = Month.STATICS.LOOKUPTABLE[i];
-			if(Array.isArray(days)) days = days[this.isLeapYear(this.epoch.year) | 0];
+			if(Array.isArray(days)) days = days[~~this.isLeapYear(this.epoch.year) | 0];
 			//console.log(i, " :: ", days)
 
 			yearday += days;
 		};
 
 		var item = Month.STATICS.LOOKUPTABLE[this.epoch.month];
-		if(Array.isArray(item)) item = item[this.isLeapYear(this.epoch.year) | 0];
+		if(Array.isArray(item)) item = item[~~this.isLeapYear(this.epoch.year) | 0];
 		while(day < item) {
 			month.push( (yearday + primer)%7 );
 			day++;

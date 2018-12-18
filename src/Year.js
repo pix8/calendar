@@ -1,6 +1,6 @@
 import Moment from 'moment'
 
-import GregorianDay from 'SakamotoMethod'
+import GregorianDay from './SakamotoMethod'
 import en from './locales/en'
 
 
@@ -14,35 +14,66 @@ export default class Year {
 			date: parseInt(1, 10)
 		}
 
-		var primer = GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date),
-			yearday = 0;
-		console.log("YEAR init >> ", this.epoch.year, primer, " :: ", en.DAY[primer]);
+		var calendarOffset = GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date);
 
-		var month = this.month = [];
+		this.calendarYear = [];
 
-		Year.STATICS.LOOKUPTABLE.forEach((item, i, arr) => {
-			//console.log(en.MONTH[i]);
+		//speedtests 1. for loop(increment) 2. while loop 3. native foreach 4. this method(no spread operator) 5. es5 implemenation of this 6. Array.from
 
-			if(Array.isArray(item)) item = item[Year.isLeapYear];
+		Year.STATICS.LOOKUPTABLE.reduce( (tally, curr, i) => {
+			//console.log(i, tally, " :: ", curr);
 
-			var day = 0;
+			if(Array.isArray(curr)) curr = curr[~~this.isLeapYear()];
 
-			var month1 = [];
-			while(day < item) {
-				//console.log( yearday, primer );
+			let calendarMonth = [...Array(curr)].map( (item, j) => ( (j+tally) + calendarOffset )%7 );
+
+			this.calendarYear[i] = calendarMonth;
+
+			return tally + curr;
+		});
+
+		//console.log("YEAR.result :version1: ", this.calendarYear);
+
+
+		this.calendarYear2 = [];
+
+		let yearDayCount = 0;
+
+		Year.STATICS.LOOKUPTABLE.forEach((no_OfdaysInMonth, i, arr) => {			
+
+			// calibration for presence of leap year
+			if(Array.isArray(no_OfdaysInMonth)) no_OfdaysInMonth = no_OfdaysInMonth[~~this.isLeapYear()];
+
+			let calendarMonth = new Array();
+
+			let day = 0;
+			
+			while(day < no_OfdaysInMonth) {
+				calendarMonth.push( (yearDayCount + calendarOffset)%7 );
 				
-				month1.push( (yearday + primer)%7 );
 				day++;
-				yearday++;
+				yearDayCount++;
 			};
 
+			/*var placeholder = new Array(no_OfdaysInMonth);
+
+			var yearDayCount = 0;
+
+			for(var i = 0, l = placeholder.length; i < l; i++) {
+				placeholder[i] = (yearDayCount + calendarOffset)%7;
+				yearDayCount++;
+			};*/
+
+
+
+			/*
 			//pad out the month with filler days
 			var padleft = [];
-			for(var i = 0, l = month1[0]; i < l; i++) {
+			for(var i = 0, l = placeholder[0]; i < l; i++) {
 				padleft.push(null);
 			}
 			var padright = [];
-			for(var i = month1[month1.length-1], l = 6; i < l; i++) {
+			for(var i = placeholder[placeholder.length-1], l = 6; i < l; i++) {
 				padright.push(null);
 			}
 
@@ -51,9 +82,10 @@ export default class Year {
 			var monthsweek = [];
 			//var week = new Array(7);  //7 in length but nothing to iterate over
 			var week = [null, null, null, null, null, null, null];
-			month1.forEach((item, i, arr) => {
+			placeholder.forEach((marker_Date, i, arr) => {
+				//console.log(marker_Date);
 
-				week[item] = (i+1);
+				week[marker_Date] = (i+1);
 
 				if(i+1 == arr.length) {
 					//console.log("last ", i+1);
@@ -61,27 +93,29 @@ export default class Year {
 					monthsweek.push(week);
 				}
 
-				//while(item) {
-				else if(item == 6) {
+				//while(marker_Date) {
+				else if(marker_Date == 6) {
 					monthsweek.push(week);
 					week = [null, null, null, null, null, null, null];
 				}
 			});
-			//console.log(month1.length, " :: ", monthsweek);
+			//console.log(placeholder.length, " :: ", monthsweek);
 
-			month1 = {
-				'day': month1,
+			placeholder = {
+				'day': placeholder,
 				'paddingLeft': padleft,
 				'paddingRight': padright,
 
 				//'week': [{padding: [], day: []}, {day: []}, {day: []}, {padding: [], day: []}]
 				'week': monthsweek
 			};
+			//console.log("OUTPUT(month) >> ", placeholder);
+			*/
 
-			//console.log("OUTPUT(month) >> ", month1);
-
-			month.push(month1);
+			this.calendarYear2[i] = calendarMonth;
 		});
+
+		//console.log("YEAR.result :version2: ", this.calendarYear2);
 	}
 
 	isLeapYear() {
