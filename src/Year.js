@@ -18,7 +18,6 @@ export default class Year {
 
 		var calendarYear = [];
 
-		// 2nd argument is iinitalvalue(opt)
 		Year.STATICS.LOOKUPTABLE.slice().reduce( (tally, curr, i) => {
 
 			// calibration for presence of leap year
@@ -29,7 +28,7 @@ export default class Year {
 			calendarYear[i] = calendarMonth;
 
 			return tally + curr;
-			//DEVNOTE: return the month as the accumator instead >> leverage Month class to generate
+			//DEVNOTE: return the month as the accumator instead >> leverage Month class to generate structure
 		}, 0);
 
 		return calendarYear;

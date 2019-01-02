@@ -17,8 +17,7 @@ export default class Month {
 		var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
 
 		var calendarMonth = [],
-			no_OfdaysInMonth = Month.STATICS.LOOKUPTABLE[this.epoch.month-1],
-			day = 0;
+			no_OfdaysInMonth = Month.STATICS.LOOKUPTABLE[this.epoch.month-1];
 
 		var yearDayCount = Month.STATICS.LOOKUPTABLE.slice(0, this.epoch.month-1).reduce( (tally, curr, i) => {
 
@@ -31,17 +30,7 @@ export default class Month {
 		// calibration for presence of leap year
 		if(Array.isArray(no_OfdaysInMonth)) no_OfdaysInMonth = no_OfdaysInMonth[~~this.isLeapYear(this.epoch.year)];
 
-
 		return [...Array(no_OfdaysInMonth)].map( (item, j) => ( (j+yearDayCount) + calendarYearOffset )%7 );
-
-		
-		/*while(day < no_OfdaysInMonth) {
-			day = calendarMonth.push( (yearDayCount + calendarYearOffset)%7 );
-
-			yearDayCount++;
-		};
-
-		return calendarMonth;*/
 	}
 
 	getNumberOfDaysInMonth(month) {
