@@ -16,7 +16,7 @@ export default class Year {
 		//var calendarYearOffset = GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date);
 		var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
 
-		var calendarYear = [ [...Array(Year.STATICS.LOOKUPTABLE[0])].map( (item, j) => ( j + calendarYearOffset )%7 ) ];
+		var calendarYear = [];
 
 		// 2nd argument is iinitalvalue(opt)
 		Year.STATICS.LOOKUPTABLE.slice().reduce( (tally, curr, i) => {
@@ -30,7 +30,7 @@ export default class Year {
 
 			return tally + curr;
 			//DEVNOTE: return the month as the accumator instead >> leverage Month class to generate
-		});
+		}, 0);
 
 		return calendarYear;
 	}
