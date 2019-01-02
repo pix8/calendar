@@ -13,6 +13,7 @@ test('data exists', () => {
 		(data) => expect(data).toBeDefined()
 	);
 })
+// expected output: defined
 
 // Length is equal to 12
 test('data contains 12 months', () => {
@@ -21,6 +22,7 @@ test('data contains 12 months', () => {
 		(data) => expect(data.calendarYear.length).toEqual(12)
 	);
 })
+// expected output: 12
 
 // Total number of days is equal to 365 or 366
 test('Total number of days is equal to 365 or 366', () => {
@@ -33,6 +35,7 @@ test('Total number of days is equal to 365 or 366', () => {
 		).toEqual(365 || 366)
 	);
 })
+// expected output: 365 or 366
 
 // Validate month day constructs against LOOKUPTABLE
 

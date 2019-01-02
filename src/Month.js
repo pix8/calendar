@@ -9,36 +9,45 @@ export default class Month {
 
 		this.epoch = {
 			year: parseInt(_epoch.getUTCFullYear(), 10),
-			month: parseInt(_epoch.getUTCMonth()+1, 10),		//DEVNOTE: 0-based
+			month: parseInt(_epoch.getUTCMonth()+1, 10),
 			date: parseInt(1, 10)
 		};
 
-		var calendarOffset = GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date);
+		//var calendarYearOffset = GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date);
+		var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
 
 		var calendarMonth = [],
+			no_OfdaysInMonth = Month.STATICS.LOOKUPTABLE[this.epoch.month-1],
 			day = 0;
 
-		var yearDayCount = 0;
-		for(var i = 0, l = this.epoch.month, days; i < l; i++) {
+		var yearDayCount = Month.STATICS.LOOKUPTABLE.slice(0, this.epoch.month-1).reduce( (tally, curr, i) => {
 
-			days = Month.STATICS.LOOKUPTABLE[i];
-			if(Array.isArray(days)) days = days[ ~~this.isLeapYear(this.epoch.year) ];
-			//console.log(i, " :: ", days)
+			// calibration for presence of leap year
+			if(Array.isArray(curr)) curr = curr[~~this.isLeapYear(this.epoch.year)];
 
-			yearDayCount += days;
-		};
+			return tally + curr;
+		}, 0);		
 
-		var no_OfdaysInMonth = Month.STATICS.LOOKUPTABLE[this.epoch.month-1];
+		// calibration for presence of leap year
+		if(Array.isArray(no_OfdaysInMonth)) no_OfdaysInMonth = no_OfdaysInMonth[~~this.isLeapYear(this.epoch.year)];
+
+
+		return [...Array(no_OfdaysInMonth)].map( (item, j) => ( (j+yearDayCount) + calendarYearOffset )%7 );
+
 		
-		if(Array.isArray(no_OfdaysInMonth)) no_OfdaysInMonth = no_OfdaysInMonth[~~this.isLeapYear()];
-		
-		while(day < no_OfdaysInMonth) {
-			day = calendarMonth.push( (yearDayCount + calendarOffset)%7 );
+		/*while(day < no_OfdaysInMonth) {
+			day = calendarMonth.push( (yearDayCount + calendarYearOffset)%7 );
 
 			yearDayCount++;
 		};
 
-		return calendarMonth;
+		return calendarMonth;*/
+	}
+
+	getNumberOfDaysInMonth(month) {
+		//DEVNOTE: do leap year calibration here;
+
+		return this.STATICS.LOOKUPTABLE[month-1];
 	}
 
 	isLeapYear(year) {

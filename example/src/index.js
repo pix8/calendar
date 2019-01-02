@@ -26,11 +26,11 @@ input.addEventListener("change", (event) => { //OR old way .onchange = (event) =
 		document.getElementById("payload-getmonth").innerHTML = JSON.stringify(data);
 	});
 
-	/*calendar.getWeek(event.target.value).then(data => {
+	calendar.getWeek(event.target.value).then(data => {
 		console.log("Week = ", data);
 		
 		document.getElementById("payload-getweek").innerHTML = JSON.stringify(data);
-	});*/
+	});
 
 	/*calendar.getDay(event.target.value).then(data => {
 		console.log("Week = ", data);
