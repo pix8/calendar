@@ -84,61 +84,6 @@ export default class Year {
 		//console.log("YEAR.result :version3: ", this.calendarYear3);
 		var t5 = performance.now();
 		console.log("Variant 3(for loop) took", (t5 - t4), "milliseconds.");
-
-
-
-
-
-
-
-
-		Year.STATICS.LOOKUPTABLE.forEach((no_OfdaysInMonth, i, arr) => {
-			/*
-			//pad out the month with filler days
-			var padleft = [];
-			for(var i = 0, l = placeholder[0]; i < l; i++) {
-				padleft.push(null);
-			}
-			var padright = [];
-			for(var i = placeholder[placeholder.length-1], l = 6; i < l; i++) {
-				padright.push(null);
-			}
-
-			//DEV: quick and dirty; divide into consituent weeks
-			//DEVNOTE: don't need to calculate padding seperately with this method
-			var monthsweek = [];
-			//var week = new Array(7);  //7 in length but nothing to iterate over
-			var week = [null, null, null, null, null, null, null];
-			placeholder.forEach((marker_Date, i, arr) => {
-				//console.log(marker_Date);
-
-				week[marker_Date] = (i+1);
-
-				if(i+1 == arr.length) {
-					//console.log("last ", i+1);
-					//week.length = 7; //7 in length but nothing to iterate over
-					monthsweek.push(week);
-				}
-
-				//while(marker_Date) {
-				else if(marker_Date == 6) {
-					monthsweek.push(week);
-					week = [null, null, null, null, null, null, null];
-				}
-			});
-			//console.log(placeholder.length, " :: ", monthsweek);
-
-			placeholder = {
-				'day': placeholder,
-				'paddingLeft': padleft,
-				'paddingRight': padright,
-
-				//'week': [{padding: [], day: []}, {day: []}, {day: []}, {padding: [], day: []}]
-				'week': monthsweek
-			};
-			//console.log("OUTPUT(month) >> ", placeholder);
-			*/
-		});
 	}
 
 	isLeapYear() {
