@@ -3,7 +3,8 @@
 import Pix8Calendar from './Calendar'
 
 
-var epoch = new Date();
+// TEST DATE = 1st December 2018
+var epoch = new Date(2018, 12, 01);
 
 // Return exists
 test('data exists', () => {
