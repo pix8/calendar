@@ -8,24 +8,22 @@ import Moment from 'moment'
 
 import Year from './Year'
 import Month from './Month'
+import Week from './Week'
+import Day from './Day'
 
 import en from './locales/en'
 
 
-class Pix8Calendar {
+export default class Pix8Calendar {
 
 	constructor(epoch = new Date().toISOString(), config) {
 		console.log("|| Pix8.Calendar service instantiated ||");
-		//TODO: validate: check for invalid arg(date) and output empty JSON object in response
-		
-		let annum = Moment.utc().year(); //epoch.getUTCFullYear();	
-
 	}
 
-	getYear(date = new Date().toISOString()) {
+	getYear(_epoch = new Date().toISOString()) {
 		//TODO: validate: check for invalid arg(date) and output empty JSON object in response
 		
-		let epoch = new Date(date);
+		let epoch = new Date(_epoch);
 
 		//returns JSON with a Year's worth of dates(relative to the epoch) supplied as months, weeks and dates
 		return Promise.resolve(new Year(epoch));
@@ -47,6 +45,11 @@ class Pix8Calendar {
 
 	getMonth(_epoch = new Date().toISOString()) {
 
+		let epoch = new Date(_epoch);
+
+		//returns JSON with a Month's worth of dates(relative to the epoch) supplied as weeks and dates
+		return Promise.resolve(new Month(epoch));
+
 		// return new Promise( (resolve) => {
 		// 	setTimeout(function() {
 		// 		console.log("2 secs");
@@ -62,24 +65,21 @@ class Pix8Calendar {
 		// 		resolve(month);
 		// 	}, 2000);
 		// });
-
-		let epoch = Moment(_epoch);
-
-		//returns JSON with a Month's worth of dates(relative to the epoch) supplied as weeks and dates
-		return Promise.resolve({
-			month: new Month(epoch),
-			year: epoch.utc().year(), 			//epoch.getUTCFullYear(),
-			index: epoch.utc().month(), 		//epoch.getUTCMonth(), //0-based index
-			iso: epoch.utc().format(), 			//new Date(epoch.getUTCFullYear()+"-"+(epoch.getUTCMonth()+1)),
-			//STATICS: Pix8Calendar.STATICS
-		});
 	};
 
-	getWeek(epoch = new Date().toISOString()) {
+	getWeek(_epoch = new Date().toISOString()) {
 
-		//returns JSON with a Month's worth of dates(relative to the epoch) supplied as dates
-		return Promise.resolve([0, 1, 2, 3, 4, 5, 6]);
+		let epoch = new Date(_epoch);
+
+		return Promise.resolve(new Week(epoch));
+	};
+
+	getDay(_epoch = new Date().toISOString()) {
+
+		let epoch = new Date(_epoch);
+
+		return Promise.resolve(new Day(epoch));
 	};
 }
 
-export default new Pix8Calendar();
+//export default new Pix8Calendar();

@@ -17,7 +17,7 @@ test('data exists', () => {
 test('data contains 12 months', () => {
 	expect.assertions(1);
 	return Pix8Calendar.getYear(epoch).then(
-		(data) => expect(data.calendarYear2.length).toEqual(12)
+		(data) => expect(data.calendarYear.length).toEqual(12)
 	);
 })
 
@@ -26,7 +26,7 @@ test('Total number of days is equal to 365 or 366', () => {
 	expect.assertions(1);
 	return Pix8Calendar.getYear(epoch).then(
 		(data) => expect(
-			data.calendarYear2.reduce( (prev, curr, i) => 
+			data.calendarYear.reduce( (prev, curr, i) => 
 				Array.isArray(prev) ? prev.length + curr.length : prev + curr.length
 			)
 		).toEqual(365 || 366)
@@ -41,7 +41,7 @@ test('Total number of days is equal to 365 or 366', () => {
 test('Validate output against 2018 calendar', () => {
 	expect.assertions(1);
 	return Pix8Calendar.getYear(epoch).then(
-		(data) => expect(data.calendarYear2).toEqual(year2018)
+		(data) => expect(data.calendarYear).toEqual(year2018)
 	);
 	//return expect(Pix8Calendar.getYear(epoch).calendarYear2).resolves.toEqual(year2018);
 })

@@ -7,24 +7,32 @@ import Calendar from '@pix8/calendar'
 var epoch = new Date(),
 	input = document.getElementById("date");
 
+var calendar = new Calendar();
+
 
 input.addEventListener("change", (event) => { //OR old way .onchange = (event) => {}; and .onchange() to trigger
 
-	console.log(event.target.value);
+	console.log("EPOCH :: ", event.target.value);
 
-	Calendar.getYear(event.target.value).then(data => {
+	calendar.getYear(event.target.value).then(data => {
 		console.log("Year = ", data);
 		
 		document.getElementById("payload-getyear").innerHTML = JSON.stringify(data);
 	});
 
-	Calendar.getMonth(event.target.value).then(data => {
+	calendar.getMonth(event.target.value).then(data => {
 		console.log("Month = ", data);
 		
 		document.getElementById("payload-getmonth").innerHTML = JSON.stringify(data);
 	});
 
-	/*Calendar.getWeek(event.target.value).then(data => {
+	/*calendar.getWeek(event.target.value).then(data => {
+		console.log("Week = ", data);
+		
+		document.getElementById("payload-getweek").innerHTML = JSON.stringify(data);
+	});*/
+
+	/*calendar.getDay(event.target.value).then(data => {
 		console.log("Week = ", data);
 		
 		document.getElementById("payload-getweek").innerHTML = JSON.stringify(data);

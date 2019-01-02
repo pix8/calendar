@@ -1,6 +1,5 @@
-import Moment from 'moment'
-
 import GregorianDay from './SakamotoMethod'
+//import Month from './month'
 import en from './locales/en'
 
 
@@ -16,9 +15,12 @@ export default class Year {
 
 		var calendarOffset = GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date);
 
-		this.calendarYear = [];
-
 		//speedtests 1. for loop(increment) 2. while loop 3. native foreach 4. this method(no spread operator) 5. es5 implemenation of this 6. Array.from
+		//browser tests using performance.now() is very indecisive. Howver repeated executions show while loop has the edge. then for. then array reduce.
+
+		//1.
+		var t0 = performance.now();
+		this.calendarYear = [ [...Array(Year.STATICS.LOOKUPTABLE[0])].map( (item, j) => ( j + calendarOffset )%7 ) ];
 
 		Year.STATICS.LOOKUPTABLE.reduce( (tally, curr, i) => {
 			//console.log(i, tally, " :: ", curr);
@@ -31,41 +33,60 @@ export default class Year {
 
 			return tally + curr;
 		});
-
 		//console.log("YEAR.result :version1: ", this.calendarYear);
+		var t1 = performance.now();
+		console.log("Variant 1(array reduce) took", (t1 - t0), "milliseconds.");
 
+		//2.
+		var t2 = performance.now();
+		this.calendarYear3 = [];
 
-		this.calendarYear2 = [];
+		let yearDayCount2 = 0;
+		
 
-		let yearDayCount = 0;
-
-		Year.STATICS.LOOKUPTABLE.forEach((no_OfdaysInMonth, i, arr) => {			
+		Year.STATICS.LOOKUPTABLE.forEach((no_OfdaysInMonth, i, arr) => {
 
 			// calibration for presence of leap year
 			if(Array.isArray(no_OfdaysInMonth)) no_OfdaysInMonth = no_OfdaysInMonth[~~this.isLeapYear()];
 
-			let calendarMonth = new Array();
+			let calendarMonth2 = new Array();
 
 			let day = 0;
 			
 			while(day < no_OfdaysInMonth) {
-				calendarMonth.push( (yearDayCount + calendarOffset)%7 );
+				day = calendarMonth2.push( (yearDayCount2 + calendarOffset)%7 );
 				
-				day++;
-				yearDayCount++;
+				yearDayCount2++;
+			};
+		});
+		//console.log("YEAR.result :version2: ", this.calendarYear2);
+		var t3 = performance.now();
+		console.log("Variant 2(while loop) took", (t3 - t2), "milliseconds.");
+
+
+		// 3.
+		var t4 = performance.now();
+		this.calendarYear2 = [];
+
+		let yearDayCount3 = 0;
+
+
+		Year.STATICS.LOOKUPTABLE.forEach((no_OfdaysInMonth, i, arr) => {
+
+			let calendarMonth3 = new Array(no_OfdaysInMonth);
+
+			for(let j = 0, l = calendarMonth3.length; j < l; j++) {
+				calendarMonth3[j] = (yearDayCount3 + calendarOffset)%7;
+				yearDayCount3++;
 			};
 
-			/*var placeholder = new Array(no_OfdaysInMonth);
+			this.calendarYear3[i] = calendarMonth3;
+		});
+		//console.log("YEAR.result :version3: ", this.calendarYear3);
+		var t5 = performance.now();
+		console.log("Variant 3(for loop) took", (t5 - t4), "milliseconds.");
 
-			var yearDayCount = 0;
-
-			for(var i = 0, l = placeholder.length; i < l; i++) {
-				placeholder[i] = (yearDayCount + calendarOffset)%7;
-				yearDayCount++;
-			};*/
-
-
-
+		Year.STATICS.LOOKUPTABLE.forEach((no_OfdaysInMonth, i, arr) => {
 			/*
 			//pad out the month with filler days
 			var padleft = [];
@@ -111,11 +132,7 @@ export default class Year {
 			};
 			//console.log("OUTPUT(month) >> ", placeholder);
 			*/
-
-			this.calendarYear2[i] = calendarMonth;
 		});
-
-		//console.log("YEAR.result :version2: ", this.calendarYear2);
 	}
 
 	isLeapYear() {

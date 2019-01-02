@@ -1,14 +1,13 @@
-import GregorianDay from 'SakamotoMethod'
+import Day from './Day'
 import en from './locales/en'
 
 
-export default class Week {
+export default function Week(epoch) {
+	var day = Day(epoch);
 
-	constructor(epoch) {
+	//create array.
+	//fill in the gaps to make a week
+	//return week
 
-	}
+	return (yearDayCount + calendarOffset)%7
 }
-
-Week.STATICS = {
-	LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-};

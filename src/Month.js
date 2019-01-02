@@ -1,45 +1,44 @@
 import GregorianDay from './SakamotoMethod'
+import Week from './Week'
 import en from './locales/en'
 
 
 export default class Month {
 
 	constructor(_epoch) {
-		//console.log("make me a month ", _epoch);		
 
 		this.epoch = {
-			year: parseInt(_epoch.utc().year(), 10),			//_epoch.getUTCFullYear(),
-			month: parseInt(_epoch.utc().month(), 10),		//_epoch.getUTCMonth() //DEVNOTE: 0-based
-			date: ''
+			year: parseInt(_epoch.getUTCFullYear(), 10),
+			month: parseInt(_epoch.getUTCMonth()+1, 10),		//DEVNOTE: 0-based
+			date: parseInt(1, 10)
 		};
 
-		var primer = GregorianDay(this.epoch.year, 1, 1);
-		console.log("YEAR init >> ", this.epoch.year, primer, " :: ", en.DAY[primer]);
+		var calendarOffset = GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date);
 
-		var month = [],
+		var calendarMonth = [],
 			day = 0;
 
-		var yearday = 0;
-		for(var i=0, l=this.epoch.month, days; i < l; i++) {
+		var yearDayCount = 0;
+		for(var i = 0, l = this.epoch.month, days; i < l; i++) {
 
 			days = Month.STATICS.LOOKUPTABLE[i];
-			if(Array.isArray(days)) days = days[~~this.isLeapYear(this.epoch.year) | 0];
+			if(Array.isArray(days)) days = days[ ~~this.isLeapYear(this.epoch.year) ];
 			//console.log(i, " :: ", days)
 
-			yearday += days;
+			yearDayCount += days;
 		};
 
-		var item = Month.STATICS.LOOKUPTABLE[this.epoch.month];
-		if(Array.isArray(item)) item = item[~~this.isLeapYear(this.epoch.year) | 0];
-		while(day < item) {
-			month.push( (yearday + primer)%7 );
-			day++;
-			yearday++;
+		var no_OfdaysInMonth = Month.STATICS.LOOKUPTABLE[this.epoch.month-1];
+		
+		if(Array.isArray(no_OfdaysInMonth)) no_OfdaysInMonth = no_OfdaysInMonth[~~this.isLeapYear()];
+		
+		while(day < no_OfdaysInMonth) {
+			day = calendarMonth.push( (yearDayCount + calendarOffset)%7 );
+
+			yearDayCount++;
 		};
 
-		//console.log(Month.STATICS.MONTHNAME[this.epoch.month], " :: ", month);
-
-		return month;
+		return calendarMonth;
 	}
 
 	isLeapYear(year) {
