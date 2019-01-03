@@ -7,7 +7,7 @@
 
 A simple date factory for outputting a [Gregorian calendar](https://en.wikipedia.org/wiki/Gregorian_calendar) date range given a target date.
 
-Vanilla dependency-free javascript consumed as a service.
+Vanilla dependency-free javascript consumed as a service for the creation of UI interfaces that are hydrated by a date model. This module will never be more than a fountain.
 
 The prime difference between this library and other implementations is that this gets down and dirty and actually does the maths to calculates the date ranges rather than expediting proceedings with recursive conditional loops and increments(although they are written + documented far nicer than my shambolic attempts). In my mind these methods expose a lot of redundancy and expensive operations for what should be a trivial bean counting exercise. So in theory(at least in my head) this should make it superfast - although unproven - but I should really run some comparison tests at some point.
 
@@ -34,19 +34,20 @@ $ npm install @pix8/calendar
 Import module into your script as desired and consume.
 ```javascript
 import Calendar from '@pix8/calendar'
+var calendar = new Calendar();
 ```
 
 ## Usage
 
+Takes a single argument that corresponds to any valid value for a JavaScript Date Object, a Date instance itself or if no argument is supplied, the current date will be used and extracted from the local system.
+
 All calls are handled as promises and return a JSON representation of the date query. All data returned is raw/native format. So days of the week and months are represented in the standard JavaScript conventions for consumption(i.e. zero-based where applicable). It is down to you to massage or convert these down further. Some static helper props are sent down the wire to assist but bear in mind thoughts such as localisations + I will more than likely remove/separate this feature because of that overhead and peeps can simply leverage this similarly as an imported ES6 module to suit their individual use case.
 
 ### API
-```javascript
-import Calendar from '@pix8/calendar'
-var calendar = new Calendar();
-```
 
 #### getYear(date)
+Returns a JSON representation of the calendar year for a given date. Values held in array notation and comply with JavaScript conventions(0-6 = Sunday-Saturday; 0-11 = January-December).
+
 ```javascript
 var date = new Date();
 
@@ -55,7 +56,27 @@ calendar.getYear(date).then(data => {
 });
 ```
 
+Output: 2019-01-01 (ISO)
+```
+[
+	[2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4],
+	[5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4],
+	[5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0],
+	[1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2],
+	[3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5],
+	[6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0],
+	[1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3],
+	[4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6],
+	[0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1],
+	[2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4],
+	[5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6],
+	[0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2]
+]
+```
+
 ##### getMonth(date)
+Returns a JSON representation of the calendar month for a given date. Values held in array notation and comply with JavaScript conventions(0-6 = Sunday-Saturday; 0-11 = January-December).
+
 ```javascript
 var date = new Date();
 
@@ -65,9 +86,20 @@ calendar.getMonth(date).then(data => {
 
 ```
 
+Output: 2019-01-01 (ISO)
+```
+[
+	[2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4,5,6,0,1,2,3,4]
+]
+```
+
 ## Possible Enhancements
 
 * Ability to lookahead and pre-fetch neighbouring weeks, months or years so there is minimal lag in the user experience
 * Current treatment is ignorrant of time units which are distorted by local geographic conventions(which are non-standard, inconsistent and unreliable) - compensating for daylight saving poses a particular challenge and remains an unopened can of worms.
 * Public/bank holiday extension module
 * Localisation extension module
+
+## Future Objectives
+
+* Host online as live API service -> CJS version on a simple open Express server

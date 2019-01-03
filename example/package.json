@@ -1,10 +1,10 @@
 {
-  "name": "example-react-app",
-  "version": "0.0.0-alpha",
+  "name": "example-calendar-app",
+  "version": "0.0.0",
   "private": true,
   "license": "ISC",
   "scripts": {
-    "postinstall": "npm link @pix8/pogo-example-module",
+    "postinstall": "npm link @pix8/calendar",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom"
