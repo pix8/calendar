@@ -1,10 +1,16 @@
 import GregorianDay from 'SakamotoMethod'
-import en from './locales/en'
 
 
-export default function Day(epoch) {
-	//check epoch is a valid date
-	//break date down in to component parts year, month, date
+export default function Day(_epoch) {
 
-	return GregorianDay(epoch.year, epoch.month, epoch.date);
+	this.epoch = {
+		year: parseInt(_epoch.getUTCFullYear(), 10),
+		month: parseInt(_epoch.getUTCMonth()+1, 10),
+		date: parseInt(_epoch.getUTCDate(), 10)
+	};
+
+	var dateDay = _epoch.getUTCDay();
+	var calendarDay = GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date);
+
+	return [calendarDay];
 }

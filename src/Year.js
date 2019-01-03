@@ -1,6 +1,5 @@
 import GregorianDay from './SakamotoMethod'
-//import Month from './Month'
-import en from './locales/en'
+import Month from './Month'
 
 
 export default class Year {
@@ -9,18 +8,16 @@ export default class Year {
 
 		this.epoch = {
 			year: parseInt(_epoch.getUTCFullYear(), 10),
-			month: parseInt(1, 10),
-			date: parseInt(1, 10)
+			month: parseInt(_epoch.getUTCMonth()+1, 10),
+			date: parseInt(_epoch.getUTCDate(), 10)
 		}
 
-		//var calendarYearOffset = GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date);
 		var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
 
 		var calendarYear = [];
 
 		Year.STATICS.LOOKUPTABLE.slice().reduce( (tally, curr, i) => {
 
-			// calibration for presence of leap year
 			if(Array.isArray(curr)) curr = curr[~~this.isLeapYear(this.epoch.year)];
 
 			let calendarMonth = [...Array(curr)].map( (item, j) => ( (j+tally) + calendarYearOffset )%7 );
@@ -28,7 +25,6 @@ export default class Year {
 			calendarYear[i] = calendarMonth;
 
 			return tally + curr;
-			//DEVNOTE: return the month as the accumator instead >> leverage Month class to generate structure
 		}, 0);
 
 		return calendarYear;
@@ -36,7 +32,7 @@ export default class Year {
 
 	isLeapYear(year) {
 		return Boolean( (!(year%4) && year%100) || !(year%400) );
-	};
+	}
 }
 
 Year.STATICS = {
