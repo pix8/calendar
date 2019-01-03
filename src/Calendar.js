@@ -4,7 +4,6 @@
 *
 ********************************************/
 import './Polyfills'
-import Moment from 'moment'
 
 import Year from './Year'
 import Month from './Month'

@@ -41,14 +41,27 @@ import Calendar from '@pix8/calendar'
 All calls are handled as promises and return a JSON representation of the date query. All data returned is raw/native format. So days of the week and months are represented in the standard JavaScript conventions for consumption(i.e. zero-based where applicable). It is down to you to massage or convert these down further. Some static helper props are sent down the wire to assist but bear in mind thoughts such as localisations + I will more than likely remove/separate this feature because of that overhead and peeps can simply leverage this similarly as an imported ES6 module to suit their individual use case.
 
 ### API
-
 ```javascript
-getYear(date)
-
+import Calendar from '@pix8/calendar'
+var calendar = new Calendar();
 ```
 
+#### getYear(date)
 ```javascript
-getMonth(date)
+var date = new Date();
+
+calendar.getYear(date).then(data => {
+	//handle returned data
+});
+```
+
+##### getMonth(date)
+```javascript
+var date = new Date();
+
+calendar.getMonth(date).then(data => {
+	//handle returned data
+});
 
 ```
 
