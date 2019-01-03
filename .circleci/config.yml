@@ -39,6 +39,10 @@ jobs:
       #     paths:
       #       - node_modules
       #     key: v1-dependencies-{{ arch }}-{{ checksum "package.json" }}
+
+      # - persist_to_workspace:
+      #   root: ~/repo
+      #   paths: .
   
   lint:
     docker:
@@ -76,6 +80,8 @@ jobs:
       - image: circleci/node:7.10
     steps:
       - checkout
+      - attach_workspace:
+        at: ~/repo
       - run:
           name: Authenticate with NPM registry
           command: |
