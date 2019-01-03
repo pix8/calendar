@@ -18,12 +18,8 @@
   "jsnext:main": "dist/index.es.js",
   "scripts": {
     "start": "rollup -c -w ",
-    "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "jest",
-    "build": "rollup -c",
-    "release:patch": "npm run version:patch && git push --follow-tags origin develop",
-    "release:minor": "npm run version:minor && git push --follow-tags origin develop",
-    "release:major": "npm run version:major && git push --follow-tags origin develop"
+    "build": "rollup -c"
   },
   "dependencies": {},
   "devDependencies": {
