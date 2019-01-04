@@ -1,5 +1,5 @@
 import GregorianDay from './algorithm/Sakamoto'
-import Month from './Month'
+//import Month from './Month'
 
 
 export default class Year {
@@ -15,17 +15,33 @@ export default class Year {
 		var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
 
 		var calendarYear = [];
+		//var calendarYear = [...Month]; //How it should eventually be!
 
+		//compose year month entries
 		Year.STATICS.LOOKUPTABLE.slice().reduce( (tally, curr, i) => {
 
+			//create month day entries
 			if(Array.isArray(curr)) curr = curr[~~this.isLeapYear(this.epoch.year)];
 
 			let calendarMonth = [...Array(curr)].map( (item, j) => ( (j+tally) + calendarYearOffset )%7 );
 
-			calendarYear[i] = calendarMonth;
+			//splits and groups the month days into clusters of weeks
+			calendarYear[i] = calendarMonth.slice().reduce((accumulator, curr) => {
+				let l = accumulator.length;
+
+				if(l === 0  || curr === Year.config.baseDay) {
+					accumulator.push([curr]);
+				}else {
+					accumulator[l-1].push(curr);
+				}
+
+				return accumulator;
+			}, []);;
 
 			return tally + curr;
 		}, 0);
+
+		console.log("jb :: ", calendarYear.flat(2).length)
 
 		return calendarYear;
 	}
@@ -38,3 +54,7 @@ export default class Year {
 Year.STATICS = {
 	LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 };
+
+Year.config = {
+	baseDay: 0
+}
