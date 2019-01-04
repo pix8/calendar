@@ -1,4 +1,4 @@
-import GregorianDay from './SakamotoMethod'
+import GregorianDay from './algorithm/Sakamoto'
 import Day from './Day'
 
 

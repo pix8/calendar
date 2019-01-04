@@ -4,11 +4,11 @@
   "description": "A simple calendar service",
   "author": "Jonathan Brincat <jb@pix8.co.uk> (http://pix8.co.uk)",
   "homepage": "",
-  "keywords": [],
+  "keywords": ["calendar", "dates", "year", "month", "simple", "service", "provider"],
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:pix8/npm.calendar.git"
+    "url": "git@github.com:pix8/calendar.git"
   },
   "files": [
     "dist"

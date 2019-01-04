@@ -1,6 +1,5 @@
-import GregorianDay from './SakamotoMethod'
+import GregorianDay from './algorithm/Sakamoto'
 //import Month from './month'
-import en from './locales/en'
 
 
 export default class Year {

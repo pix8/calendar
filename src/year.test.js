@@ -1,8 +1,7 @@
-//export {default as Functions} from './Functions'
-//const Functions = require('./Functions');
 import Pix8Calendar from './Calendar'
 
 
+//SPECS
 // TEST DATE = 1st December 2018
 var epoch = new Date(2018, 12, 01);
 
@@ -50,8 +49,10 @@ test('Validate output against 2018 calendar', () => {
 	//return expect(Pix8Calendar.getYear(epoch).calendarYear2).resolves.toEqual(year2018);
 })
 
+
+//MOCK
 //2018 day data
-var year2018 = [
+const year2018 = [
 	//Jan
 	[
 		1, 2, 3, 4, 5, 6,

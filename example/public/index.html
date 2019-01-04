@@ -27,8 +27,22 @@
 			background-color: rgb(167,197,93); /*#A7C55D;*/
 		}
 
+		#output {
+			color: rgb(236,0,140); /*#EC008C;*/
+		}
+
 		p {
 			font-size: 1.6rem;
+		}
+
+		body {
+			min-height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
+
+		main {
+			flex-grow: 1;
 		}
 	</style>
 </head>
@@ -41,18 +55,6 @@
 	<header id="app--masthead" role="complementary">
 		<section class="foobar">
 			<div class="container">
-				<h1 class="style__text-primary-colour">@pix8/Calendar</h1>
-				<h2 class="style__no-margin-top">A fast simple provider of the Gregorian calendar</h2>
-
-				<article id="input">
-					<div class="ui__field">
-						<label>Enter a date</label>
-						<div class="ui__control">
-							<input type="date" id="date" name="date" />
-						</div>
-					</div>
-				</article>
-
 				<article id="output">
 					<div id="getyear">
 						<h2>Return calendar year: <span class="query__year"></span></h2>
@@ -85,12 +87,23 @@
 			<p class="style__text-primary-colour emphasize">
 				&gt;_
 			</p>
+			<h1 class="style__text-primary-colour">@pix8/Calendar</h1>
+			<h2 class="style__no-margin-top">A fast simple provider of the Gregorian calendar with arrays and numbers</h2>
+
+			<article id="input">
+				<div class="ui__field">
+					<label>Enter a date</label>
+					<div class="ui__control">
+						<input type="date" id="date" name="date" />
+					</div>
+				</div>
+			</article>
 		</div>
 	</main>
 
 	<footer id="app--footer">
 		<div class="container">
-			<p>Powered by pix'ie dust. Fuelled by tea. <a href="http://pix8.co.uk" target="_blank">pix8 Ltd</a> &copy; 2019.</p>
+			<p>Powered by pix'ie dust. Fuelled by tea. &#x2615; <a href="http://pix8.co.uk" target="_blank">pix8 Ltd</a> &copy; 2019.</p>
 		</div>
 	</footer>
 </body>

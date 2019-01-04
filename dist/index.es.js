@@ -214,7 +214,6 @@ function () {
 
     console.log("|| Pix8.Calendar service instantiated ||");
     this.locales = en;
-    console.log(this.locales);
   }
   /**
   * Validates a date object
