@@ -1,6 +1,5 @@
-import GregorianDay from './SakamotoMethod'
+import GregorianDay from './algorithm/Sakamoto'
 //import Month from './month'
-import en from './locales/en'
 
 
 export default class Year {
@@ -24,13 +23,10 @@ export default class Year {
 			// calibration for presence of leap year
 			if(Array.isArray(no_OfdaysInMonth)) no_OfdaysInMonth = no_OfdaysInMonth[~~this.isLeapYear()];
 
-			let calendarMonth = new Array();
+			let calendarMonth = new Array(no_OfdaysInMonth);
 
-			let day = 0;
-			
-			while(day < no_OfdaysInMonth) {
-				day = calendarMonth.push( (yearDayCount + calendarOffset)%7 );
-				
+			for(let j = 0, l = calendarMonth.length; j < l; j++) {
+				calendarMonth[j] = (yearDayCount + calendarOffset)%7;
 				yearDayCount++;
 			};
 

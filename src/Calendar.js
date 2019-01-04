@@ -19,7 +19,6 @@ export default class Pix8Calendar {
 		console.log("|| Pix8.Calendar service instantiated ||");
 
 		this.locales = en;
-		console.log(this.locales);
 	}
 
 	/**
