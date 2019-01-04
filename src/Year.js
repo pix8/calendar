@@ -1,5 +1,5 @@
 import GregorianDay from './algorithm/Sakamoto'
-import Month from './Month'
+//import Month from './Month'
 
 
 export default class Year {
@@ -15,6 +15,7 @@ export default class Year {
 		var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
 
 		var calendarYear = [];
+		//var calendarYear = [...Month]; //How it should eventually be!
 
 		Year.STATICS.LOOKUPTABLE.slice().reduce( (tally, curr, i) => {
 

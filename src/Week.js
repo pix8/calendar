@@ -1,5 +1,5 @@
 import GregorianDay from './algorithm/Sakamoto'
-import Day from './Day'
+//import Day from './Day'
 
 
 export default function Week(_epoch) {

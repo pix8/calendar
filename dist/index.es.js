@@ -96,67 +96,6 @@ var GregorianDay = (function (y, m, d) {
 // 	return(y + y/4 -y/100 +y/400 + [m] + d) % 7;
 // }
 
-function Day(_epoch) {
-  this.epoch = {
-    year: parseInt(_epoch.getUTCFullYear(), 10),
-    month: parseInt(_epoch.getUTCMonth() + 1, 10),
-    date: parseInt(_epoch.getUTCDate(), 10)
-  };
-
-  var dateDay = _epoch.getUTCDay();
-
-  var calendarDay = GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date);
-  return [calendarDay];
-}
-
-function Week(_epoch) {
-  this.epoch = {
-    year: parseInt(_epoch.getUTCFullYear(), 10),
-    month: parseInt(_epoch.getUTCMonth() + 1, 10),
-    date: parseInt(_epoch.getUTCDate(), 10)
-  };
-  var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
-  var calendarWeek = [0, 1, 2, 3, 4, 5, 6];
-  return calendarWeek; //return (yearDayCount + calendarOffset)%7;
-}
-
-var Month =
-/*#__PURE__*/
-function () {
-  function Month(_epoch) {
-    var _this = this;
-
-    classCallCheck(this, Month);
-
-    this.epoch = {
-      year: parseInt(_epoch.getUTCFullYear(), 10),
-      month: parseInt(_epoch.getUTCMonth() + 1, 10),
-      date: parseInt(_epoch.getUTCDate(), 10)
-    };
-    var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
-    var yearDayTally = Month.STATICS.LOOKUPTABLE.slice(0, this.epoch.month - 1).reduce(function (tally, curr, i) {
-      return tally + (Array.isArray(curr) ? curr[~~_this.isLeapYear(_this.epoch.year)] : curr);
-    }, 0);
-    var daysInMonth = Month.STATICS.LOOKUPTABLE[this.epoch.month - 1];
-    if (Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~this.isLeapYear(this.epoch.year)];
-    return toConsumableArray(Array(daysInMonth)).map(function (item, j) {
-      return (j + yearDayTally + calendarYearOffset) % 7;
-    });
-  }
-
-  createClass(Month, [{
-    key: "isLeapYear",
-    value: function isLeapYear(year) {
-      return Boolean(!(year % 4) && year % 100 || !(year % 400));
-    }
-  }]);
-
-  return Month;
-}();
-Month.STATICS = {
-  LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-};
-
 var Year =
 /*#__PURE__*/
 function () {
@@ -171,7 +110,8 @@ function () {
       date: parseInt(_epoch.getUTCDate(), 10)
     };
     var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
-    var calendarYear = [];
+    var calendarYear = []; //var calendarYear = [...Month]; //How it should eventually be!
+
     Year.STATICS.LOOKUPTABLE.slice().reduce(function (tally, curr, i) {
       if (Array.isArray(curr)) curr = curr[~~_this.isLeapYear(_this.epoch.year)];
 
@@ -197,6 +137,85 @@ function () {
 Year.STATICS = {
   LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 };
+
+var Month =
+/*#__PURE__*/
+function () {
+  function Month(_epoch) {
+    var _this = this;
+
+    classCallCheck(this, Month);
+
+    this.epoch = {
+      year: parseInt(_epoch.getUTCFullYear(), 10),
+      month: parseInt(_epoch.getUTCMonth() + 1, 10),
+      date: parseInt(_epoch.getUTCDate(), 10)
+    };
+    var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
+    var calendarMonth = []; //epoch origin represent as the year day
+
+    var yearDayTally = Month.STATICS.LOOKUPTABLE.slice(0, this.epoch.month - 1).reduce(function (tally, curr, i) {
+      return tally + (Array.isArray(curr) ? curr[~~_this.isLeapYear(_this.epoch.year)] : curr);
+    }, 0); //create month day entries
+
+    var daysInMonth = Month.STATICS.LOOKUPTABLE[this.epoch.month - 1];
+    if (Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~this.isLeapYear(this.epoch.year)];
+    calendarMonth = toConsumableArray(Array(daysInMonth)).map(function (item, j) {
+      return (j + yearDayTally + calendarYearOffset) % 7;
+    });
+    return [//splits and groups the month days into clusters of weeks
+    calendarMonth.slice().reduce(function (accumulator, curr) {
+      var l = accumulator.length;
+
+      if (l === 0 || curr === Month.config.baseDay) {
+        accumulator.push([curr]);
+      } else {
+        accumulator[l - 1].push(curr);
+      }
+
+      return accumulator;
+    }, [])];
+  }
+
+  createClass(Month, [{
+    key: "isLeapYear",
+    value: function isLeapYear(year) {
+      return Boolean(!(year % 4) && year % 100 || !(year % 400));
+    }
+  }]);
+
+  return Month;
+}();
+Month.STATICS = {
+  LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+};
+Month.config = {
+  baseDay: 0
+};
+
+function Week(_epoch) {
+  this.epoch = {
+    year: parseInt(_epoch.getUTCFullYear(), 10),
+    month: parseInt(_epoch.getUTCMonth() + 1, 10),
+    date: parseInt(_epoch.getUTCDate(), 10)
+  };
+  var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
+  var calendarWeek = [0, 1, 2, 3, 4, 5, 6];
+  return calendarWeek; //return (yearDayCount + calendarOffset)%7;
+}
+
+function Day(_epoch) {
+  this.epoch = {
+    year: parseInt(_epoch.getUTCFullYear(), 10),
+    month: parseInt(_epoch.getUTCMonth() + 1, 10),
+    date: parseInt(_epoch.getUTCDate(), 10)
+  };
+
+  var dateDay = _epoch.getUTCDay();
+
+  var calendarDay = GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date);
+  return [calendarDay];
+}
 
 var en = {
   //MONTH: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
