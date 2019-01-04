@@ -63,7 +63,7 @@ calendar.getYear(date).then(data => {
 ```
 
 Output: 2019-01-01 (ISO)
-```
+```javascript
 [ //year
 	[ //month
 		[ //week
@@ -120,7 +120,7 @@ calendar.getMonth(date).then(data => {
 ```
 
 Output: 2019-01-01 (ISO)
-```
+```javascript
 [ //year
 	[ //month
 		[ //week

@@ -36,12 +36,10 @@ export default class Year {
 				}
 
 				return accumulator;
-			}, []);;
+			}, []);
 
 			return tally + curr;
 		}, 0);
-
-		console.log("jb :: ", calendarYear.flat(2).length)
 
 		return calendarYear;
 	}
