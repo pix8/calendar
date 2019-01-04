@@ -113,17 +113,31 @@ function () {
     };
     var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
     var calendarYear = []; //var calendarYear = [...Month]; //How it should eventually be!
+    //compose year month entries
 
     Year.STATICS.LOOKUPTABLE.slice().reduce(function (tally, curr, i) {
+      //create month day entries
       if (Array.isArray(curr)) curr = curr[~~_this.isLeapYear(_this.epoch.year)];
 
       var calendarMonth = toConsumableArray(Array(curr)).map(function (item, j) {
         return (j + tally + calendarYearOffset) % 7;
-      });
+      }); //splits and groups the month days into clusters of weeks
 
-      calendarYear[i] = calendarMonth;
+
+      calendarYear[i] = calendarMonth.slice().reduce(function (accumulator, curr) {
+        var l = accumulator.length;
+
+        if (l === 0 || curr === Year.config.baseDay) {
+          accumulator.push([curr]);
+        } else {
+          accumulator[l - 1].push(curr);
+        }
+
+        return accumulator;
+      }, []);
       return tally + curr;
     }, 0);
+    console.log("jb :: ", calendarYear.flat(2).length);
     return calendarYear;
   }
 
@@ -138,6 +152,9 @@ function () {
 }();
 Year.STATICS = {
   LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+};
+Year.config = {
+  baseDay: 0
 };
 
 var Month =
