@@ -1,10 +1,18 @@
 {
   "name": "@pix8/calendar",
-  "version": "0.0.4-beta",
+  "version": "0.1.0-beta",
   "description": "A simple calendar service",
   "author": "Jonathan Brincat <jb@pix8.co.uk> (http://pix8.co.uk)",
   "homepage": "",
-  "keywords": ["calendar", "dates", "year", "month", "simple", "service", "provider"],
+  "keywords": [
+    "calendar",
+    "dates",
+    "year",
+    "month",
+    "simple",
+    "service",
+    "provider"
+  ],
   "license": "ISC",
   "repository": {
     "type": "git",
