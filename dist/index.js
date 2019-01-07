@@ -112,7 +112,7 @@ function () {
       date: parseInt(_epoch.getUTCDate(), 10)
     };
     var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
-    var calendarYear = []; //var calendarYear = [...Month]; //How it should eventually be!
+    var calendarYear = []; //var calendarYear = [...new Month()]; //How it should eventually be!
     //compose year month entries
 
     Year.STATICS.LOOKUPTABLE.slice().reduce(function (tally, curr, i) {
@@ -137,8 +137,10 @@ function () {
       }, []);
       return tally + curr;
     }, 0);
-    console.log("jb :: ", calendarYear.flat(2).length);
-    return calendarYear;
+    var calendar = [];
+    calendar[this.epoch.year] = calendarYear; //console.log("jb :: ", calendar, " :: ", calendar.indexOf(calendarYear) );
+
+    return calendar;
   }
 
   createClass(Year, [{
@@ -182,7 +184,7 @@ function () {
     calendarMonth = toConsumableArray(Array(daysInMonth)).map(function (item, j) {
       return (j + yearDayTally + calendarYearOffset) % 7;
     });
-    return [//splits and groups the month days into clusters of weeks
+    return [[//splits and groups the month days into clusters of weeks
     calendarMonth.slice().reduce(function (accumulator, curr) {
       var l = accumulator.length;
 
@@ -193,7 +195,7 @@ function () {
       }
 
       return accumulator;
-    }, [])];
+    }, [])]];
   }
 
   createClass(Month, [{
@@ -250,7 +252,7 @@ function () {
 
     classCallCheck(this, Pix8Calendar);
 
-    console.log("|| Pix8.Calendar service instantiated ||");
+    //console.log("|| Pix8.Calendar service instantiated ||");
     this.locales = en;
   }
   /**
@@ -273,12 +275,21 @@ function () {
     key: "setLocale",
     value: function setLocale(customLocale) {}
   }, {
+    key: "getCalendarYear",
+    value: function getCalendarYear() {
+      var _epoch = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date().toISOString();
+
+      var epoch = new Date(_epoch);
+      if (!this.isValidDate(epoch)) throw TypeError("Pix8Calendar: Query is not a valid date"); //returns JSON with a Calendar Year's worth of dates(relative to the epoch) supplied as months, weeks and dates
+
+      return Promise.resolve(new Year(epoch));
+    }
+  }, {
     key: "getYear",
     value: function getYear() {
       var _epoch = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date().toISOString();
 
-      var epoch = new Date(_epoch); //TODO: validate: check for invalid arg(date) and output empty JSON object in response
-
+      var epoch = new Date(_epoch);
       if (!this.isValidDate(epoch)) throw TypeError("Pix8Calendar: Query is not a valid date"); //returns JSON with a Year's worth of dates(relative to the epoch) supplied as months, weeks and dates
 
       return Promise.resolve(new Year(epoch)); // return new Promise(
@@ -299,8 +310,7 @@ function () {
     value: function getMonth() {
       var _epoch = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date().toISOString();
 
-      var epoch = new Date(_epoch); //TODO: validate: check for invalid arg(date) and output empty JSON object in response
-
+      var epoch = new Date(_epoch);
       if (!this.isValidDate(epoch)) throw TypeError("Pix8Calendar: Query is not a valid date"); //returns JSON with a Month's worth of dates(relative to the epoch) supplied as weeks and dates
 
       return Promise.resolve(new Month(epoch)); // return new Promise( (resolve) => {
@@ -322,8 +332,7 @@ function () {
     value: function getWeek() {
       var _epoch = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date().toISOString();
 
-      var epoch = new Date(_epoch); //TODO: validate: check for invalid arg(date) and output empty JSON object in response
-
+      var epoch = new Date(_epoch);
       if (!this.isValidDate(epoch)) throw TypeError("Pix8Calendar: Query is not a valid date");
       return Promise.resolve(new Week(epoch));
     }
@@ -332,8 +341,7 @@ function () {
     value: function getDay() {
       var _epoch = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date().toISOString();
 
-      var epoch = new Date(_epoch); //TODO: validate: check for invalid arg(date) and output empty JSON object in response
-
+      var epoch = new Date(_epoch);
       if (!this.isValidDate(epoch)) throw TypeError("Pix8Calendar: Query is not a valid date");
       return Promise.resolve(new Day(epoch));
     }

@@ -19,7 +19,7 @@ input.addEventListener("change", (event) => { //OR old way .onchange = (event) =
 		console.log("Year = ", data);
 		
 		var el = document.getElementById("payload--getyear");
-		if(el !== null) el.innerHTML = JSON.stringify(data);
+		if(el !== null) el.innerHTML = JSON.stringify(data[2019]);
 	});
 
 	calendar.getMonth(event.target.value).then(data => {

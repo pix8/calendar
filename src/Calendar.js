@@ -16,7 +16,7 @@ import en from './locales/en'
 export default class Pix8Calendar {
 
 	constructor(epoch = new Date().toISOString(), config) {
-		console.log("|| Pix8.Calendar service instantiated ||");
+		//console.log("|| Pix8.Calendar service instantiated ||");
 
 		this.locales = en;
 	}
@@ -37,11 +37,21 @@ export default class Pix8Calendar {
 	setLocale(customLocale) {
 	}
 
+	getCalendarYear(_epoch = new Date().toISOString()) {
+
+		let epoch = new Date(_epoch);
+
+		if(!this.isValidDate(epoch))
+			throw TypeError("Pix8Calendar: Query is not a valid date");
+
+		//returns JSON with a Calendar Year's worth of dates(relative to the epoch) supplied as months, weeks and dates
+		return Promise.resolve(new Year(epoch));
+	};
+
 	getYear(_epoch = new Date().toISOString()) {
 
 		let epoch = new Date(_epoch);
 
-		//TODO: validate: check for invalid arg(date) and output empty JSON object in response
 		if(!this.isValidDate(epoch))
 			throw TypeError("Pix8Calendar: Query is not a valid date");
 
@@ -67,7 +77,6 @@ export default class Pix8Calendar {
 
 		let epoch = new Date(_epoch);
 
-		//TODO: validate: check for invalid arg(date) and output empty JSON object in response
 		if(!this.isValidDate(epoch))
 			throw TypeError("Pix8Calendar: Query is not a valid date");
 
@@ -95,7 +104,6 @@ export default class Pix8Calendar {
 
 		let epoch = new Date(_epoch);
 
-		//TODO: validate: check for invalid arg(date) and output empty JSON object in response
 		if(!this.isValidDate(epoch))
 			throw TypeError("Pix8Calendar: Query is not a valid date");
 
@@ -106,7 +114,6 @@ export default class Pix8Calendar {
 
 		let epoch = new Date(_epoch);
 
-		//TODO: validate: check for invalid arg(date) and output empty JSON object in response
 		if(!this.isValidDate(epoch))
 			throw TypeError("Pix8Calendar: Query is not a valid date");
 

@@ -45,7 +45,7 @@ Takes a single argument that corresponds to any valid value for a JavaScript Dat
 
 All calls are handled as promises and return ~~a JSON~~ an Array representation of the date query. All data returned is raw/native format. So days of the week and months are represented in the standard JavaScript conventions for consumption(i.e. zero-based where applicable). It is down to you to massage or convert these down further. Some static helper props are sent down the wire to assist but bear in mind thoughts such as localisations + I will more than likely remove/separate this feature because of that overhead and peeps can simply leverage this similarly as an imported ES6 module to suit their individual use case.
 
-Composition is granted by array nesting with each level representing a date span, top tier = year, 2nd tier = month, 3rd tier = week and the values of course are the day values. Date is granted by index position within the array or by performing the simple maths that maps to it's region within the array clusters(eg. 2nd day of the 2nd week in any month would be 1st week (array.length+1) + day ). Similarly you can flatten the arrays to the desired depth to extract further meaning. However in the majority of cases it is convention to use an iterators to conditionally render any allying interface and so you would also have access to a counter(index) for such purposes.
+Composition is granted by array nesting with each level representing a date span, top tier = year, 2nd tier = month, 3rd tier = week and the values of course are the day values.
 
 The ultimate rationality is to keep the functionality of this module pure, unopinionated and agnostic to it's treatment.
 
@@ -64,45 +64,47 @@ calendar.getYear(date).then(data => {
 
 Output: 2019-01-01 (ISO)
 ```javascript
-[ //year
-	[ //month
-		[ //week
-			2,3,4,5,6
+[
+	[ //year
+		[ //month
+			[ //week
+				2,3,4,5,6
+			],
+			[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4]
 		],
-		[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4]
-	],
-	[
-		[5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4]]
-	,
-	[
-		[5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0]
-	],
-	[
-		[1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2]]
-	,
-	[
-		[3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5]
-	],
-	[
-		[6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0]
-	],
-	[
-		[1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3]
-	],
-	[
-		[4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6]
-	],
-	[
-		[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1]
-	],
-	[
-		[2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4]
-	],
-	[
-		[5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6]
-	],
-	[
-		[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2]
+		[
+			[5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4]]
+		,
+		[
+			[5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0]
+		],
+		[
+			[1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2]]
+		,
+		[
+			[3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5]
+		],
+		[
+			[6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0]
+		],
+		[
+			[1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3]
+		],
+		[
+			[4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6]
+		],
+		[
+			[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1]
+		],
+		[
+			[2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4]
+		],
+		[
+			[5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6]
+		],
+		[
+			[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2]
+		]
 	]
 ]
 ```
@@ -121,15 +123,17 @@ calendar.getMonth(date).then(data => {
 
 Output: 2019-01-01 (ISO)
 ```javascript
-[ //year
-	[ //month
-		[ //week
-			2,3,4,5,6
-		],
-		[0,1,2,3,4,5,6],
-		[0,1,2,3,4,5,6],
-		[0,1,2,3,4,5,6],
-		[0,1,2,3,4]
+[
+	[ //year
+		[ //month
+			[ //week
+				2,3,4,5,6
+			],
+			[0,1,2,3,4,5,6],
+			[0,1,2,3,4,5,6],
+			[0,1,2,3,4,5,6],
+			[0,1,2,3,4]
+		]
 	]
 ]
 ```
