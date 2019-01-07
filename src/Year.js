@@ -11,7 +11,7 @@ export default class Year {
 			month: parseInt(_epoch.getUTCMonth()+1, 10),
 			date: parseInt(_epoch.getUTCDate(), 10)
 		}
-
+		
 		var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
 
 		var calendarYear = [];

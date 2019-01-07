@@ -111,6 +111,7 @@ function () {
       month: parseInt(_epoch.getUTCMonth() + 1, 10),
       date: parseInt(_epoch.getUTCDate(), 10)
     };
+    console.log("no deal :: ", this.epoch);
     var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
     var calendarYear = []; //var calendarYear = [...new Month()]; //How it should eventually be!
     //compose year month entries
