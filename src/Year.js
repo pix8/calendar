@@ -41,11 +41,7 @@ export default class Year {
 			return tally + curr;
 		}, 0);
 
-		var calendar = [];
-		calendar[this.epoch.year] = calendarYear;
-		//console.log("jb :: ", calendar, " :: ", calendar.indexOf(calendarYear) );
-
-		return calendar;
+		return calendarYear;
 	}
 
 	isLeapYear(year) {

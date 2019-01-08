@@ -30,7 +30,7 @@ export default class Month {
 			return ( (j+yearDayTally) + calendarYearOffset )%7;
 		} );
 		
-		return [[
+		return (
 			
 			//splits and groups the month days into clusters of weeks
 			calendarMonth.slice().reduce((accumulator, curr) => {
@@ -44,7 +44,7 @@ export default class Month {
 
 				return accumulator;
 			}, [])
-		]];
+		);
 	}
 
 	isLeapYear(year) {
