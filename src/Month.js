@@ -8,12 +8,6 @@ export default class Month {
 
 		this.baseClass = new BaseClass(_epoch);
 
-		//epoch origin represent as the year day
-		// var yearDayTally = BaseClass.LOOKUPTABLE.slice(0, this.baseClass.epoch.month-1).reduce((tally, daysInMonth, i) => {
-
-		// 	return tally + this.baseClass.getDaysInMonth(daysInMonth);
-		// }, 0);
-
 		var yearDayTally = this.baseClass.getYearDay(this.baseClass.epoch.month, null, true),
 			daysInMonth = BaseClass.LOOKUPTABLE[this.baseClass.epoch.month-1];
 		
@@ -76,10 +70,11 @@ class BaseClass {
 	}
 
 	getYearDay(month = this.epoch.month, date = this.epoch.date, excludeTargetMonth = false) {
-		return BaseClass.LOOKUPTABLE.slice(0, month-1).reduce((tally, daysInMonth, i) => {
-
-			return tally + this.getDaysInMonth(daysInMonth);
-		}, excludeTargetMonth ? 0 : date);
+		return (
+			BaseClass.LOOKUPTABLE.slice(0, month-1).reduce(
+				(tally, daysInMonth, i) => tally + this.getDaysInMonth(daysInMonth)
+			, excludeTargetMonth ? 0 : date)
+		)
 	}
 
 	getDaysInMonth(month) {

@@ -114,11 +114,7 @@ function () {
   function Month(_epoch) {
     classCallCheck(this, Month);
 
-    this.baseClass = new BaseClass(_epoch); //epoch origin represent as the year day
-    // var yearDayTally = BaseClass.LOOKUPTABLE.slice(0, this.baseClass.epoch.month-1).reduce((tally, daysInMonth, i) => {
-    // 	return tally + this.baseClass.getDaysInMonth(daysInMonth);
-    // }, 0);
-
+    this.baseClass = new BaseClass(_epoch);
     var yearDayTally = this.baseClass.getYearDay(this.baseClass.epoch.month, null, true),
         daysInMonth = BaseClass.LOOKUPTABLE[this.baseClass.epoch.month - 1]; //--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
 
@@ -324,24 +320,17 @@ var Week =
 function () {
   //class Week extends day {
   function Week(_epoch) {
-    var _this = this;
-
     classCallCheck(this, Week);
 
-    this.baseClass = new BaseClass$2(_epoch);
+    this.baseClass = new BaseClass$2(_epoch); //MOCK
+
     var date = 19;
     var month = 1;
     /*var week = date/7;
     	console.log( GregorianDay(year, month, date) );
     console.log(date, "/", month, "/", year, " week = ", Math.ceil(week));*/
 
-    var yearDayTally = BaseClass$2.LOOKUPTABLE.slice(0, month - 1).reduce(function (tally, daysInMonth, i) {
-      //console.log(this.baseClass.getDaysInMonth(daysInMonth), " :: ", tally);
-      return tally + _this.baseClass.getDaysInMonth(daysInMonth);
-    }, 0);
-    console.log("1. year day number = ", this.baseClass.getYearDay(month, date));
-    console.log("2. year day number = ", yearDayTally + date); //GUESS WHAT. YOU NEED THE YEAR DAY. date needs to be converted to it's year day.
-    //return week
+    console.log("Year day number = ", this.baseClass.getYearDay(month, date)); //return week
     //week number
     //split week at month boundaries
     //DEVNOTE: week should be split into two arrays if it is a partial ie.[0,1][2,3,4,5,6]
@@ -387,13 +376,13 @@ function () {
   createClass(BaseClass, [{
     key: "getYearDay",
     value: function getYearDay() {
-      var _this2 = this;
+      var _this = this;
 
       var month = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.epoch.month;
       var date = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.epoch.date;
       var excludeTargetMonth = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       return BaseClass.LOOKUPTABLE.slice(0, month - 1).reduce(function (tally, daysInMonth, i) {
-        return tally + _this2.getDaysInMonth(daysInMonth);
+        return tally + _this.getDaysInMonth(daysInMonth);
       }, excludeTargetMonth ? 0 : date);
     }
   }, {

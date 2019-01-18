@@ -21,6 +21,7 @@ export default class Week {
 
 		this.baseClass = new BaseClass(_epoch);
 
+		//MOCK
 		var date = 19;
 		var month = 1;
 		var year = 2019;
@@ -30,16 +31,7 @@ export default class Week {
 		console.log( GregorianDay(year, month, date) );
 		console.log(date, "/", month, "/", year, " week = ", Math.ceil(week));*/
 
-		var yearDayTally = BaseClass.LOOKUPTABLE.slice(0, month-1).reduce((tally, daysInMonth, i) => {
-			//console.log(this.baseClass.getDaysInMonth(daysInMonth), " :: ", tally);
-
-			return tally + this.baseClass.getDaysInMonth(daysInMonth);
-		}, 0);
-
-		console.log("1. year day number = ", this.baseClass.getYearDay(month, date));
-		console.log("2. year day number = ", yearDayTally + date);
-
-		//GUESS WHAT. YOU NEED THE YEAR DAY. date needs to be converted to it's year day.
+		console.log("Year day number = ", this.baseClass.getYearDay(month, date));
 
 		//return week
 			//week number
@@ -85,10 +77,11 @@ class BaseClass {
 	}
 
 	getYearDay(month = this.epoch.month, date = this.epoch.date, excludeTargetMonth = false) {
-		return BaseClass.LOOKUPTABLE.slice(0, month-1).reduce((tally, daysInMonth, i) => {
-
-			return tally + this.getDaysInMonth(daysInMonth);
-		}, excludeTargetMonth ? 0 : date);
+		return (
+			BaseClass.LOOKUPTABLE.slice(0, month-1).reduce(
+				(tally, daysInMonth, i) => tally + this.getDaysInMonth(daysInMonth)
+			, excludeTargetMonth ? 0 : date)
+		)
 	}
 
 	getDaysInMonth(month) {
