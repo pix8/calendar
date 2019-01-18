@@ -17,14 +17,14 @@ input.addEventListener("change", (event) => { //OR old way .onchange = (event) =
 	if(!event.target.value.length) return false;
 
 	calendar.getCalendarYear(event.target.value).then(data => {
-		console.log("CalendarYear = ", data);
+		// console.log("CalendarYear = ", data);
 		
 		var el = document.getElementById("payload--getcalendaryear");
 		if(el !== null) el.innerHTML = JSON.stringify(data);
 	});
 
 	calendar.getCalendarMonth(event.target.value).then(data => {
-		console.log("CalendarMonth = ", data);
+		// console.log("CalendarMonth = ", data);
 		
 		var el = document.getElementById("payload--getcalendarmonth");
 		if(el !== null) el.innerHTML = JSON.stringify(data);
@@ -45,14 +45,14 @@ input.addEventListener("change", (event) => { //OR old way .onchange = (event) =
 	});*/
 
 	calendar.getYear(event.target.value).then(data => {
-		console.log("Year = ", data);
+		// console.log("Year = ", data);
 		
 		var el = document.getElementById("payload--getyear");
 		if(el !== null) el.innerHTML = JSON.stringify(data);
 	});
 
 	calendar.getMonth(event.target.value).then(data => {
-		console.log("Month = ", data);
+		// console.log("Month = ", data);
 		
 		var el = document.getElementById("payload--getmonth")
 		if(el !== null) el.innerHTML = JSON.stringify(data);

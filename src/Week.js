@@ -3,6 +3,7 @@ import GregorianDay from './algorithm/Sakamoto'
 
 
 export default function Week(_epoch) {
+//export default function Week(_epoch) extends day {
 
 	this.epoch = {
 		year: parseInt(_epoch.getUTCFullYear()),

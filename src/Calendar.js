@@ -72,7 +72,6 @@ export default class Pix8Calendar {
 
 		calendar[year] = new Array(12);
 		calendar[year][month] = new Month(epoch); //epoch.toLocaleString();
-		console.log(calendar);
 
 		return Promise.resolve(calendar);
 	};

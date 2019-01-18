@@ -3,6 +3,7 @@ import GregorianDay from './algorithm/Sakamoto'
 
 
 export default class Month {
+//export default class Month extends week {
 
 	constructor(_epoch) {
 
@@ -19,17 +20,24 @@ export default class Month {
 		//epoch origin represent as the year day
 		var yearDayTally = Month.STATICS.LOOKUPTABLE.slice(0, this.epoch.month-1).reduce( (tally, curr, i) => {
 
-			return tally + ((Array.isArray(curr)) ? curr[~~this.isLeapYear(this.epoch.year)] : curr);
+			return tally + ((Array.isArray(curr)) ? curr[~~Month.isLeapYear(this.epoch.year)] : curr);
 		}, 0);		
 
 		//create month day entries
 		var daysInMonth = Month.STATICS.LOOKUPTABLE[this.epoch.month-1];
-		if(Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~this.isLeapYear(this.epoch.year)];
-
-		calendarMonth = [...Array(daysInMonth)].map( (item, j) => {
-			return ( (j+yearDayTally) + calendarYearOffset )%7;
-		} );
 		
+		// MONTH common =========================
+
+		if(Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~Month.isLeapYear(this.epoch.year)];
+
+		calendarMonth = [...Array(daysInMonth)].map( (item, j) => ( (j+yearDayTally) + calendarYearOffset )%7 );
+		
+		return getMonth(calendarMonth);
+
+		// MONTH common =========================
+	}
+
+	getMonth(calendarMonth) {
 		return (
 			
 			//splits and groups the month days into clusters of weeks
@@ -47,14 +55,14 @@ export default class Month {
 		);
 	}
 
-	isLeapYear(year) {
+	static isLeapYear(year) {
 		return Boolean( (!(year%4) && year%100) || !(year%400) );
 	}
-}
 
-Month.STATICS = {
-	LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-};
+	static STATICS = {
+		LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+	}
+}
 
 Month.config = {
 	baseDay: 0
