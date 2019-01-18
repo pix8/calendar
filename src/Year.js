@@ -1,4 +1,3 @@
-import GregorianDay from './algorithm/Sakamoto'
 import Month from './Month'
 
 
@@ -9,16 +8,22 @@ export default class Year {
 
 		this.baseClass = new BaseClass(_epoch);
 
-		var calendarYear = [];
-
 		//YEAR
 		return (
 			BaseClass.LOOKUPTABLE.slice().reduce( (accumulator, daysInMonth, i) => {
+
+				//--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
+
+				daysInMonth = this.baseClass.getDaysInMonth(daysInMonth);
+
 				//1.
-				var calendarMonth = this.getMonth(this.baseClass.getDaysInMonth(daysInMonth), accumulator.flat(2).length);
+				var calendarMonth = this.getMonth(daysInMonth, accumulator.flat(2).length);
 
 				//2.
 				accumulator[i] = this.getWeek(calendarMonth);
+				
+				//console.log(new Date(2019, i, 1).toLocaleString(), " :: " ,new Month(new Date(2019, i, 1)));
+				//accumulator[i] = new Month( new Date(2019, i, 1) );
 
 				return accumulator;
 			}, [])
@@ -55,6 +60,9 @@ export default class Year {
 	}
 	//Scheduled for demolition -----------------> 2. Week Class
 }
+
+
+import GregorianDay from './algorithm/Sakamoto'
 
 
 class BaseClass {

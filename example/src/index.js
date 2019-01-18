@@ -58,12 +58,12 @@ input.addEventListener("change", (event) => { //OR old way .onchange = (event) =
 		if(el !== null) el.innerHTML = JSON.stringify(data);
 	});
 
-	/*calendar.getWeek(event.target.value).then(data => {
+	calendar.getWeek(event.target.value).then(data => {
 		console.log("Week = ", data);
 		
 		var el = document.getElementById("payload--getweek")
 		if(el !== null) el.innerHTML = JSON.stringify(data);
-	});*/
+	});
 
 	/*calendar.getDay(event.target.value).then(data => {
 		console.log("Day = ", data);

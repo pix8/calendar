@@ -1,4 +1,3 @@
-import GregorianDay from './algorithm/Sakamoto'
 //import Week from './Week'
 
 
@@ -10,23 +9,28 @@ export default class Month {
 		this.baseClass = new BaseClass(_epoch);
 
 		//epoch origin represent as the year day
-		var yearDayTally = BaseClass.LOOKUPTABLE.slice(0, this.baseClass.epoch.month-1).reduce( (tally, curr, i) => {
+		// var yearDayTally = BaseClass.LOOKUPTABLE.slice(0, this.baseClass.epoch.month-1).reduce((tally, daysInMonth, i) => {
 
-			return tally + ((Array.isArray(curr)) ? curr[~~BaseClass.isLeapYear(this.baseClass.epoch.year)] : curr);
-		}, 0);		
+		// 	return tally + this.baseClass.getDaysInMonth(daysInMonth);
+		// }, 0);
 
-		//create month day entries
-		var daysInMonth = BaseClass.LOOKUPTABLE[this.baseClass.epoch.month-1];
+		var yearDayTally = this.baseClass.getYearDay(this.baseClass.epoch.month, null, true),
+			daysInMonth = BaseClass.LOOKUPTABLE[this.baseClass.epoch.month-1];
 		
-		if(Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~BaseClass.isLeapYear(this.baseClass.epoch.year)];
+		//--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
+		
+		daysInMonth = this.baseClass.getDaysInMonth(daysInMonth);
 		
 		//1.
 		var calendarMonth = this.getMonth(daysInMonth, yearDayTally);
 		
-		return this.getWeek(calendarMonth);
+		return (
+			this.getWeek(calendarMonth)
+		);
 	}
 
 	getMonth(daysInMonth, yearDayTally) {
+		console.log([...Array(daysInMonth)])
 
 		//MONTHS
 		return [...Array(daysInMonth)].map( (item, j) => ( (j+yearDayTally) + this.baseClass.calendarYearOffset )%7 );
@@ -56,6 +60,9 @@ export default class Month {
 }
 
 
+import GregorianDay from './algorithm/Sakamoto'
+
+
 class BaseClass {
 
 	constructor(_epoch) {
@@ -66,6 +73,13 @@ class BaseClass {
 		}
 		
 		this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
+	}
+
+	getYearDay(month = this.epoch.month, date = this.epoch.date, excludeTargetMonth = false) {
+		return BaseClass.LOOKUPTABLE.slice(0, month-1).reduce((tally, daysInMonth, i) => {
+
+			return tally + this.getDaysInMonth(daysInMonth);
+		}, excludeTargetMonth ? 0 : date);
 	}
 
 	getDaysInMonth(month) {

@@ -142,8 +142,7 @@ export default class Pix8Calendar {
 		return Promise.resolve(new Month(epoch));
 	};
 
-	/*getWeek(_epoch = new Date()) {
-		//DEVNOTE: week should be split into two arrays if it is a partial ie.[0,1][2,3,4,5,6]
+	getWeek(_epoch = new Date()) {
 
 		var epoch = new Date(_epoch);
 
@@ -151,7 +150,7 @@ export default class Pix8Calendar {
 			throw TypeError("Pix8Calendar: Query is not a valid date");
 
 		return Promise.resolve(new Week(epoch));
-	};*/
+	};
 
 	/*getDay(_epoch = new Date()) {
 
