@@ -24,6 +24,23 @@ function _createClass(Constructor, protoProps, staticProps) {
 
 var createClass = _createClass;
 
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+var defineProperty = _defineProperty;
+
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) {
     for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
@@ -53,23 +70,6 @@ function _toConsumableArray(arr) {
 }
 
 var toConsumableArray = _toConsumableArray;
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-var defineProperty = _defineProperty;
 
 // Tomohiko Sakamoto Algorithm
 // https://groups.google.com/forum/#!msg/comp.lang.c/m4YG7Uw72Ic/WQj-pRNzJaIJ
@@ -113,31 +113,26 @@ function () {
 
     classCallCheck(this, Year);
 
-    this.epoch = {
-      year: parseInt(_epoch.getUTCFullYear()),
-      month: parseInt(_epoch.getUTCMonth() + 1),
-      date: parseInt(_epoch.getUTCDate())
-    };
-    var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
+    this.baseClass = new BaseClass(_epoch);
     var calendarYear = []; //var calendarYear = [...new Month()]; //How it should eventually be!
     //compose year month entries
 
-    Year.STATICS.LOOKUPTABLE.slice().reduce(function (tally, daysInMonth, i) {
+    BaseClass.STATICS.LOOKUPTABLE.slice().reduce(function (tally, daysInMonth, i) {
       // MONTH common =========================
-      //create month day entries
-      if (Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~Year.isLeapYear(_this.epoch.year)];
+      if (Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~BaseClass.isLeapYear(_this.baseClass.epoch.year)];
 
       var calendarMonth = toConsumableArray(Array(daysInMonth)).map(function (item, j) {
-        return (j + tally + calendarYearOffset) % 7;
-      }); //splits and groups the month days into clusters of weeks
+        return (j + tally + _this.baseClass.calendarYearOffset) % 7;
+      }); // MONTH common =========================
+      //splits and groups the month days into clusters of weeks
 
 
-      calendarYear[i] = _this.getMonth(calendarMonth); // MONTH common =========================
-
+      calendarYear[i] = _this.getMonth(calendarMonth);
       return tally + daysInMonth;
     }, 0);
     return calendarYear;
-  }
+  } //-----------------> 1. Month Class
+
 
   createClass(Year, [{
     key: "getMonth",
@@ -146,7 +141,7 @@ function () {
         calendarMonth.slice().reduce(function (accumulator, curr) {
           var l = accumulator.length;
 
-          if (l === 0 || curr === Year.config.baseDay) {
+          if (l === 0 || curr === BaseClass.config.baseDay) {
             accumulator.push([curr]);
           } else {
             accumulator[l - 1].push(curr);
@@ -155,21 +150,42 @@ function () {
           return accumulator;
         }, [])
       );
-    }
-  }], [{
+    } //-----------------> 1. Month Class
+
+  }]);
+
+  return Year;
+}();
+
+var BaseClass =
+/*#__PURE__*/
+function () {
+  function BaseClass(_epoch) {
+    classCallCheck(this, BaseClass);
+
+    this.epoch = {
+      year: parseInt(_epoch.getUTCFullYear()),
+      month: parseInt(_epoch.getUTCMonth() + 1),
+      date: parseInt(_epoch.getUTCDate())
+    };
+    this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
+  }
+
+  createClass(BaseClass, null, [{
     key: "isLeapYear",
     value: function isLeapYear(year) {
       return Boolean(!(year % 4) && year % 100 || !(year % 400));
     }
   }]);
 
-  return Year;
+  return BaseClass;
 }();
 
-defineProperty(Year, "STATICS", {
+defineProperty(BaseClass, "STATICS", {
   LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 });
-Year.config = {
+
+BaseClass.config = {
   baseDay: 0
 };
 
@@ -182,25 +198,23 @@ function () {
 
     classCallCheck(this, Month);
 
-    this.epoch = {
-      year: parseInt(_epoch.getUTCFullYear()),
-      month: parseInt(_epoch.getUTCMonth() + 1),
-      date: parseInt(_epoch.getUTCDate())
-    };
-    var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
-    var calendarMonth = []; //epoch origin represent as the year day
+    this.baseClass = new BaseClass$1(_epoch); //var calendarMonth = [];
+    //epoch origin represent as the year day
 
-    var yearDayTally = Month.STATICS.LOOKUPTABLE.slice(0, this.epoch.month - 1).reduce(function (tally, curr, i) {
-      return tally + (Array.isArray(curr) ? curr[~~Month.isLeapYear(_this.epoch.year)] : curr);
+    var yearDayTally = BaseClass$1.STATICS.LOOKUPTABLE.slice(0, this.baseClass.epoch.month - 1).reduce(function (tally, curr, i) {
+      return tally + (Array.isArray(curr) ? curr[~~BaseClass$1.isLeapYear(_this.baseClass.epoch.year)] : curr);
     }, 0); //create month day entries
 
-    var daysInMonth = Month.STATICS.LOOKUPTABLE[this.epoch.month - 1]; // MONTH common =========================
+    var daysInMonth = BaseClass$1.STATICS.LOOKUPTABLE[this.baseClass.epoch.month - 1]; // MONTH common =========================
 
-    if (Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~Month.isLeapYear(this.epoch.year)];
-    calendarMonth = toConsumableArray(Array(daysInMonth)).map(function (item, j) {
-      return (j + yearDayTally + calendarYearOffset) % 7;
-    });
-    return getMonth(calendarMonth); // MONTH common =========================
+    if (Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~BaseClass$1.isLeapYear(this.baseClass.epoch.year)];
+
+    var calendarMonth = toConsumableArray(Array(daysInMonth)).map(function (item, j) {
+      return (j + yearDayTally + _this.baseClass.calendarYearOffset) % 7;
+    }); // MONTH common =========================
+
+
+    return this.getMonth(calendarMonth);
   }
 
   createClass(Month, [{
@@ -210,7 +224,7 @@ function () {
         calendarMonth.slice().reduce(function (accumulator, curr) {
           var l = accumulator.length;
 
-          if (l === 0 || curr === Month.config.baseDay) {
+          if (l === 0 || curr === BaseClass$1.config.baseDay) {
             accumulator.push([curr]);
           } else {
             accumulator[l - 1].push(curr);
@@ -220,20 +234,40 @@ function () {
         }, [])
       );
     }
-  }], [{
+  }]);
+
+  return Month;
+}();
+
+var BaseClass$1 =
+/*#__PURE__*/
+function () {
+  function BaseClass(_epoch) {
+    classCallCheck(this, BaseClass);
+
+    this.epoch = {
+      year: parseInt(_epoch.getUTCFullYear()),
+      month: parseInt(_epoch.getUTCMonth() + 1),
+      date: parseInt(_epoch.getUTCDate())
+    };
+    this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
+  }
+
+  createClass(BaseClass, null, [{
     key: "isLeapYear",
     value: function isLeapYear(year) {
       return Boolean(!(year % 4) && year % 100 || !(year % 400));
     }
   }]);
 
-  return Month;
+  return BaseClass;
 }();
 
-defineProperty(Month, "STATICS", {
+defineProperty(BaseClass$1, "STATICS", {
   LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 });
-Month.config = {
+
+BaseClass$1.config = {
   baseDay: 0
 };
 

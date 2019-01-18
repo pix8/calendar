@@ -7,31 +7,22 @@ export default class Year {
 
 	constructor(_epoch) {
 
-		this.epoch = {
-			year: parseInt(_epoch.getUTCFullYear()),
-			month: parseInt(_epoch.getUTCMonth()+1),
-			date: parseInt(_epoch.getUTCDate())
-		}
-		
-		var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
+		this.baseClass = new BaseClass(_epoch);
 
 		var calendarYear = [];
 		//var calendarYear = [...new Month()]; //How it should eventually be!
 
 		//compose year month entries
-		Year.STATICS.LOOKUPTABLE.slice().reduce( (tally, daysInMonth, i) => {
+		BaseClass.STATICS.LOOKUPTABLE.slice().reduce( (tally, daysInMonth, i) => {
 
 			// MONTH common =========================
-			
-			//create month day entries
-			if(Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~Year.isLeapYear(this.epoch.year)];
+			if(Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~BaseClass.isLeapYear(this.baseClass.epoch.year)];
 
-			let calendarMonth = [...Array(daysInMonth)].map( (item, j) => ( (j+tally) + calendarYearOffset )%7 );
+			var calendarMonth = [...Array(daysInMonth)].map( (item, j) => ( (j+tally) + this.baseClass.calendarYearOffset )%7 );
+			// MONTH common =========================
 
 			//splits and groups the month days into clusters of weeks
 			calendarYear[i] = this.getMonth(calendarMonth);
-
-			// MONTH common =========================
 
 			return tally + daysInMonth;
 		}, 0);
@@ -39,6 +30,7 @@ export default class Year {
 		return calendarYear;
 	}
 
+	//-----------------> 1. Month Class
 	getMonth(calendarMonth) {
 
 		return (
@@ -47,7 +39,7 @@ export default class Year {
 			calendarMonth.slice().reduce((accumulator, curr) => {
 				const l = accumulator.length;
 
-				if(l === 0  || curr === Year.config.baseDay) {
+				if(l === 0  || curr === BaseClass.config.baseDay) {
 					accumulator.push([curr]);
 				}else {
 					accumulator[l-1].push(curr);
@@ -56,6 +48,21 @@ export default class Year {
 				return accumulator;
 			}, [])
 		);
+	}
+	//-----------------> 1. Month Class
+}
+
+
+class BaseClass {
+
+	constructor(_epoch) {
+		this.epoch = {
+			year: parseInt(_epoch.getUTCFullYear()),
+			month: parseInt(_epoch.getUTCMonth()+1),
+			date: parseInt(_epoch.getUTCDate())
+		}
+		
+		this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
 	}
 
 	static isLeapYear(year) {
@@ -67,6 +74,6 @@ export default class Year {
 	}
 }
 
-Year.config = {
+BaseClass.config = {
 	baseDay: 0
 }

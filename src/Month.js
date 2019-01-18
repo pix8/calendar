@@ -7,44 +7,37 @@ export default class Month {
 
 	constructor(_epoch) {
 
-		this.epoch = {
-			year: parseInt(_epoch.getUTCFullYear()),
-			month: parseInt(_epoch.getUTCMonth()+1),
-			date: parseInt(_epoch.getUTCDate())
-		};
+		this.baseClass = new BaseClass(_epoch);
 
-		var calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
-
-		var calendarMonth = [];
+		//var calendarMonth = [];
 
 		//epoch origin represent as the year day
-		var yearDayTally = Month.STATICS.LOOKUPTABLE.slice(0, this.epoch.month-1).reduce( (tally, curr, i) => {
+		var yearDayTally = BaseClass.STATICS.LOOKUPTABLE.slice(0, this.baseClass.epoch.month-1).reduce( (tally, curr, i) => {
 
-			return tally + ((Array.isArray(curr)) ? curr[~~Month.isLeapYear(this.epoch.year)] : curr);
+			return tally + ((Array.isArray(curr)) ? curr[~~BaseClass.isLeapYear(this.baseClass.epoch.year)] : curr);
 		}, 0);		
 
 		//create month day entries
-		var daysInMonth = Month.STATICS.LOOKUPTABLE[this.epoch.month-1];
+		var daysInMonth = BaseClass.STATICS.LOOKUPTABLE[this.baseClass.epoch.month-1];
 		
 		// MONTH common =========================
+		if(Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~BaseClass.isLeapYear(this.baseClass.epoch.year)];
 
-		if(Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~Month.isLeapYear(this.epoch.year)];
-
-		calendarMonth = [...Array(daysInMonth)].map( (item, j) => ( (j+yearDayTally) + calendarYearOffset )%7 );
-		
-		return getMonth(calendarMonth);
-
+		var calendarMonth = [...Array(daysInMonth)].map( (item, j) => ( (j+yearDayTally) + this.baseClass.calendarYearOffset )%7 );
 		// MONTH common =========================
+		
+		return this.getMonth(calendarMonth);
 	}
 
 	getMonth(calendarMonth) {
+		
 		return (
 			
 			//splits and groups the month days into clusters of weeks
 			calendarMonth.slice().reduce((accumulator, curr) => {
 				const l = accumulator.length;
 
-				if(l === 0  || curr === Month.config.baseDay) {
+				if(l === 0  || curr === BaseClass.config.baseDay) {
 					accumulator.push([curr]);
 				}else {
 					accumulator[l-1].push(curr);
@@ -53,6 +46,20 @@ export default class Month {
 				return accumulator;
 			}, [])
 		);
+	}
+}
+
+
+class BaseClass {
+
+	constructor(_epoch) {
+		this.epoch = {
+			year: parseInt(_epoch.getUTCFullYear()),
+			month: parseInt(_epoch.getUTCMonth()+1),
+			date: parseInt(_epoch.getUTCDate())
+		}
+		
+		this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
 	}
 
 	static isLeapYear(year) {
@@ -64,6 +71,6 @@ export default class Month {
 	}
 }
 
-Month.config = {
+BaseClass.config = {
 	baseDay: 0
 }
