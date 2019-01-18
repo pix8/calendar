@@ -13,7 +13,7 @@
     "service",
     "provider"
   ],
-  "license": "ISC",
+  "license": "GPL-3.0-or-later",
   "repository": {
     "type": "git",
     "url": "git@github.com:pix8/calendar.git"
