@@ -45,19 +45,18 @@ Takes a single argument that corresponds to any valid value for a JavaScript Dat
 
 All calls are handled as promises and return ~~a JSON~~ an Array representation of the date query. All data returned is raw/native format. So days of the week and months are represented in the standard JavaScript conventions for consumption(i.e. zero-based where applicable). It is down to you to massage or convert these down further. Some static helper props are sent down the wire to assist but bear in mind thoughts such as localisations + I will more than likely remove/separate this feature because of that overhead and peeps can simply leverage this similarly as an imported ES6 module to suit their individual use case.
 
-Composition is granted by array nesting with each level representing a date span, top tier = year, 2nd tier = month, 3rd tier = week and the values of course are the day values.
+Meaning is inferred by composition and granted by the array nesting structure with each level representing a date span, top tier = year, 2nd tier = month, 3rd tier = week and the values of course are the day values. So for instance the year of a particular data set would be inferred by it's positional index. Similarly this logic would be applied to months and to weeks until we reach the bottom of the granular chain where the day value is ultimately stored(a date would also be ascertained from index position). Effectively everything is in logical order and the arrays can simply be unravelled/flattened at a desired depth to stimulate whatever meaning suits your purpose. For example to extract date values for a month you flatten the array(at this level) to remove the extraneous arrays wrapping collections of weeks. You could also use the length of a starting or trailing week array to establish and calculate days needed to pad out a month in a user interface without contaminating the source of truth(our data model) with superfluous/duplicated representations that exist purely to service the interface.
 
 The ultimate rationality is to keep the functionality of this module pure, unopinionated and agnostic to it's treatment.
 
 ### API
 
-#### getYear(date)
-Returns ~~a JSON~~ an Array representation of the calendar year for a given date. Values held in array notation and comply with JavaScript conventions(0-6 = Sunday-Saturday; 0-11 = January-December).
+#### getCalendarYear(date)
 
 ```javascript
 var date = new Date();
 
-calendar.getYear(date).then(data => {
+calendar.getCalendarYear(date).then(data => {
 	//handle returned data
 });
 ```
@@ -109,13 +108,70 @@ Output: 2019-01-01 (ISO)
 ]
 ```
 
-##### getMonth(date)
-Returns ~~a JSON~~ an Array representation of the calendar month for a given date. Values held in array notation and comply with JavaScript conventions(0-6 = Sunday-Saturday; 0-11 = January-December).
+#### getYear(date)
+Returns ~~a JSON~~ an Array representation of the calendar year for a given date. Values held in array notation and abide to standard JavaScript conventions(0-6 = Sunday-Saturday; 0-11 = January-December).
 
 ```javascript
 var date = new Date();
 
-calendar.getMonth(date).then(data => {
+calendar.getYear(date).then(data => {
+	//handle returned data
+});
+```
+
+Output: 2019-01-01 (ISO)
+```javascript
+
+[ //year
+	[ //month
+		[ //week
+			2,3,4,5,6
+		],
+		[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4]
+	],
+	[
+		[5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4]]
+	,
+	[
+		[5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0]
+	],
+	[
+		[1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2]]
+	,
+	[
+		[3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5]
+	],
+	[
+		[6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0]
+	],
+	[
+		[1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3]
+	],
+	[
+		[4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6]
+	],
+	[
+		[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1]
+	],
+	[
+		[2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4]
+	],
+	[
+		[5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6]
+	],
+	[
+		[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2,3,4,5,6],[0,1,2]
+	]
+]
+
+```
+
+##### getCalendarMonth(date)
+
+```javascript
+var date = new Date();
+
+calendar.getCalendarMonth(date).then(data => {
 	//handle returned data
 });
 
@@ -135,6 +191,32 @@ Output: 2019-01-01 (ISO)
 			[0,1,2,3,4]
 		]
 	]
+]
+```
+
+##### getMonth(date)
+Returns ~~a JSON~~ an Array representation of the calendar month for a given date. Values held in array notation and comply with JavaScript conventions(0-6 = Sunday-Saturday; 0-11 = January-December).
+
+```javascript
+var date = new Date();
+
+calendar.getMonth(date).then(data => {
+	//handle returned data
+});
+
+```
+
+Output: 2019-01-01 (ISO)
+```javascript
+
+[ //month
+	[ //week
+		2,3,4,5,6
+	],
+	[0,1,2,3,4,5,6],
+	[0,1,2,3,4,5,6],
+	[0,1,2,3,4,5,6],
+	[0,1,2,3,4]
 ]
 ```
 
