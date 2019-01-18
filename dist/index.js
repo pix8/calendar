@@ -119,18 +119,14 @@ function () {
     var calendarYear = []; //var calendarYear = [...new Month()]; //How it should eventually be!
     //compose year month entries
 
-    BaseClass.STATICS.LOOKUPTABLE.slice().reduce(function (tally, daysInMonth, i) {
-      // MONTH common =========================
+    BaseClass.STATICS.LOOKUPTABLE.slice().reduce(function (yearDayTally, daysInMonth, i) {
       if (Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~BaseClass.isLeapYear(_this.baseClass.epoch.year)];
 
-      var calendarMonth = toConsumableArray(Array(daysInMonth)).map(function (item, j) {
-        return (j + tally + _this.baseClass.calendarYearOffset) % 7;
-      }); // MONTH common =========================
-      //splits and groups the month days into clusters of weeks
+      var calendarMonth = _this.getMonth(daysInMonth, yearDayTally); //splits and groups the month days into clusters of weeks
 
 
-      calendarYear[i] = _this.getMonth(calendarMonth);
-      return tally + daysInMonth;
+      calendarYear[i] = _this.getWeek(calendarMonth);
+      return yearDayTally + daysInMonth;
     }, 0);
     return calendarYear;
   } //-----------------> 1. Month Class
@@ -138,8 +134,21 @@ function () {
 
   createClass(Year, [{
     key: "getMonth",
-    value: function getMonth(calendarMonth) {
-      return (//splits and groups the month days into clusters of weeks
+    value: function getMonth(daysInMonth, yearDayTally) {
+      var _this2 = this;
+
+      //MONTHS
+      return toConsumableArray(Array(daysInMonth)).map(function (item, j) {
+        return (j + yearDayTally + _this2.baseClass.calendarYearOffset) % 7;
+      });
+    } //-----------------> 1. Month Class
+    //-----------------> 2. Week Class
+
+  }, {
+    key: "getWeek",
+    value: function getWeek(calendarMonth) {
+      return (//WEEKS
+        //splits and groups the month days into clusters of weeks
         calendarMonth.slice().reduce(function (accumulator, curr) {
           var l = accumulator.length;
 
@@ -152,7 +161,7 @@ function () {
           return accumulator;
         }, [])
       );
-    } //-----------------> 1. Month Class
+    } //-----------------> 2. Week Class
 
   }]);
 
@@ -207,22 +216,28 @@ function () {
       return tally + (Array.isArray(curr) ? curr[~~BaseClass$1.isLeapYear(_this.baseClass.epoch.year)] : curr);
     }, 0); //create month day entries
 
-    var daysInMonth = BaseClass$1.STATICS.LOOKUPTABLE[this.baseClass.epoch.month - 1]; // MONTH common =========================
-
+    var daysInMonth = BaseClass$1.STATICS.LOOKUPTABLE[this.baseClass.epoch.month - 1];
     if (Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~BaseClass$1.isLeapYear(this.baseClass.epoch.year)];
-
-    var calendarMonth = toConsumableArray(Array(daysInMonth)).map(function (item, j) {
-      return (j + yearDayTally + _this.baseClass.calendarYearOffset) % 7;
-    }); // MONTH common =========================
-
-
-    return this.getMonth(calendarMonth);
+    var calendarMonth = this.getMonth(daysInMonth, yearDayTally);
+    return this.getWeek(calendarMonth);
   }
 
   createClass(Month, [{
     key: "getMonth",
-    value: function getMonth(calendarMonth) {
-      return (//splits and groups the month days into clusters of weeks
+    value: function getMonth(daysInMonth, yearDayTally) {
+      var _this2 = this;
+
+      //MONTHS
+      return toConsumableArray(Array(daysInMonth)).map(function (item, j) {
+        return (j + yearDayTally + _this2.baseClass.calendarYearOffset) % 7;
+      });
+    } //-----------------> 1. Week Class
+
+  }, {
+    key: "getWeek",
+    value: function getWeek(calendarMonth) {
+      return (//WEEKS
+        //splits and groups the month days into clusters of weeks
         calendarMonth.slice().reduce(function (accumulator, curr) {
           var l = accumulator.length;
 
@@ -235,7 +250,8 @@ function () {
           return accumulator;
         }, [])
       );
-    }
+    } //-----------------> 1. Week Class
+
   }]);
 
   return Month;

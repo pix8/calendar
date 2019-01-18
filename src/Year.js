@@ -13,28 +13,35 @@ export default class Year {
 		//var calendarYear = [...new Month()]; //How it should eventually be!
 
 		//compose year month entries
-		BaseClass.STATICS.LOOKUPTABLE.slice().reduce( (tally, daysInMonth, i) => {
+		BaseClass.STATICS.LOOKUPTABLE.slice().reduce( (yearDayTally, daysInMonth, i) => {
 
-			// MONTH common =========================
 			if(Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~BaseClass.isLeapYear(this.baseClass.epoch.year)];
-
-			var calendarMonth = [...Array(daysInMonth)].map( (item, j) => ( (j+tally) + this.baseClass.calendarYearOffset )%7 );
-			// MONTH common =========================
+			
+			var calendarMonth = this.getMonth(daysInMonth, yearDayTally);
 
 			//splits and groups the month days into clusters of weeks
-			calendarYear[i] = this.getMonth(calendarMonth);
+			calendarYear[i] = this.getWeek(calendarMonth);
 
-			return tally + daysInMonth;
+			return yearDayTally + daysInMonth;
 		}, 0);
 
 		return calendarYear;
 	}
 
 	//-----------------> 1. Month Class
-	getMonth(calendarMonth) {
+	getMonth(daysInMonth, yearDayTally) {
+
+		//MONTHS
+		return [...Array(daysInMonth)].map( (item, j) => ( (j+yearDayTally) + this.baseClass.calendarYearOffset )%7 );
+	}
+	//-----------------> 1. Month Class
+
+	//-----------------> 2. Week Class
+	getWeek(calendarMonth) {
 
 		return (
 			
+			//WEEKS
 			//splits and groups the month days into clusters of weeks
 			calendarMonth.slice().reduce((accumulator, curr) => {
 				const l = accumulator.length;
@@ -49,7 +56,7 @@ export default class Year {
 			}, [])
 		);
 	}
-	//-----------------> 1. Month Class
+	//-----------------> 2. Week Class
 }
 
 

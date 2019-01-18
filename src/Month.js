@@ -20,19 +20,25 @@ export default class Month {
 		//create month day entries
 		var daysInMonth = BaseClass.STATICS.LOOKUPTABLE[this.baseClass.epoch.month-1];
 		
-		// MONTH common =========================
 		if(Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~BaseClass.isLeapYear(this.baseClass.epoch.year)];
-
-		var calendarMonth = [...Array(daysInMonth)].map( (item, j) => ( (j+yearDayTally) + this.baseClass.calendarYearOffset )%7 );
-		// MONTH common =========================
 		
-		return this.getMonth(calendarMonth);
+		var calendarMonth = this.getMonth(daysInMonth, yearDayTally);
+		
+		return this.getWeek(calendarMonth);
 	}
 
-	getMonth(calendarMonth) {
+	getMonth(daysInMonth, yearDayTally) {
+
+		//MONTHS
+		return [...Array(daysInMonth)].map( (item, j) => ( (j+yearDayTally) + this.baseClass.calendarYearOffset )%7 );
+	}
+
+	//-----------------> 1. Week Class
+	getWeek(calendarMonth) {
 		
 		return (
 			
+			//WEEKS
 			//splits and groups the month days into clusters of weeks
 			calendarMonth.slice().reduce((accumulator, curr) => {
 				const l = accumulator.length;
@@ -47,6 +53,7 @@ export default class Month {
 			}, [])
 		);
 	}
+	//-----------------> 1. Week Class
 }
 
 
