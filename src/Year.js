@@ -1,5 +1,5 @@
 import GregorianDay from './algorithm/Sakamoto'
-//import Month from './Month'
+import Month from './Month'
 
 
 export default class Year {
@@ -9,23 +9,21 @@ export default class Year {
 
 		this.baseClass = new BaseClass(_epoch);
 
-		var calendarYear = [];
-		//var calendarYear = [...new Month()]; //How it should eventually be!
+		//YEAR
+		return (
+			BaseClass.STATICS.LOOKUPTABLE.slice().reduce( (accumulator, daysInMonth, i) => {
 
-		//compose year month entries
-		BaseClass.STATICS.LOOKUPTABLE.slice().reduce( (yearDayTally, daysInMonth, i) => {
+				if(Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~BaseClass.isLeapYear(this.baseClass.epoch.year)];
+				
+				//1.
+				var calendarMonth = this.getMonth(daysInMonth, accumulator.flat(1).length);
 
-			if(Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~BaseClass.isLeapYear(this.baseClass.epoch.year)];
-			
-			var calendarMonth = this.getMonth(daysInMonth, yearDayTally);
+				//2.
+				accumulator[i] = this.getWeek(calendarMonth);
 
-			//splits and groups the month days into clusters of weeks
-			calendarYear[i] = this.getWeek(calendarMonth);
-
-			return yearDayTally + daysInMonth;
-		}, 0);
-
-		return calendarYear;
+				return accumulator;
+			}, [])
+		);
 	}
 
 	//-----------------> 1. Month Class
@@ -44,6 +42,7 @@ export default class Year {
 			//WEEKS
 			//splits and groups the month days into clusters of weeks
 			calendarMonth.slice().reduce((accumulator, curr) => {
+				//console.log(accumulator);
 				const l = accumulator.length;
 
 				if(l === 0  || curr === BaseClass.config.baseDay) {
@@ -70,6 +69,10 @@ class BaseClass {
 		}
 		
 		this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
+	}
+
+	static getDaysInMonth(month) {
+		return (Array.isArray(month)) ? month[~~BaseClass.isLeapYear(this.epoch.year)] : month;
 	}
 
 	static isLeapYear(year) {

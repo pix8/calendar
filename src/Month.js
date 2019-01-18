@@ -9,8 +9,6 @@ export default class Month {
 
 		this.baseClass = new BaseClass(_epoch);
 
-		//var calendarMonth = [];
-
 		//epoch origin represent as the year day
 		var yearDayTally = BaseClass.STATICS.LOOKUPTABLE.slice(0, this.baseClass.epoch.month-1).reduce( (tally, curr, i) => {
 
@@ -22,6 +20,7 @@ export default class Month {
 		
 		if(Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~BaseClass.isLeapYear(this.baseClass.epoch.year)];
 		
+		//1.
 		var calendarMonth = this.getMonth(daysInMonth, yearDayTally);
 		
 		return this.getWeek(calendarMonth);
@@ -67,6 +66,10 @@ class BaseClass {
 		}
 		
 		this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
+	}
+
+	static getDaysInMonth(month) {
+		return (Array.isArray(month)) ? month[~~BaseClass.isLeapYear(this.epoch.year)] : month;
 	}
 
 	static isLeapYear(year) {
