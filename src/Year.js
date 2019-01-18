@@ -31,10 +31,10 @@ export default class Year {
 	}
 
 	//Scheduled for demolition -----------------> 1. Month Class
-	getMonth(daysInMonth, yearDayTally) {
+	getMonth(daysInMonth, dayOfYear) {
 
 		//MONTHS
-		return [...Array(daysInMonth)].map( (item, j) => ( (j+yearDayTally) + this.baseClass.calendarYearOffset )%7 );
+		return [...Array(daysInMonth)].map( (item, j) => ( (j+dayOfYear) + this.baseClass.calendarYearOffset )%7 );
 	}
 	//Scheduled for demolition -----------------> 1. Month Class
 

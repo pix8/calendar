@@ -115,24 +115,23 @@ function () {
     classCallCheck(this, Month);
 
     this.baseClass = new BaseClass(_epoch);
-    var yearDayTally = this.baseClass.getYearDay(this.baseClass.epoch.month, null, true),
+    var dayOfYear = this.baseClass.getDayOfYear(this.baseClass.epoch.month, null, true),
         daysInMonth = BaseClass.LOOKUPTABLE[this.baseClass.epoch.month - 1]; //--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
 
     daysInMonth = this.baseClass.getDaysInMonth(daysInMonth); //1.
 
-    var calendarMonth = this.getMonth(daysInMonth, yearDayTally);
+    var calendarMonth = this.getMonth(daysInMonth, dayOfYear);
     return this.getWeek(calendarMonth);
   }
 
   createClass(Month, [{
     key: "getMonth",
-    value: function getMonth(daysInMonth, yearDayTally) {
+    value: function getMonth(daysInMonth, dayOfYear) {
       var _this = this;
 
-      console.log(toConsumableArray(Array(daysInMonth))); //MONTHS
-
+      //MONTHS
       return toConsumableArray(Array(daysInMonth)).map(function (item, j) {
-        return (j + yearDayTally + _this.baseClass.calendarYearOffset) % 7;
+        return (j + dayOfYear + _this.baseClass.calendarYearOffset) % 7;
       });
     } //Scheduled for demolition -----------------> 1. Week Class
 
@@ -175,8 +174,8 @@ function () {
   }
 
   createClass(BaseClass, [{
-    key: "getYearDay",
-    value: function getYearDay() {
+    key: "getDayOfYear",
+    value: function getDayOfYear() {
       var _this2 = this;
 
       var month = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.epoch.month;
@@ -236,12 +235,12 @@ function () {
 
   createClass(Year, [{
     key: "getMonth",
-    value: function getMonth(daysInMonth, yearDayTally) {
+    value: function getMonth(daysInMonth, dayOfYear) {
       var _this2 = this;
 
       //MONTHS
       return toConsumableArray(Array(daysInMonth)).map(function (item, j) {
-        return (j + yearDayTally + _this2.baseClass.calendarYearOffset) % 7;
+        return (j + dayOfYear + _this2.baseClass.calendarYearOffset) % 7;
       });
     } //Scheduled for demolition -----------------> 1. Month Class
     //Scheduled for demolition -----------------> 2. Week Class
@@ -324,13 +323,17 @@ function () {
 
     this.baseClass = new BaseClass$2(_epoch); //MOCK
 
-    var date = 19;
-    var month = 1;
-    /*var week = date/7;
-    	console.log( GregorianDay(year, month, date) );
-    console.log(date, "/", month, "/", year, " week = ", Math.ceil(week));*/
+    var date = 7;
+    var month = 7;
+    var year = 2019;
+    var dayOfYear = this.baseClass.getDayOfYear(month, date); //DEVNOTE. hmm month should be zero-based?
 
-    console.log("Year day number = ", this.baseClass.getYearDay(month, date)); //return week
+    var weekNo = Math.ceil(dayOfYear / 7); //DEVNOTE: temp and crude; assumes 1st Jan = 0(Sunday). Not taking into account year offset.
+
+    console.log("Day of year = ", this.baseClass.getDayOfYear(month, date));
+    console.log("Is a", "Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday".split(",")[GregorianDay(year, month, date)], GregorianDay(year, month, date)); //DEVNOTE. hmm month should be zero-based?
+
+    console.log(new Date(year, month - 1, date).toLocaleString(), " week = ", weekNo); //return week
     //week number
     //split week at month boundaries
     //DEVNOTE: week should be split into two arrays if it is a partial ie.[0,1][2,3,4,5,6]
@@ -374,8 +377,8 @@ function () {
   }
 
   createClass(BaseClass, [{
-    key: "getYearDay",
-    value: function getYearDay() {
+    key: "getDayOfYear",
+    value: function getDayOfYear() {
       var _this = this;
 
       var month = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.epoch.month;

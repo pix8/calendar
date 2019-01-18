@@ -22,16 +22,18 @@ export default class Week {
 		this.baseClass = new BaseClass(_epoch);
 
 		//MOCK
-		var date = 19;
-		var month = 1;
+		var date = 7;
+		var month = 7;
 		var year = 2019;
 
-		/*var week = date/7;
 
-		console.log( GregorianDay(year, month, date) );
-		console.log(date, "/", month, "/", year, " week = ", Math.ceil(week));*/
 
-		console.log("Year day number = ", this.baseClass.getYearDay(month, date));
+		var dayOfYear = this.baseClass.getDayOfYear(month, date); //DEVNOTE. hmm month should be zero-based?
+		var weekNo = Math.ceil(dayOfYear/7); //DEVNOTE: temp and crude; assumes 1st Jan = 0(Sunday). Not taking into account year offset.
+
+		console.log("Day of year = ", this.baseClass.getDayOfYear(month, date));
+		console.log("Is a", "Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday".split(",")[GregorianDay(year, month, date)], GregorianDay(year, month, date) );  //DEVNOTE. hmm month should be zero-based?
+		console.log(new Date(year, month-1, date).toLocaleString(), " week = ", weekNo);
 
 		//return week
 			//week number
@@ -76,7 +78,7 @@ class BaseClass {
 		this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
 	}
 
-	getYearDay(month = this.epoch.month, date = this.epoch.date, excludeTargetMonth = false) {
+	getDayOfYear(month = this.epoch.month, date = this.epoch.date, excludeTargetMonth = false) {
 		return (
 			BaseClass.LOOKUPTABLE.slice(0, month-1).reduce(
 				(tally, daysInMonth, i) => tally + this.getDaysInMonth(daysInMonth)
