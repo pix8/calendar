@@ -208,11 +208,11 @@ function () {
 
     classCallCheck(this, Year);
 
-    this.baseClass = new BaseClass$1(_epoch); //YEAR
+    this.baseClass = new BaseClass$1(_epoch);
 
     return BaseClass$1.LOOKUPTABLE.slice().reduce(function (accumulator, daysInMonth, i) {
       //1.
-      var calendarMonth = _this.getMonth(_this.baseClass.getDaysInMonth(daysInMonth), accumulator.flat(1).length); //2.
+      var calendarMonth = _this.getMonth(_this.baseClass.getDaysInMonth(daysInMonth), accumulator.flat(2).length); //2.
 
 
       accumulator[i] = _this.getWeek(calendarMonth);
