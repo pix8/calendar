@@ -11,12 +11,9 @@ export default class Year {
 
 		//YEAR
 		return (
-			BaseClass.STATICS.LOOKUPTABLE.slice().reduce( (accumulator, daysInMonth, i) => {
-
-				if(Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~BaseClass.isLeapYear(this.baseClass.epoch.year)];
-				
+			BaseClass.LOOKUPTABLE.slice().reduce( (accumulator, daysInMonth, i) => {
 				//1.
-				var calendarMonth = this.getMonth(daysInMonth, accumulator.flat(1).length);
+				var calendarMonth = this.getMonth(this.baseClass.getDaysInMonth(daysInMonth), accumulator.flat(1).length);
 
 				//2.
 				accumulator[i] = this.getWeek(calendarMonth);
@@ -26,15 +23,15 @@ export default class Year {
 		);
 	}
 
-	//-----------------> 1. Month Class
+	//Scheduled for demolition -----------------> 1. Month Class
 	getMonth(daysInMonth, yearDayTally) {
 
 		//MONTHS
 		return [...Array(daysInMonth)].map( (item, j) => ( (j+yearDayTally) + this.baseClass.calendarYearOffset )%7 );
 	}
-	//-----------------> 1. Month Class
+	//Scheduled for demolition -----------------> 1. Month Class
 
-	//-----------------> 2. Week Class
+	//Scheduled for demolition -----------------> 2. Week Class
 	getWeek(calendarMonth) {
 
 		return (
@@ -42,7 +39,6 @@ export default class Year {
 			//WEEKS
 			//splits and groups the month days into clusters of weeks
 			calendarMonth.slice().reduce((accumulator, curr) => {
-				//console.log(accumulator);
 				const l = accumulator.length;
 
 				if(l === 0  || curr === BaseClass.config.baseDay) {
@@ -55,7 +51,7 @@ export default class Year {
 			}, [])
 		);
 	}
-	//-----------------> 2. Week Class
+	//Scheduled for demolition -----------------> 2. Week Class
 }
 
 
@@ -71,17 +67,15 @@ class BaseClass {
 		this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
 	}
 
-	static getDaysInMonth(month) {
-		return (Array.isArray(month)) ? month[~~BaseClass.isLeapYear(this.epoch.year)] : month;
+	getDaysInMonth(month) {
+		return (Array.isArray(month)) ? month[~~this.isLeapYear()] : month;
 	}
 
-	static isLeapYear(year) {
+	isLeapYear(year = this.epoch.year) {
 		return Boolean( (!(year%4) && year%100) || !(year%400) );
 	}
 
-	static STATICS = {
-		LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-	}
+	static LOOKUPTABLE = [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 }
 
 BaseClass.config = {

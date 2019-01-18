@@ -3,20 +3,20 @@ import GregorianDay from './algorithm/Sakamoto'
 
 
 export default class Month {
-//export default class Month extends week {
+//export default class Month extends Week { //--> extends Day //--> extends BaseClass
 
 	constructor(_epoch) {
 
 		this.baseClass = new BaseClass(_epoch);
 
 		//epoch origin represent as the year day
-		var yearDayTally = BaseClass.STATICS.LOOKUPTABLE.slice(0, this.baseClass.epoch.month-1).reduce( (tally, curr, i) => {
+		var yearDayTally = BaseClass.LOOKUPTABLE.slice(0, this.baseClass.epoch.month-1).reduce( (tally, curr, i) => {
 
 			return tally + ((Array.isArray(curr)) ? curr[~~BaseClass.isLeapYear(this.baseClass.epoch.year)] : curr);
 		}, 0);		
 
 		//create month day entries
-		var daysInMonth = BaseClass.STATICS.LOOKUPTABLE[this.baseClass.epoch.month-1];
+		var daysInMonth = BaseClass.LOOKUPTABLE[this.baseClass.epoch.month-1];
 		
 		if(Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~BaseClass.isLeapYear(this.baseClass.epoch.year)];
 		
@@ -32,7 +32,7 @@ export default class Month {
 		return [...Array(daysInMonth)].map( (item, j) => ( (j+yearDayTally) + this.baseClass.calendarYearOffset )%7 );
 	}
 
-	//-----------------> 1. Week Class
+	//Scheduled for demolition -----------------> 1. Week Class
 	getWeek(calendarMonth) {
 		
 		return (
@@ -52,7 +52,7 @@ export default class Month {
 			}, [])
 		);
 	}
-	//-----------------> 1. Week Class
+	//Scheduled for demolition -----------------> 1. Week Class
 }
 
 
@@ -68,17 +68,15 @@ class BaseClass {
 		this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
 	}
 
-	static getDaysInMonth(month) {
-		return (Array.isArray(month)) ? month[~~BaseClass.isLeapYear(this.epoch.year)] : month;
+	getDaysInMonth(month) {
+		return (Array.isArray(month)) ? month[~~this.isLeapYear()] : month;
 	}
 
-	static isLeapYear(year) {
+	isLeapYear(year = this.epoch.year) {
 		return Boolean( (!(year%4) && year%100) || !(year%400) );
 	}
 
-	static STATICS = {
-		LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-	}
+	static LOOKUPTABLE = [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 }
 
 BaseClass.config = {

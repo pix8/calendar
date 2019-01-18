@@ -109,7 +109,7 @@ var GregorianDay = (function (y, m, d) {
 var Month =
 /*#__PURE__*/
 function () {
-  //export default class Month extends week {
+  //export default class Month extends Week { //--> extends Day //--> extends BaseClass
   function Month(_epoch) {
     var _this = this;
 
@@ -117,11 +117,11 @@ function () {
 
     this.baseClass = new BaseClass(_epoch); //epoch origin represent as the year day
 
-    var yearDayTally = BaseClass.STATICS.LOOKUPTABLE.slice(0, this.baseClass.epoch.month - 1).reduce(function (tally, curr, i) {
+    var yearDayTally = BaseClass.LOOKUPTABLE.slice(0, this.baseClass.epoch.month - 1).reduce(function (tally, curr, i) {
       return tally + (Array.isArray(curr) ? curr[~~BaseClass.isLeapYear(_this.baseClass.epoch.year)] : curr);
     }, 0); //create month day entries
 
-    var daysInMonth = BaseClass.STATICS.LOOKUPTABLE[this.baseClass.epoch.month - 1];
+    var daysInMonth = BaseClass.LOOKUPTABLE[this.baseClass.epoch.month - 1];
     if (Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~BaseClass.isLeapYear(this.baseClass.epoch.year)]; //1.
 
     var calendarMonth = this.getMonth(daysInMonth, yearDayTally);
@@ -137,7 +137,7 @@ function () {
       return toConsumableArray(Array(daysInMonth)).map(function (item, j) {
         return (j + yearDayTally + _this2.baseClass.calendarYearOffset) % 7;
       });
-    } //-----------------> 1. Week Class
+    } //Scheduled for demolition -----------------> 1. Week Class
 
   }, {
     key: "getWeek",
@@ -156,7 +156,7 @@ function () {
           return accumulator;
         }, [])
       );
-    } //-----------------> 1. Week Class
+    } //Scheduled for demolition -----------------> 1. Week Class
 
   }]);
 
@@ -177,14 +177,15 @@ function () {
     this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
   }
 
-  createClass(BaseClass, null, [{
+  createClass(BaseClass, [{
     key: "getDaysInMonth",
     value: function getDaysInMonth(month) {
-      return Array.isArray(month) ? month[~~BaseClass.isLeapYear(this.epoch.year)] : month;
+      return Array.isArray(month) ? month[~~this.isLeapYear()] : month;
     }
   }, {
     key: "isLeapYear",
-    value: function isLeapYear(year) {
+    value: function isLeapYear() {
+      var year = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.epoch.year;
       return Boolean(!(year % 4) && year % 100 || !(year % 400));
     }
   }]);
@@ -192,9 +193,7 @@ function () {
   return BaseClass;
 }();
 
-defineProperty(BaseClass, "STATICS", {
-  LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-});
+defineProperty(BaseClass, "LOOKUPTABLE", [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]);
 
 BaseClass.config = {
   baseDay: 0
@@ -211,16 +210,15 @@ function () {
 
     this.baseClass = new BaseClass$1(_epoch); //YEAR
 
-    return BaseClass$1.STATICS.LOOKUPTABLE.slice().reduce(function (accumulator, daysInMonth, i) {
-      if (Array.isArray(daysInMonth)) daysInMonth = daysInMonth[~~BaseClass$1.isLeapYear(_this.baseClass.epoch.year)]; //1.
-
-      var calendarMonth = _this.getMonth(daysInMonth, accumulator.flat(1).length); //2.
+    return BaseClass$1.LOOKUPTABLE.slice().reduce(function (accumulator, daysInMonth, i) {
+      //1.
+      var calendarMonth = _this.getMonth(_this.baseClass.getDaysInMonth(daysInMonth), accumulator.flat(1).length); //2.
 
 
       accumulator[i] = _this.getWeek(calendarMonth);
       return accumulator;
     }, []);
-  } //-----------------> 1. Month Class
+  } //Scheduled for demolition -----------------> 1. Month Class
 
 
   createClass(Year, [{
@@ -232,8 +230,8 @@ function () {
       return toConsumableArray(Array(daysInMonth)).map(function (item, j) {
         return (j + yearDayTally + _this2.baseClass.calendarYearOffset) % 7;
       });
-    } //-----------------> 1. Month Class
-    //-----------------> 2. Week Class
+    } //Scheduled for demolition -----------------> 1. Month Class
+    //Scheduled for demolition -----------------> 2. Week Class
 
   }, {
     key: "getWeek",
@@ -241,7 +239,6 @@ function () {
       return (//WEEKS
         //splits and groups the month days into clusters of weeks
         calendarMonth.slice().reduce(function (accumulator, curr) {
-          //console.log(accumulator);
           var l = accumulator.length;
 
           if (l === 0 || curr === BaseClass$1.config.baseDay) {
@@ -253,7 +250,7 @@ function () {
           return accumulator;
         }, [])
       );
-    } //-----------------> 2. Week Class
+    } //Scheduled for demolition -----------------> 2. Week Class
 
   }]);
 
@@ -274,14 +271,15 @@ function () {
     this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
   }
 
-  createClass(BaseClass, null, [{
+  createClass(BaseClass, [{
     key: "getDaysInMonth",
     value: function getDaysInMonth(month) {
-      return Array.isArray(month) ? month[~~BaseClass.isLeapYear(this.epoch.year)] : month;
+      return Array.isArray(month) ? month[~~this.isLeapYear()] : month;
     }
   }, {
     key: "isLeapYear",
-    value: function isLeapYear(year) {
+    value: function isLeapYear() {
+      var year = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.epoch.year;
       return Boolean(!(year % 4) && year % 100 || !(year % 400));
     }
   }]);
@@ -289,9 +287,7 @@ function () {
   return BaseClass;
 }();
 
-defineProperty(BaseClass$1, "STATICS", {
-  LOOKUPTABLE: [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-});
+defineProperty(BaseClass$1, "LOOKUPTABLE", [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]);
 
 BaseClass$1.config = {
   baseDay: 0
