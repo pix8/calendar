@@ -31,10 +31,10 @@ export default class Year {
 	}
 
 	//Scheduled for demolition -----------------> 1. Month Class
-	getMonth(daysInMonth, dayOfYear) {
+	getMonth(daysInMonth, dayNumber) {
 
 		//MONTHS
-		return [...Array(daysInMonth)].map( (item, j) => ( (j+dayOfYear) + this.baseClass.calendarYearOffset )%7 );
+		return [...Array(daysInMonth)].map( (item, j) => ( (j+dayNumber) + this.baseClass.calendarYearOffset )%7 );
 	}
 	//Scheduled for demolition -----------------> 1. Month Class
 
@@ -75,6 +75,14 @@ class BaseClass {
 		}
 		
 		this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
+	}
+
+	getDayNumber(month = this.epoch.month, date = this.epoch.date, excludeTargetMonth = false) {
+		return (
+			BaseClass.LOOKUPTABLE.slice(0, month-1).reduce(
+				(tally, daysInMonth, i) => tally + this.getDaysInMonth(daysInMonth)
+			, excludeTargetMonth ? 0 : date)
+		)
 	}
 
 	getDaysInMonth(month) {

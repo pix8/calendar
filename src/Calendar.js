@@ -18,7 +18,7 @@ export default class Pix8Calendar {
 
 		this.locales = en;
 
-		this.calendar = new Array();
+		this.calendar = new Array(); //Object.freeze(), Object.seal()
 	};
 
 	/**

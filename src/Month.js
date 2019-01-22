@@ -8,7 +8,7 @@ export default class Month {
 
 		this.baseClass = new BaseClass(_epoch);
 
-		var dayOfYear = this.baseClass.getDayOfYear(this.baseClass.epoch.month, null, true),
+		var dayNumber = this.baseClass.getDayNumber(this.baseClass.epoch.month, null, true),
 			daysInMonth = BaseClass.LOOKUPTABLE[this.baseClass.epoch.month-1];
 		
 		//--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
@@ -16,17 +16,17 @@ export default class Month {
 		daysInMonth = this.baseClass.getDaysInMonth(daysInMonth);
 		
 		//1.
-		var calendarMonth = this.getMonth(daysInMonth, dayOfYear);
+		var calendarMonth = this.getMonth(daysInMonth, dayNumber);
 		
 		return (
 			this.getWeek(calendarMonth)
 		);
 	}
 
-	getMonth(daysInMonth, dayOfYear) {
+	getMonth(daysInMonth, dayNumber) {
 
 		//MONTHS
-		return [...Array(daysInMonth)].map( (item, j) => ( (j+dayOfYear) + this.baseClass.calendarYearOffset )%7 );
+		return [...Array(daysInMonth)].map( (item, j) => ( (j+dayNumber) + this.baseClass.calendarYearOffset )%7 );
 	}
 
 	//Scheduled for demolition -----------------> 1. Week Class
@@ -68,7 +68,7 @@ class BaseClass {
 		this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
 	}
 
-	getDayOfYear(month = this.epoch.month, date = this.epoch.date, excludeTargetMonth = false) {
+	getDayNumber(month = this.epoch.month, date = this.epoch.date, excludeTargetMonth = false) {
 		return (
 			BaseClass.LOOKUPTABLE.slice(0, month-1).reduce(
 				(tally, daysInMonth, i) => tally + this.getDaysInMonth(daysInMonth)
