@@ -14,6 +14,22 @@ class BaseClass {
 		this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
 	}
 
+	// get year() {
+	// 	return this.year;
+	// }
+
+	// get month() {
+	// 	return this.month;
+	// }
+
+	// get date() {
+	// 	return this.date;
+	// }
+
+	get day() {
+		return GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date);
+	}
+
 	getDayNumber(month = this.epoch.month, date = this.epoch.date, excludeTargetMonth = false) {
 		return (
 			BaseClass.LOOKUPTABLE.slice(0, month-1).reduce(
@@ -38,7 +54,7 @@ BaseClass.config = {
 }
 
 
-export default class Year extends BaseClass{
+export default class Year extends BaseClass {
 //export default class Year extends Month {
 
 	constructor(_epoch) {
