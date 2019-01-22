@@ -4,7 +4,8 @@ import Calendar from '@pix8/calendar'
 
 //window.onload = function() {};
 
-var epoch = new Date(),
+//var epoch = new Date(),
+var epoch = new Date(2018,2,2),
 	input = document.getElementById("date");
 
 var calendar = new Calendar();

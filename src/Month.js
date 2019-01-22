@@ -6,6 +6,8 @@ export default class Month {
 
 	constructor(_epoch) {
 
+		//super(_epoch);
+
 		this.baseClass = new BaseClass(_epoch);
 
 		var dayNumber = this.baseClass.getDayNumber(this.baseClass.epoch.month, null, true),

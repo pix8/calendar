@@ -6,6 +6,8 @@ export default class Year {
 
 	constructor(_epoch) {
 
+		//super(_epoch);
+
 		this.baseClass = new BaseClass(_epoch);
 
 		//YEAR
@@ -70,7 +72,7 @@ class BaseClass {
 	constructor(_epoch) {
 		this.epoch = {
 			year: parseInt(_epoch.getUTCFullYear()),
-			month: parseInt(_epoch.getUTCMonth()+1),
+			month: parseInt(_epoch.getUTCMonth()+1), //DEVNOTE: get rid of this +1
 			date: parseInt(_epoch.getUTCDate())
 		}
 		
