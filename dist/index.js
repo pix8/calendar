@@ -26,23 +26,6 @@ function _createClass(Constructor, protoProps, staticProps) {
 
 var createClass = _createClass;
 
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-var defineProperty = _defineProperty;
-
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) {
     for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
@@ -72,6 +55,108 @@ function _toConsumableArray(arr) {
 }
 
 var toConsumableArray = _toConsumableArray;
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var _typeof_1 = createCommonjsModule(function (module) {
+function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
+
+function _typeof(obj) {
+  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+    module.exports = _typeof = function _typeof(obj) {
+      return _typeof2(obj);
+    };
+  } else {
+    module.exports = _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+    };
+  }
+
+  return _typeof(obj);
+}
+
+module.exports = _typeof;
+});
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+var assertThisInitialized = _assertThisInitialized;
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (_typeof_1(call) === "object" || typeof call === "function")) {
+    return call;
+  }
+
+  return assertThisInitialized(self);
+}
+
+var possibleConstructorReturn = _possibleConstructorReturn;
+
+var getPrototypeOf = createCommonjsModule(function (module) {
+function _getPrototypeOf(o) {
+  module.exports = _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
+
+module.exports = _getPrototypeOf;
+});
+
+var setPrototypeOf = createCommonjsModule(function (module) {
+function _setPrototypeOf(o, p) {
+  module.exports = _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
+
+module.exports = _setPrototypeOf;
+});
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) setPrototypeOf(subClass, superClass);
+}
+
+var inherits = _inherits;
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+var defineProperty = _defineProperty;
 
 // Tomohiko Sakamoto Algorithm
 // https://groups.google.com/forum/#!msg/comp.lang.c/m4YG7Uw72Ic/WQj-pRNzJaIJ
@@ -208,41 +293,91 @@ BaseClass.config = {
   baseDay: 0
 };
 
-var Year =
+var BaseClass$1 =
 /*#__PURE__*/
 function () {
+  function BaseClass(_epoch) {
+    classCallCheck(this, BaseClass);
+
+    this.epoch = {
+      year: parseInt(_epoch.getUTCFullYear()),
+      month: parseInt(_epoch.getUTCMonth() + 1),
+      //DEVNOTE: get rid of this +1
+      date: parseInt(_epoch.getUTCDate())
+    };
+    this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
+  }
+
+  createClass(BaseClass, [{
+    key: "getDayNumber",
+    value: function getDayNumber() {
+      var _this = this;
+
+      var month = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.epoch.month;
+      var date = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.epoch.date;
+      var excludeTargetMonth = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+      return BaseClass.LOOKUPTABLE.slice(0, month - 1).reduce(function (tally, daysInMonth, i) {
+        return tally + _this.getDaysInMonth(daysInMonth);
+      }, excludeTargetMonth ? 0 : date);
+    }
+  }, {
+    key: "getDaysInMonth",
+    value: function getDaysInMonth(month) {
+      return Array.isArray(month) ? month[~~this.isLeapYear()] : month;
+    }
+  }, {
+    key: "isLeapYear",
+    value: function isLeapYear() {
+      var year = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.epoch.year;
+      return Boolean(!(year % 4) && year % 100 || !(year % 400));
+    }
+  }]);
+
+  return BaseClass;
+}();
+
+defineProperty(BaseClass$1, "LOOKUPTABLE", [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]);
+
+BaseClass$1.config = {
+  baseDay: 0
+};
+
+var Year =
+/*#__PURE__*/
+function (_BaseClass) {
+  inherits(Year, _BaseClass);
+
   //export default class Year extends Month {
   function Year(_epoch) {
-    var _this = this;
+    var _this2;
 
     classCallCheck(this, Year);
 
-    //super(_epoch);
-    this.baseClass = new BaseClass$1(_epoch); //YEAR
+    _this2 = possibleConstructorReturn(this, getPrototypeOf(Year).call(this, _epoch)); //YEAR
 
-    return BaseClass$1.LOOKUPTABLE.slice().reduce(function (accumulator, daysInMonth, i) {
+    return possibleConstructorReturn(_this2, BaseClass$1.LOOKUPTABLE.slice().reduce(function (accumulator, daysInMonth, i) {
       //--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
-      daysInMonth = _this.baseClass.getDaysInMonth(daysInMonth); //1.
+      daysInMonth = _this2.getDaysInMonth(daysInMonth); //1.
 
-      var calendarMonth = _this.getMonth(daysInMonth, accumulator.flat(2).length); //2.
+      var calendarMonth = _this2.getMonth(daysInMonth, accumulator.flat(2).length); //2.
 
 
-      accumulator[i] = _this.getWeek(calendarMonth); //console.log(new Date(2019, i, 1).toLocaleString(), " :: " ,new Month(new Date(2019, i, 1)));
+      accumulator[i] = _this2.getWeek(calendarMonth); //console.log(new Date(2019, i, 1).toLocaleString(), " :: " ,new Month(new Date(2019, i, 1)));
       //accumulator[i] = new Month( new Date(2019, i, 1) );
 
       return accumulator;
-    }, []);
+    }, []));
   } //Scheduled for demolition -----------------> 1. Month Class
 
 
   createClass(Year, [{
     key: "getMonth",
     value: function getMonth(daysInMonth, dayNumber) {
-      var _this2 = this;
+      var _this3 = this;
 
       //MONTHS
       return toConsumableArray(Array(daysInMonth)).map(function (item, j) {
-        return (j + dayNumber + _this2.baseClass.calendarYearOffset) % 7;
+        return (j + dayNumber + _this3.calendarYearOffset) % 7;
       });
     } //Scheduled for demolition -----------------> 1. Month Class
     //Scheduled for demolition -----------------> 2. Week Class
@@ -269,141 +404,7 @@ function () {
   }]);
 
   return Year;
-}();
-
-var BaseClass$1 =
-/*#__PURE__*/
-function () {
-  function BaseClass(_epoch) {
-    classCallCheck(this, BaseClass);
-
-    this.epoch = {
-      year: parseInt(_epoch.getUTCFullYear()),
-      month: parseInt(_epoch.getUTCMonth() + 1),
-      //DEVNOTE: get rid of this +1
-      date: parseInt(_epoch.getUTCDate())
-    };
-    this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
-  }
-
-  createClass(BaseClass, [{
-    key: "getDayNumber",
-    value: function getDayNumber() {
-      var _this3 = this;
-
-      var month = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.epoch.month;
-      var date = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.epoch.date;
-      var excludeTargetMonth = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      return BaseClass.LOOKUPTABLE.slice(0, month - 1).reduce(function (tally, daysInMonth, i) {
-        return tally + _this3.getDaysInMonth(daysInMonth);
-      }, excludeTargetMonth ? 0 : date);
-    }
-  }, {
-    key: "getDaysInMonth",
-    value: function getDaysInMonth(month) {
-      return Array.isArray(month) ? month[~~this.isLeapYear()] : month;
-    }
-  }, {
-    key: "isLeapYear",
-    value: function isLeapYear() {
-      var year = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.epoch.year;
-      return Boolean(!(year % 4) && year % 100 || !(year % 400));
-    }
-  }]);
-
-  return BaseClass;
-}();
-
-defineProperty(BaseClass$1, "LOOKUPTABLE", [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]);
-
-BaseClass$1.config = {
-  baseDay: 0
-};
-
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
-}
-
-var _typeof_1 = createCommonjsModule(function (module) {
-function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
-function _typeof(obj) {
-  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-    module.exports = _typeof = function _typeof(obj) {
-      return _typeof2(obj);
-    };
-  } else {
-    module.exports = _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-    };
-  }
-
-  return _typeof(obj);
-}
-
-module.exports = _typeof;
-});
-
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-
-var assertThisInitialized = _assertThisInitialized;
-
-function _possibleConstructorReturn(self, call) {
-  if (call && (_typeof_1(call) === "object" || typeof call === "function")) {
-    return call;
-  }
-
-  return assertThisInitialized(self);
-}
-
-var possibleConstructorReturn = _possibleConstructorReturn;
-
-var getPrototypeOf = createCommonjsModule(function (module) {
-function _getPrototypeOf(o) {
-  module.exports = _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-    return o.__proto__ || Object.getPrototypeOf(o);
-  };
-  return _getPrototypeOf(o);
-}
-
-module.exports = _getPrototypeOf;
-});
-
-var setPrototypeOf = createCommonjsModule(function (module) {
-function _setPrototypeOf(o, p) {
-  module.exports = _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-    o.__proto__ = p;
-    return o;
-  };
-
-  return _setPrototypeOf(o, p);
-}
-
-module.exports = _setPrototypeOf;
-});
-
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function");
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) setPrototypeOf(subClass, superClass);
-}
-
-var inherits = _inherits;
+}(BaseClass$1);
 
 //REF
 //https://www.epochconverter.com/weeknumbers
@@ -502,8 +503,6 @@ function (_BaseClass) {
 
 
     var WEEK = [0, 1, 2, 3, 4, 5, 6]; //DEVNOTE: hardcoding this sequence isn't workable for configurable base day
-
-    console.log("".concat(day, " ").concat((date - 1) % 7, " ").concat(date));
 
     if (day !== (date - 1) % 7 && day >= date) {
       //console.log(">> partial week segment start");

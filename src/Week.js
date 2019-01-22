@@ -77,7 +77,7 @@ export default class Week extends BaseClass {
 		var day = this.day;
 
 		var dayNumber = this.getDayNumber(month, date);
-		var weekNo = Math.ceil(dayNumber/7); //DEVNOTE: temp and crude; assumes 1st Jan = 0(Sunday). Not taking into account year offset or ISO standard
+		var weekNo = Math.ceil(dayNumber/7); //DEVNOTE: temp and crude; assumes 1st Jan = 0(Sunday) always. Not taking into account year offset, base day or ISO standard
 
 		var daysInMonth = this.getDaysInMonth(BaseClass.LOOKUPTABLE[month-1]);
 
@@ -85,7 +85,6 @@ export default class Week extends BaseClass {
 
 		const WEEK = [0, 1, 2, 3, 4, 5, 6]; //DEVNOTE: hardcoding this sequence isn't workable for configurable base day
 
-		console.log(`${day} ${(date-1)%7} ${date}`);
 		if(day !== (date-1)%7 && day >= date) {
 			//console.log(">> partial week segment start");
 			//console.log(`${(date%7)}-1=${(date%7)-1} ${day}-${(date%7)-1}=${day-((date%7)-1)}`);
