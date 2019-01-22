@@ -35,8 +35,8 @@ export default class Week {
 
 			var foo = WEEK.slice(0, -(WEEK.length-(day-((date%7)-1))) ),
 				bar = WEEK.slice(day-((date%7)-1));
-			console.log("week :foo: ", foo);
-			console.log("week :bar: ", bar);
+			//console.log("week :foo: ", foo);
+			//console.log("week :bar: ", bar);
 
 			return [foo, bar];
 		}
@@ -44,8 +44,8 @@ export default class Week {
 			//console.log(">> partial week segment end >");
 			var foo = WEEK.slice(0, day+(daysInMonth-date)+1 ),
 				bar = WEEK.slice(day+(daysInMonth-date)+1);
-			console.log("week :foo: ", foo);
-			console.log("week :bar: ", bar);
+			//console.log("week :foo: ", foo);
+			//console.log("week :bar: ", bar);
 
 			return [foo, bar];
 		}
