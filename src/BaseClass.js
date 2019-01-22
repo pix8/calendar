@@ -1,27 +1,12 @@
-//import BaseClass from './BaseClass'
 import GregorianDay from './algorithm/Sakamoto'
 
-// export default function Day(_epoch) {
 
-// 	this.epoch = {
-// 		year: parseInt(_epoch.getUTCFullYear()),
-// 		month: parseInt(_epoch.getUTCMonth()+1),
-// 		date: parseInt(_epoch.getUTCDate())
-// 	};
-
-// 	var dateDay = _epoch.getUTCDay();
-// 	var calendarDay = GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date);
-
-// 	return [calendarDay];
-// }
-
-
-export default class Day {
+export default class BaseClass {
 
 	constructor(_epoch) {
 		this.epoch = {
 			year: parseInt(_epoch.getUTCFullYear()),
-			month: parseInt(_epoch.getUTCMonth()+1),
+			month: parseInt(_epoch.getUTCMonth()+1), //DEVNOTE: get rid of this +1 manipulation
 			date: parseInt(_epoch.getUTCDate())
 		}
 		
@@ -41,12 +26,12 @@ export default class Day {
 	// }
 
 	get day() {
-		return GregorianDay(this.epoch.year, this.epoch.month, this.epoch.year);
+		return GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date);
 	}
 
 	getDayNumber(month = this.epoch.month, date = this.epoch.date, excludeTargetMonth = false) {
 		return (
-			Day.LOOKUPTABLE.slice(0, month-1).reduce(
+			BaseClass.LOOKUPTABLE.slice(0, month-1).reduce(
 				(tally, daysInMonth, i) => tally + this.getDaysInMonth(daysInMonth)
 			, excludeTargetMonth ? 0 : date)
 		)
@@ -57,7 +42,6 @@ export default class Day {
 		return (Array.isArray(month)) ? month[~~this.isLeapYear()] : month;
 	}
 
-	//static isLeapYear(year = this.epoch.year) {
 	isLeapYear(year = this.epoch.year) {
 		return Boolean( (!(year%4) && year%100) || !(year%400) );
 	}
@@ -65,8 +49,6 @@ export default class Day {
 	static LOOKUPTABLE = [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 }
 
-Day.config = {
-	baseDay: 0,
-	weekStartDay: 0,
-	weekNumberStartDay: 4
+BaseClass.config = {
+	baseDay: 0
 }
