@@ -14,9 +14,8 @@ export default class Year extends BaseClass {
 			BaseClass.LOOKUPTABLE.slice().reduce( (accumulator, daysInMonth, i) => {
 
 				//--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
-
 				//1.
-				var calendarMonth = this.getMonth(daysInMonth[this.isLeapYear()] || daysInMonth, accumulator.flat(2).length);
+				var calendarMonth = this.getMonth(daysInMonth[~~this.isLeapYear()] || daysInMonth, accumulator.flat(2).length);
 
 				//2.
 				accumulator[i] = this.getWeek(calendarMonth);

@@ -379,7 +379,7 @@ function (_BaseClass) {
     return possibleConstructorReturn(_this, BaseClass.LOOKUPTABLE.slice().reduce(function (accumulator, daysInMonth, i) {
       //--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
       //1.
-      var calendarMonth = _this.getMonth(daysInMonth[_this.isLeapYear()] || daysInMonth, accumulator.flat(2).length); //2.
+      var calendarMonth = _this.getMonth(daysInMonth[~~_this.isLeapYear()] || daysInMonth, accumulator.flat(2).length); //2.
 
 
       accumulator[i] = _this.getWeek(calendarMonth); //console.log(new Date(2019, i, 1).toLocaleString(), " :: " ,new Month(new Date(2019, i, 1)));
