@@ -30,20 +30,15 @@ export default class BaseClass {
 	}
 
 	get ordinalDate() {
-		return this.getOrdinalDate(this.epoch.month, this.epoch.date);
+		return (
+			BaseClass.LOOKUPTABLE.slice(0, this.epoch.month).reduce(
+				(tally, daysInMonth, i) => tally + this.getDaysInMonth(i)
+			, this.epoch.date)
+		)
 	}
 
 	get weekNumber() {
 		return ( this.calendarYearOffset > 4 ) ? Math.abs(Math.ceil( (this.ordinalDate - (7-this.calendarYearOffset) )/7 )) : Math.ceil( (this.ordinalDate+this.calendarYearOffset)/7 );
-	}
-
-	//DEVNOTE: move into getter and scrub the excludeTargetMonth param to simplify(can deduct that at query + clearer)
-	getOrdinalDate(month = this.epoch.month, date = this.epoch.date, excludeTargetMonth = false) {
-		return (
-			BaseClass.LOOKUPTABLE.slice(0, month).reduce(
-				(tally, daysInMonth, i) => tally + this.getDaysInMonth(daysInMonth)
-			, excludeTargetMonth ? 0 : date)
-		)
 	}
 
 	getDaysInMonth(month = this.epoch.month) {

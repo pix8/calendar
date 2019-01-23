@@ -8,14 +8,11 @@ export default class Month extends BaseClass {
 	constructor(_epoch) {
 
 		super(_epoch);
-
-		var dayNumber = this.getOrdinalDate(this.epoch.month, null, true),
-			daysInMonth = this.getDaysInMonth();
 		
 		//--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
 		
 		//1.
-		var calendarMonth = this.getMonth(daysInMonth, dayNumber);
+		var calendarMonth = this.getMonth(this.getDaysInMonth(), this.ordinalDate-this.epoch.date);
 		
 		return (
 			this.getWeek(calendarMonth)

@@ -189,19 +189,6 @@ function () {
   }
 
   createClass(BaseClass, [{
-    key: "getOrdinalDate",
-    //DEVNOTE: move into getter and scrub the excludeTargetMonth param to simplify(can deduct that at query + clearer)
-    value: function getOrdinalDate() {
-      var _this = this;
-
-      var month = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.epoch.month;
-      var date = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.epoch.date;
-      var excludeTargetMonth = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      return BaseClass.LOOKUPTABLE.slice(0, month).reduce(function (tally, daysInMonth, i) {
-        return tally + _this.getDaysInMonth(daysInMonth);
-      }, excludeTargetMonth ? 0 : date);
-    }
-  }, {
     key: "getDaysInMonth",
     value: function getDaysInMonth() {
       var month = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.epoch.month;
@@ -236,7 +223,11 @@ function () {
   }, {
     key: "ordinalDate",
     get: function get() {
-      return this.getOrdinalDate(this.epoch.month, this.epoch.date);
+      var _this = this;
+
+      return BaseClass.LOOKUPTABLE.slice(0, this.epoch.month).reduce(function (tally, daysInMonth, i) {
+        return tally + _this.getDaysInMonth(i);
+      }, this.epoch.date);
     }
   }, {
     key: "weekNumber",
@@ -329,14 +320,10 @@ function (_BaseClass) {
 
     classCallCheck(this, Month);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf(Month).call(this, _epoch));
-
-    var dayNumber = _this.getOrdinalDate(_this.epoch.month, null, true),
-        daysInMonth = _this.getDaysInMonth(); //--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
+    _this = possibleConstructorReturn(this, getPrototypeOf(Month).call(this, _epoch)); //--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
     //1.
 
-
-    var calendarMonth = _this.getMonth(daysInMonth, dayNumber);
+    var calendarMonth = _this.getMonth(_this.getDaysInMonth(), _this.ordinalDate - _this.epoch.date);
 
     return possibleConstructorReturn(_this, _this.getWeek(calendarMonth));
   }
