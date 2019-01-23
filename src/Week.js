@@ -5,10 +5,14 @@ import BaseClass from './BaseClass'
 //https://www.epochconverter.com/weeknumbers
 //https://en.wikipedia.org/wiki/ISO_8601
 //NOTE: week numbering systems are subject to localisation/regional/cultural conventions
-	//ISO8601 standard = week start Monday. 1st week of year is week with first Thursday i.e. first 4-day week i.e. week with 4th Jan. a year can have 52 or 53 week numbers.
+	//ISO8601 standard = week start Monday. 1st week of year is week with first Thursday(midpoint = 3-thurs-3) i.e. first 4-day week i.e. week with 4th Jan. a year can have 52 or 53 week numbers.
+	// the week with the year's first Thursday in it (the formal ISO definition),
+	// the week with 4 January in it,
+	// the first week with the majority (four or more) of its days in the starting year, and
+	// the week starting with the Monday in the period 29 December – 4 January.
 
 export default class Week extends BaseClass {
-//class Week extends day {
+//class Week extends day { //--> extends BaseClass??
 
 	constructor(_epoch) {
 
@@ -17,17 +21,12 @@ export default class Week extends BaseClass {
 		
 		super(_epoch);
 
-		var { date, month, year}  = this.epoch;
-		var day = this.day;
+		var {day, date, month, year}  = this;
 
-		var dayNumber = this.getDayNumber(month, date);
-		var weekNo = Math.ceil(dayNumber/7); //DEVNOTE: temp and crude; assumes 1st Jan = 0(Sunday) always. Not taking into account year offset, base day or ISO standard
-
-		var daysInMonth = this.getDaysInMonth(BaseClass.LOOKUPTABLE[month-1]);
-
-		//console.log(`${_epoch.toLocaleString()} is a ${"Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday".split(",")[day]} Day = ${day} Date = ${date}) Week Number = ${weekNo} Day Number = ${this.getDayNumber(month, date)}`);
-
+		const DAYSINMONTH = this.getDaysInMonth(BaseClass.LOOKUPTABLE[month-1]);
 		const WEEK = [0, 1, 2, 3, 4, 5, 6]; //DEVNOTE: hardcoding this sequence isn't workable for configurable base day
+
+		console.log(`${_epoch.toLocaleString()} is a ${"Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday".split(",")[day]} Day = ${day} Date = ${date} Week Number = ${this.weekNumber} Day Number = ${this.getOrdinalDate(month, date)} Offset = ${this.calendarYearOffset}`);
 
 		if(day !== (date-1)%7 && day >= date) {
 			//console.log(">> partial week segment start");
@@ -39,22 +38,19 @@ export default class Week extends BaseClass {
 
 			return [foo, bar];
 		}
-		else if( day+(daysInMonth-date) < 6 ) {
+		else if( day+(DAYSINMONTH-date) < 6 ) {
 			//console.log(">> partial week segment end");
-			var foo = WEEK.slice(0, day+(daysInMonth-date)+1 ),
-				bar = WEEK.slice(day+(daysInMonth-date)+1);
+			var foo = WEEK.slice(0, day+(DAYSINMONTH-date)+1 ),
+				bar = WEEK.slice(day+(DAYSINMONTH-date)+1);
 			//console.log(`week :foobar:  [${foo}][${bar}]`);
 
 			return [foo, bar];
 		}
 
-		//console.log(">> do nothing")
 		return WEEK;
-			//week number
-			//week number indication and way to give epoch context
-			//Week construct would have to abide by the config.baseday for construction
 	}
 
+	// DEVNOTE: REF: Year.js and Month.js implementation
 	getWeek(calendarMonth) {
 		
 		return (

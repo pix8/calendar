@@ -13,23 +13,31 @@ export default class BaseClass {
 		this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
 	}
 
-	// get year() {
-	// 	return this.year;
-	// }
+	get year() {
+		return this.epoch.year;
+	}
 
-	// get month() {
-	// 	return this.month;
-	// }
+	get month() {
+		return this.epoch.month;
+	}
 
-	// get date() {
-	// 	return this.date;
-	// }
+	get date() {
+		return this.epoch.date;
+	}
 
 	get day() {
 		return GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date);
 	}
 
-	getDayNumber(month = this.epoch.month, date = this.epoch.date, excludeTargetMonth = false) {
+	get ordinalDate() {
+		return this.getOrdinalDate(this.epoch.month, this.epoch.date);
+	}
+
+	get weekNumber() {
+		return ( this.calendarYearOffset > 4 ) ? Math.abs(Math.ceil( (this.ordinalDate - (7-this.calendarYearOffset) )/7 )) : Math.ceil( (this.ordinalDate+this.calendarYearOffset)/7 );
+	}
+
+	getOrdinalDate(month = this.epoch.month, date = this.epoch.date, excludeTargetMonth = false) {
 		return (
 			BaseClass.LOOKUPTABLE.slice(0, month-1).reduce(
 				(tally, daysInMonth, i) => tally + this.getDaysInMonth(daysInMonth)
@@ -50,5 +58,9 @@ export default class BaseClass {
 }
 
 BaseClass.config = {
-	baseDay: 0
+	baseDay: 0,
+	firstWeekOfYear: 4
+	//First week of the year must contain the date 4th Jan/first thursday (iso8601)
+	//first week of the year must contain the date 1st Jan/first friday (middle eastern)
+	//first week of the year must contain the date 1st Jan/first saturday (north america/islam)
 }

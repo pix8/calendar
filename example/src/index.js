@@ -4,7 +4,10 @@ import Calendar from '@pix8/calendar'
 
 //window.onload = function() {};
 
+//DEVNOTE: BUG. There is an issue with javascript dates below year 1847. time is manipulated. reason unknown.
+
 var epoch = new Date(),
+	epoch = new Date(2022,0,2),
 	input = document.getElementById("date");
 
 var calendar = new Calendar();

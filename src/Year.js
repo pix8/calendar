@@ -3,7 +3,7 @@ import Month from './Month'
 
 
 export default class Year extends BaseClass {
-//export default class Year extends Month {
+//export default class Year extends Month { //--> extends Week //--> extends Day //--> extends BaseClass
 
 	constructor(_epoch) {
 

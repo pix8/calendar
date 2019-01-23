@@ -8,9 +8,8 @@ export default class Month extends BaseClass {
 	constructor(_epoch) {
 
 		super(_epoch);
-		//this.baseClass = new BaseClass(_epoch);
 
-		var dayNumber = this.getDayNumber(this.epoch.month, null, true),
+		var dayNumber = this.getOrdinalDate(this.epoch.month, null, true),
 			daysInMonth = BaseClass.LOOKUPTABLE[this.epoch.month-1];
 		
 		//--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)

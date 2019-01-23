@@ -162,7 +162,7 @@ var defineProperty = _defineProperty;
 // Returns the day of the week at any given point in time on the Gregorian Calendar(this algorithm should be good for around 3236 years!)
 // return will be zero-based with 0=Sunday, 1=Monday, 2=Tuesday...6 = Saturday
 // @y - year 
-// @m - month [1-12]
+// @m - month [1-12] DEVNOTE: adjust to use javascript convention [0-12]; uncomment the statement below and modify any calls accordingly
 // @d - date [1-31]
 // NOTE: month and date should be normalized and NOT 0-based.
 var GregorianDay = (function (y, m, d) {
@@ -172,6 +172,10 @@ var GregorianDay = (function (y, m, d) {
   // currently(1901-2099), the traditional Julian calendar is 13 days behind the Gregorian calendar.
   // array represents the number of days ahead any given date in a month would be the following year(adjusted to compensate for leap years)
   // - unadjusted this array would contain these values for a straight 365 days every year [0, 3, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5]
+  // - eg. ignoring leap years and simplified to 365 for every year. jan is baseline and therefore 0 - we know it contains 31 days. if all things being equal. feb would mimic january day by day and everything would stay constant. this would be true for all months.
+  // however all things are not equal(!). There is variance in the number of days every month contains. This introduces an offset to apply with every incremental month since the Jan marker. the offset to apply on days in feb can be reliably represented as 31 = 7x4 + 3days which is equivalent to 31%7.
+  // This is the 2nd entry in the array. Each entry represent an offset/ shift of days to be applied in respect of January 1st to calculate a day.
+  // 1 is subtracted from every value in the array AFTER january and feb to adjust for leap years as assumption are made later in the calculations(jan and feb will get their years shifted back by 1 year) that require this massaging.
   var offset = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4]; // if the month(m) corresponds to January or February we decrement the year(y) by one
   // we do this to level the playing field and avoid the february 28/29 conundrum
   // - we will defer the 365 or 366 days decision for the time being and assume 364 days.
@@ -180,14 +184,11 @@ var GregorianDay = (function (y, m, d) {
   // this is equivalent to  y = y - (m < 3) || y = y - (true or false) || y = y - (1 or 0)
 
   y -= Number(m < 3); // a year normally consists of 365 which can be refactored as 364+1; that is (52(weeks)x7(days))+(1 day).
-  // therefore it can be reliably assumed the next year will always be carried forward 1 day; unless it is a leap in which case days move 2 days forward.
+  // therefore it can be reliably assumed the next year will always carry forward 1 day; unless it is a leap in which case days move 2 days forward.
   // modulus 7 because that's how long a week is and we are calculating to the day
 
-  return (y + ~~(y / 4) - ~~(y / 100) + ~~(y / 400) + offset[m - 1] + d) % 7;
-}); // export default (y, m, d) => {
-// 	y -=m < 3;
-// 	return(y + y/4 -y/100 +y/400 + [m] + d) % 7;
-// }
+  return (y + ~~(y / 4) - ~~(y / 100) + ~~(y / 400) + offset[m - 1] + d) % 7; //return (y + ~~(y/4) - ~~(y/100) + ~~(y/400) + offset[m] + d) % 7;
+});
 
 var BaseClass =
 /*#__PURE__*/
@@ -202,20 +203,11 @@ function () {
       date: parseInt(_epoch.getUTCDate())
     };
     this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
-  } // get year() {
-  // 	return this.year;
-  // }
-  // get month() {
-  // 	return this.month;
-  // }
-  // get date() {
-  // 	return this.date;
-  // }
-
+  }
 
   createClass(BaseClass, [{
-    key: "getDayNumber",
-    value: function getDayNumber() {
+    key: "getOrdinalDate",
+    value: function getOrdinalDate() {
       var _this = this;
 
       var month = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.epoch.month;
@@ -238,9 +230,34 @@ function () {
       return Boolean(!(year % 4) && year % 100 || !(year % 400));
     }
   }, {
+    key: "year",
+    get: function get() {
+      return this.epoch.year;
+    }
+  }, {
+    key: "month",
+    get: function get() {
+      return this.epoch.month;
+    }
+  }, {
+    key: "date",
+    get: function get() {
+      return this.epoch.date;
+    }
+  }, {
     key: "day",
     get: function get() {
       return GregorianDay(this.epoch.year, this.epoch.month, this.epoch.date);
+    }
+  }, {
+    key: "ordinalDate",
+    get: function get() {
+      return this.getOrdinalDate(this.epoch.month, this.epoch.date);
+    }
+  }, {
+    key: "weekNumber",
+    get: function get() {
+      return this.calendarYearOffset > 4 ? Math.abs(Math.ceil((this.ordinalDate - (7 - this.calendarYearOffset)) / 7)) : Math.ceil((this.ordinalDate + this.calendarYearOffset) / 7);
     }
   }]);
 
@@ -249,21 +266,29 @@ function () {
 
 defineProperty(BaseClass, "LOOKUPTABLE", [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]);
 BaseClass.config = {
-  baseDay: 0
+  baseDay: 0,
+  firstWeekOfYear: 4 //First week of the year must contain the date 4th Jan/first thursday (iso8601)
+  //first week of the year must contain the date 1st Jan/first friday (middle eastern)
+  //first week of the year must contain the date 1st Jan/first saturday (north america/islam)
+
 };
 
 //REF
 //https://www.epochconverter.com/weeknumbers
 //https://en.wikipedia.org/wiki/ISO_8601
 //NOTE: week numbering systems are subject to localisation/regional/cultural conventions
-//ISO8601 standard = week start Monday. 1st week of year is week with first Thursday i.e. first 4-day week i.e. week with 4th Jan. a year can have 52 or 53 week numbers.
+//ISO8601 standard = week start Monday. 1st week of year is week with first Thursday(midpoint = 3-thurs-3) i.e. first 4-day week i.e. week with 4th Jan. a year can have 52 or 53 week numbers.
+// the week with the year's first Thursday in it (the formal ISO definition),
+// the week with 4 January in it,
+// the first week with the majority (four or more) of its days in the starting year, and
+// the week starting with the Monday in the period 29 December – 4 January.
 
 var Week =
 /*#__PURE__*/
 function (_BaseClass) {
   inherits(Week, _BaseClass);
 
-  //class Week extends day {
+  //class Week extends day { //--> extends BaseClass??
   function Week(_epoch) {
     var _this;
 
@@ -272,18 +297,18 @@ function (_BaseClass) {
     //MOCK
     //_epoch = new Date(2018, 0, 30);
     _this = possibleConstructorReturn(this, getPrototypeOf(Week).call(this, _epoch));
-    var _this$epoch = _this.epoch,
-        date = _this$epoch.date,
-        month = _this$epoch.month,
-        year = _this$epoch.year;
-    var day = _this.day;
 
-    var dayNumber = _this.getDayNumber(month, date);
+    var _assertThisInitialize = assertThisInitialized(assertThisInitialized(_this)),
+        day = _assertThisInitialize.day,
+        date = _assertThisInitialize.date,
+        month = _assertThisInitialize.month,
+        year = _assertThisInitialize.year;
 
-    var daysInMonth = _this.getDaysInMonth(BaseClass.LOOKUPTABLE[month - 1]); //console.log(`${_epoch.toLocaleString()} is a ${"Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday".split(",")[day]} Day = ${day} Date = ${date}) Week Number = ${weekNo} Day Number = ${this.getDayNumber(month, date)}`);
-
+    var DAYSINMONTH = _this.getDaysInMonth(BaseClass.LOOKUPTABLE[month - 1]);
 
     var WEEK = [0, 1, 2, 3, 4, 5, 6]; //DEVNOTE: hardcoding this sequence isn't workable for configurable base day
+
+    console.log("".concat(_epoch.toLocaleString(), " is a ").concat("Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday".split(",")[day], " Day = ").concat(day, " Date = ").concat(date, " Week Number = ").concat(_this.weekNumber, " Day Number = ").concat(_this.getOrdinalDate(month, date), " Offset = ").concat(_this.calendarYearOffset));
 
     if (day !== (date - 1) % 7 && day >= date) {
       //console.log(">> partial week segment start");
@@ -292,19 +317,17 @@ function (_BaseClass) {
           bar = WEEK.slice(day - (date % 7 - 1)); //console.log(`week :foobar:  [${foo}][${bar}]`);
 
       return possibleConstructorReturn(_this, [foo, bar]);
-    } else if (day + (daysInMonth - date) < 6) {
+    } else if (day + (DAYSINMONTH - date) < 6) {
       //console.log(">> partial week segment end");
-      var foo = WEEK.slice(0, day + (daysInMonth - date) + 1),
-          bar = WEEK.slice(day + (daysInMonth - date) + 1); //console.log(`week :foobar:  [${foo}][${bar}]`);
+      var foo = WEEK.slice(0, day + (DAYSINMONTH - date) + 1),
+          bar = WEEK.slice(day + (DAYSINMONTH - date) + 1); //console.log(`week :foobar:  [${foo}][${bar}]`);
 
       return possibleConstructorReturn(_this, [foo, bar]);
-    } //console.log(">> do nothing")
+    }
 
+    return possibleConstructorReturn(_this, WEEK);
+  } // DEVNOTE: REF: Year.js and Month.js implementation
 
-    return possibleConstructorReturn(_this, WEEK); //week number
-    //week number indication and way to give epoch context
-    //Week construct would have to abide by the config.baseday for construction
-  }
 
   createClass(Week, [{
     key: "getWeek",
@@ -340,9 +363,9 @@ function (_BaseClass) {
 
     classCallCheck(this, Month);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf(Month).call(this, _epoch)); //this.baseClass = new BaseClass(_epoch);
+    _this = possibleConstructorReturn(this, getPrototypeOf(Month).call(this, _epoch));
 
-    var dayNumber = _this.getDayNumber(_this.epoch.month, null, true),
+    var dayNumber = _this.getOrdinalDate(_this.epoch.month, null, true),
         daysInMonth = BaseClass.LOOKUPTABLE[_this.epoch.month - 1]; //--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
 
 
@@ -393,7 +416,7 @@ var Year =
 function (_BaseClass) {
   inherits(Year, _BaseClass);
 
-  //export default class Year extends Month {
+  //export default class Year extends Month { //--> extends Week //--> extends Day //--> extends BaseClass
   function Year(_epoch) {
     var _this;
 
