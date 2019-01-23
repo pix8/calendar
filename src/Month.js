@@ -10,11 +10,9 @@ export default class Month extends BaseClass {
 		super(_epoch);
 
 		var dayNumber = this.getOrdinalDate(this.epoch.month, null, true),
-			daysInMonth = BaseClass.LOOKUPTABLE[this.epoch.month-1];
+			daysInMonth = this.getDaysInMonth();
 		
 		//--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
-		
-		daysInMonth = this.getDaysInMonth(daysInMonth);
 		
 		//1.
 		var calendarMonth = this.getMonth(daysInMonth, dayNumber);
@@ -32,7 +30,7 @@ export default class Month extends BaseClass {
 
 	//Scheduled for demolition -----------------> 1. Week Class
 	getWeek(calendarMonth) {
-		
+
 		return (
 			
 			//WEEKS

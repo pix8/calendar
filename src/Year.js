@@ -15,14 +15,11 @@ export default class Year extends BaseClass {
 
 				//--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
 
-				daysInMonth = this.getDaysInMonth(daysInMonth);
-
 				//1.
-				var calendarMonth = this.getMonth(daysInMonth, accumulator.flat(2).length);
+				var calendarMonth = this.getMonth(daysInMonth[this.isLeapYear()] || daysInMonth, accumulator.flat(2).length);
 
 				//2.
 				accumulator[i] = this.getWeek(calendarMonth);
-				
 				//console.log(new Date(2019, i, 1).toLocaleString(), " :: " ,new Month(new Date(2019, i, 1)));
 				//accumulator[i] = new Month( new Date(2019, i, 1) );
 

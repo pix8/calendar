@@ -11,7 +11,7 @@ export default class Week extends BaseClass {
 
 		var {day, date, month, year}  = this;
 
-		const DAYSINMONTH = this.getDaysInMonth(BaseClass.LOOKUPTABLE[month-1]);
+		const DAYSINMONTH = this.getDaysInMonth(month);
 		const WEEK = [0, 1, 2, 3, 4, 5, 6]; //DEVNOTE: hardcoding this sequence isn't workable for configurable base day
 
 		//console.log(`${_epoch.toLocaleString()} is a ${"Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday".split(",")[day]} Day = ${day} Date = ${date} Week Number = ${this.weekNumber} Day Number = ${this.getOrdinalDate(month, date)} Offset = ${this.calendarYearOffset}`);

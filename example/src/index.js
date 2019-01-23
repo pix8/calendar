@@ -7,7 +7,7 @@ import Calendar from '@pix8/calendar'
 //DEVNOTE: BUG. There is an issue with javascript dates below year 1847. time is manipulated. reason unknown.
 
 var epoch = new Date(),
-	epoch = new Date(2022,0,2),
+	epoch = new Date(2019,0,1),
 	input = document.getElementById("date");
 
 var calendar = new Calendar();
@@ -62,7 +62,7 @@ input.addEventListener("change", (event) => { //OR old way .onchange = (event) =
 	});
 
 	calendar.getWeek(event.target.value).then(data => {
-		console.log("Week = ", data);
+		//console.log("Week = ", data);
 		
 		var el = document.getElementById("payload--getweek")
 		if(el !== null) el.innerHTML = JSON.stringify(data);

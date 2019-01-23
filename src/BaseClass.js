@@ -6,11 +6,11 @@ export default class BaseClass {
 	constructor(_epoch) {
 		this.epoch = {
 			year: parseInt(_epoch.getUTCFullYear()),
-			month: parseInt(_epoch.getUTCMonth()+1), //DEVNOTE: get rid of this +1 manipulation
+			month: parseInt(_epoch.getUTCMonth()), //DEVNOTE: get rid of this +1 manipulation
 			date: parseInt(_epoch.getUTCDate())
 		}
 		
-		this.calendarYearOffset = GregorianDay(this.epoch.year, 1, 1);
+		this.calendarYearOffset = GregorianDay(this.epoch.year, 0, 1);
 	}
 
 	get year() {
@@ -37,17 +37,17 @@ export default class BaseClass {
 		return ( this.calendarYearOffset > 4 ) ? Math.abs(Math.ceil( (this.ordinalDate - (7-this.calendarYearOffset) )/7 )) : Math.ceil( (this.ordinalDate+this.calendarYearOffset)/7 );
 	}
 
+	//DEVNOTE: move into getter and scrub the excludeTargetMonth param to simplify(can deduct that at query + clearer)
 	getOrdinalDate(month = this.epoch.month, date = this.epoch.date, excludeTargetMonth = false) {
 		return (
-			BaseClass.LOOKUPTABLE.slice(0, month-1).reduce(
+			BaseClass.LOOKUPTABLE.slice(0, month).reduce(
 				(tally, daysInMonth, i) => tally + this.getDaysInMonth(daysInMonth)
 			, excludeTargetMonth ? 0 : date)
 		)
 	}
 
-	//DEVNOTE: change to work with month values?? and query LOOKUPTABLE directly?
-	getDaysInMonth(month) {
-		return (Array.isArray(month)) ? month[~~this.isLeapYear()] : month;
+	getDaysInMonth(month = this.epoch.month) {
+		return (Array.isArray(BaseClass.LOOKUPTABLE[month])) ? BaseClass.LOOKUPTABLE[month][~~this.isLeapYear()] : BaseClass.LOOKUPTABLE[month];
 	}
 
 	isLeapYear(year = this.epoch.year) {
