@@ -59,8 +59,6 @@ export default class BaseClass {
 
 BaseClass.config = {
 	baseDay: 0,
-	firstWeekOfYear: 4
-	//First week of the year must contain the date 4th Jan/first thursday (iso8601)
-	//first week of the year must contain the date 1st Jan/first friday (middle eastern)
-	//first week of the year must contain the date 1st Jan/first saturday (north america/islam)
+	//weekStartDay: 0,
+	//weekNumberStartDay: 4
 }
