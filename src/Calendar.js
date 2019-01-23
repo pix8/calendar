@@ -76,7 +76,7 @@ export default class Pix8Calendar {
 		return Promise.resolve(calendar);
 	};
 
-	/*getCalendarWeek(_epoch = new Date()) {
+	getCalendarWeek(_epoch = new Date()) {
 		var epoch = new Date(_epoch);
 
 		if(!this.isValidDate(epoch))
@@ -89,15 +89,15 @@ export default class Pix8Calendar {
 		//TEMP
 		var calendar = new Array();
 
-		calendar[year] = new Array(12);
-		calendar[year][month] = new Array(new Month(epoch).length)
-		var week = 0;
-		calendar[year][month][week] = "TBC";//which week is the date?
+		// calendar[year] = new Array(12);
+		// calendar[year][month] = new Array(new Month(epoch).length)
+		// var week = 0;
+		// calendar[year][month][week] = "TBC";
 		//DEVNOTE: week will need to be split into respective month/year position and 2nd array if partial
 		// ie, [...null,null,[null,null,null,null,[0,1]]],[[[2,3,4,5,6],null,null,null,null], null, null...]
 
 		return Promise.resolve(calendar);
-	};*/
+	};
 
 	/*getCalendarDay(_epoch = new Date()) {
 		var epoch = new Date(_epoch);

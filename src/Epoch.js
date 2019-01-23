@@ -1,7 +1,7 @@
 import GregorianDay from './algorithm/Sakamoto'
 
 
-export default class BaseClass {
+export default class Epoch {
 
 	constructor(_epoch) {
 		this.epoch = {
@@ -31,7 +31,7 @@ export default class BaseClass {
 
 	get ordinalDate() {
 		return (
-			BaseClass.LOOKUPTABLE.slice(0, this.epoch.month).reduce(
+			Epoch.LOOKUPTABLE.slice(0, this.epoch.month).reduce(
 				(tally, daysInMonth, i) => tally + this.getDaysInMonth(i)
 			, this.epoch.date)
 		)
@@ -42,7 +42,7 @@ export default class BaseClass {
 	}
 
 	getDaysInMonth(month = this.epoch.month) {
-		return (Array.isArray(BaseClass.LOOKUPTABLE[month])) ? BaseClass.LOOKUPTABLE[month][~~this.isLeapYear()] : BaseClass.LOOKUPTABLE[month];
+		return (Array.isArray(Epoch.LOOKUPTABLE[month])) ? Epoch.LOOKUPTABLE[month][~~this.isLeapYear()] : Epoch.LOOKUPTABLE[month];
 	}
 
 	isLeapYear(year = this.epoch.year) {
@@ -52,7 +52,7 @@ export default class BaseClass {
 	static LOOKUPTABLE = [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 }
 
-BaseClass.config = {
+Epoch.config = {
 	baseDay: 0,
 	//weekStartDay: 0,
 	//weekNumberStartDay: 4

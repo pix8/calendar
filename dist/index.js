@@ -173,11 +173,11 @@ var GregorianDay = (function (y, m, d) {
   return (y + ~~(y / 4) - ~~(y / 100) + ~~(y / 400) + offset[m] + d) % 7;
 });
 
-var BaseClass =
+var Epoch =
 /*#__PURE__*/
 function () {
-  function BaseClass(_epoch) {
-    classCallCheck(this, BaseClass);
+  function Epoch(_epoch) {
+    classCallCheck(this, Epoch);
 
     this.epoch = {
       year: parseInt(_epoch.getUTCFullYear()),
@@ -188,11 +188,11 @@ function () {
     this.calendarYearOffset = GregorianDay(this.epoch.year, 0, 1);
   }
 
-  createClass(BaseClass, [{
+  createClass(Epoch, [{
     key: "getDaysInMonth",
     value: function getDaysInMonth() {
       var month = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.epoch.month;
-      return Array.isArray(BaseClass.LOOKUPTABLE[month]) ? BaseClass.LOOKUPTABLE[month][~~this.isLeapYear()] : BaseClass.LOOKUPTABLE[month];
+      return Array.isArray(Epoch.LOOKUPTABLE[month]) ? Epoch.LOOKUPTABLE[month][~~this.isLeapYear()] : Epoch.LOOKUPTABLE[month];
     }
   }, {
     key: "isLeapYear",
@@ -225,7 +225,7 @@ function () {
     get: function get() {
       var _this = this;
 
-      return BaseClass.LOOKUPTABLE.slice(0, this.epoch.month).reduce(function (tally, daysInMonth, i) {
+      return Epoch.LOOKUPTABLE.slice(0, this.epoch.month).reduce(function (tally, daysInMonth, i) {
         return tally + _this.getDaysInMonth(i);
       }, this.epoch.date);
     }
@@ -236,57 +236,53 @@ function () {
     }
   }]);
 
-  return BaseClass;
+  return Epoch;
 }();
 
-defineProperty(BaseClass, "LOOKUPTABLE", [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]);
-BaseClass.config = {
+defineProperty(Epoch, "LOOKUPTABLE", [31, [28, 29], 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]);
+Epoch.config = {
   baseDay: 0 //weekStartDay: 0,
   //weekNumberStartDay: 4
 
 };
 
-var Week =
+var Year =
 /*#__PURE__*/
-function (_BaseClass) {
-  inherits(Week, _BaseClass);
+function (_Epoch) {
+  inherits(Year, _Epoch);
 
-  //class Week extends day { //--> extends BaseClass??
-  function Week(_epoch) {
+  //export default class Year extends Month { //--> extends Week //--> extends Day //--> extends Epoch
+  function Year(_epoch) {
     var _this;
 
-    classCallCheck(this, Week);
+    classCallCheck(this, Year);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf(Week).call(this, _epoch));
+    _this = possibleConstructorReturn(this, getPrototypeOf(Year).call(this, _epoch)); //YEAR
 
-    var _assertThisInitialize = assertThisInitialized(assertThisInitialized(_this)),
-        day = _assertThisInitialize.day,
-        date = _assertThisInitialize.date,
-        month = _assertThisInitialize.month,
-        year = _assertThisInitialize.year;
+    return possibleConstructorReturn(_this, Epoch.LOOKUPTABLE.slice().reduce(function (accumulator, daysInMonth, i) {
+      //--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
+      //1.
+      var calendarMonth = _this.getMonth(daysInMonth[~~_this.isLeapYear()] || daysInMonth, accumulator.flat(2).length); //2.
 
-    var DAYSINMONTH = _this.getDaysInMonth(month);
 
-    var WEEK = [0, 1, 2, 3, 4, 5, 6]; //DEVNOTE: hardcoding this sequence isn't workable for configurable base day
-    //console.log(`${_epoch.toLocaleString()} is a ${"Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday".split(",")[day]} Day = ${day} Date = ${date} Week Number = ${this.weekNumber} Day Number = ${this.getOrdinalDate(month, date)} Offset = ${this.calendarYearOffset}`);
+      accumulator[i] = _this.getWeek(calendarMonth); //console.log(new Date(2019, i, 1).toLocaleString(), " :: " ,new Month(new Date(2019, i, 1)));
+      //accumulator[i] = new Month( new Date(2019, i, 1) );
 
-    if (day !== (date - 1) % 7 && day >= date) {
-      //console.log(">> partial week segment start");
-      var foo = WEEK.slice(0, -(WEEK.length - (day - (date % 7 - 1)))),
-          bar = WEEK.slice(day - (date % 7 - 1));
-      return possibleConstructorReturn(_this, [foo, bar]);
-    } else if (day + (DAYSINMONTH - date) < 6) {
-      //console.log(">> partial week segment end");
-      var foo = WEEK.slice(0, day + (DAYSINMONTH - date) + 1),
-          bar = WEEK.slice(day + (DAYSINMONTH - date) + 1);
-      return possibleConstructorReturn(_this, [foo, bar]);
+      return accumulator;
+    }, []));
+  }
+
+  createClass(Year, [{
+    key: "getMonth",
+    value: function getMonth(daysInMonth, dayNumber) {
+      var _this2 = this;
+
+      //MONTHS
+      return toConsumableArray(Array(daysInMonth)).map(function (item, j) {
+        return (j + dayNumber + _this2.calendarYearOffset) % 7;
+      });
     }
-
-    return possibleConstructorReturn(_this, WEEK);
-  } // DEVNOTE: REF: Year.js and Month.js implementation
-
-
-  createClass(Week, [{
+  }, {
     key: "getWeek",
     value: function getWeek(calendarMonth) {
       return (//WEEKS
@@ -294,7 +290,7 @@ function (_BaseClass) {
         calendarMonth.slice().reduce(function (accumulator, curr) {
           var l = accumulator.length;
 
-          if (l === 0 || curr === BaseClass.config.baseDay) {
+          if (l === 0 || curr === Epoch.config.baseDay) {
             accumulator.push([curr]);
           } else {
             accumulator[l - 1].push(curr);
@@ -306,15 +302,15 @@ function (_BaseClass) {
     }
   }]);
 
-  return Week;
-}(BaseClass);
+  return Year;
+}(Epoch);
 
 var Month =
 /*#__PURE__*/
-function (_BaseClass) {
-  inherits(Month, _BaseClass);
+function (_Epoch) {
+  inherits(Month, _Epoch);
 
-  //export default class Month extends Week { //--> extends Day //--> extends BaseClass
+  //export default class Month extends Week { //--> extends Day //--> extends Epoch
   function Month(_epoch) {
     var _this;
 
@@ -337,8 +333,7 @@ function (_BaseClass) {
       return toConsumableArray(Array(daysInMonth)).map(function (item, j) {
         return (j + dayNumber + _this2.calendarYearOffset) % 7;
       });
-    } //Scheduled for demolition -----------------> 1. Week Class
-
+    }
   }, {
     key: "getWeek",
     value: function getWeek(calendarMonth) {
@@ -347,7 +342,7 @@ function (_BaseClass) {
         calendarMonth.slice().reduce(function (accumulator, curr) {
           var l = accumulator.length;
 
-          if (l === 0 || curr === BaseClass.config.baseDay) {
+          if (l === 0 || curr === Epoch.config.baseDay) {
             accumulator.push([curr]);
           } else {
             accumulator[l - 1].push(curr);
@@ -356,75 +351,53 @@ function (_BaseClass) {
           return accumulator;
         }, [])
       );
-    } //Scheduled for demolition -----------------> 1. Week Class
-
+    }
   }]);
 
   return Month;
-}(BaseClass);
+}(Epoch);
 
-var Year =
+var Week =
 /*#__PURE__*/
-function (_BaseClass) {
-  inherits(Year, _BaseClass);
+function (_Epoch) {
+  inherits(Week, _Epoch);
 
-  //export default class Year extends Month { //--> extends Week //--> extends Day //--> extends BaseClass
-  function Year(_epoch) {
+  //class Week extends day { //--> extends Epoch??
+  function Week(_epoch) {
     var _this;
 
-    classCallCheck(this, Year);
+    classCallCheck(this, Week);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf(Year).call(this, _epoch)); //YEAR
+    _this = possibleConstructorReturn(this, getPrototypeOf(Week).call(this, _epoch));
 
-    return possibleConstructorReturn(_this, BaseClass.LOOKUPTABLE.slice().reduce(function (accumulator, daysInMonth, i) {
-      //--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
-      //1.
-      var calendarMonth = _this.getMonth(daysInMonth[~~_this.isLeapYear()] || daysInMonth, accumulator.flat(2).length); //2.
+    var _assertThisInitialize = assertThisInitialized(assertThisInitialized(_this)),
+        day = _assertThisInitialize.day,
+        date = _assertThisInitialize.date,
+        month = _assertThisInitialize.month,
+        year = _assertThisInitialize.year;
 
+    var WEEK = [0, 1, 2, 3, 4, 5, 6]; //DEVNOTE: hardcoding this sequence isn't workable for configurable base day
 
-      accumulator[i] = _this.getWeek(calendarMonth); //console.log(new Date(2019, i, 1).toLocaleString(), " :: " ,new Month(new Date(2019, i, 1)));
-      //accumulator[i] = new Month( new Date(2019, i, 1) );
-
-      return accumulator;
-    }, []));
-  } //Scheduled for demolition -----------------> 1. Month Class
+    var DAYSINMONTH = _this.getDaysInMonth(); //console.log(`${_epoch.toLocaleString()} is a ${"Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday".split(",")[day]} Day = ${day} Date = ${date} Week Number = ${this.weekNumber} Day Number = ${this.getOrdinalDate(month, date)} Offset = ${this.calendarYearOffset}`);
 
 
-  createClass(Year, [{
-    key: "getMonth",
-    value: function getMonth(daysInMonth, dayNumber) {
-      var _this2 = this;
+    if (day !== (date - 1) % 7 && day >= date) {
+      //console.log(">> partial week segment start");
+      var foo = WEEK.slice(0, -(WEEK.length - (day - (date % 7 - 1)))),
+          bar = WEEK.slice(day - (date % 7 - 1));
+      return possibleConstructorReturn(_this, [foo, bar]);
+    } else if (day + (DAYSINMONTH - date) < 6) {
+      //console.log(">> partial week segment end");
+      var foo = WEEK.slice(0, day + (DAYSINMONTH - date) + 1),
+          bar = WEEK.slice(day + (DAYSINMONTH - date) + 1);
+      return possibleConstructorReturn(_this, [foo, bar]);
+    }
 
-      //MONTHS
-      return toConsumableArray(Array(daysInMonth)).map(function (item, j) {
-        return (j + dayNumber + _this2.calendarYearOffset) % 7;
-      });
-    } //Scheduled for demolition -----------------> 1. Month Class
-    //Scheduled for demolition -----------------> 2. Week Class
+    return possibleConstructorReturn(_this, WEEK);
+  }
 
-  }, {
-    key: "getWeek",
-    value: function getWeek(calendarMonth) {
-      return (//WEEKS
-        //splits and groups the month days into clusters of weeks
-        calendarMonth.slice().reduce(function (accumulator, curr) {
-          var l = accumulator.length;
-
-          if (l === 0 || curr === BaseClass.config.baseDay) {
-            accumulator.push([curr]);
-          } else {
-            accumulator[l - 1].push(curr);
-          }
-
-          return accumulator;
-        }, [])
-      );
-    } //Scheduled for demolition -----------------> 2. Week Class
-
-  }]);
-
-  return Year;
-}(BaseClass);
+  return Week;
+}(Epoch);
 
 var en = {
   //MONTH: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -493,25 +466,27 @@ function () {
       return Promise.resolve(calendar);
     }
   }, {
-    key: "getYear",
+    key: "getCalendarWeek",
+    value: function getCalendarWeek() {
+      var _epoch = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date();
 
-    /*getCalendarWeek(_epoch = new Date()) {
-    	var epoch = new Date(_epoch);
-    		if(!this.isValidDate(epoch))
-    		throw TypeError("Pix8Calendar: Query is not a valid date");
-    		var year = parseInt(epoch.getUTCFullYear()),
-    		month = parseInt(epoch.getUTCMonth()),
-    		date = parseInt(epoch.getUTCDate());
-    		//TEMP
-    	var calendar = new Array();
-    		calendar[year] = new Array(12);
-    	calendar[year][month] = new Array(new Month(epoch).length)
-    	var week = 0;
-    	calendar[year][month][week] = "TBC";//which week is the date?
-    	//DEVNOTE: week will need to be split into respective month/year position and 2nd array if partial
-    	// ie, [...null,null,[null,null,null,null,[0,1]]],[[[2,3,4,5,6],null,null,null,null], null, null...]
-    		return Promise.resolve(calendar);
-    };*/
+      var epoch = new Date(_epoch);
+      if (!this.isValidDate(epoch)) throw TypeError("Pix8Calendar: Query is not a valid date");
+      var year = parseInt(epoch.getUTCFullYear()),
+          month = parseInt(epoch.getUTCMonth()),
+          date = parseInt(epoch.getUTCDate()); //TEMP
+
+      var calendar = new Array(); // calendar[year] = new Array(12);
+      // calendar[year][month] = new Array(new Month(epoch).length)
+      // var week = 0;
+      // calendar[year][month][week] = "TBC";
+      //DEVNOTE: week will need to be split into respective month/year position and 2nd array if partial
+      // ie, [...null,null,[null,null,null,null,[0,1]]],[[[2,3,4,5,6],null,null,null,null], null, null...]
+
+      return Promise.resolve(calendar);
+    }
+  }, {
+    key: "getYear",
 
     /*getCalendarDay(_epoch = new Date()) {
     	var epoch = new Date(_epoch);

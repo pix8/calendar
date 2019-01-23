@@ -1,9 +1,9 @@
-import BaseClass from './BaseClass'
+import Epoch from './Epoch'
 //import Day from './Day'
 
 
-export default class Week extends BaseClass {
-//class Week extends day { //--> extends BaseClass??
+export default class Week extends Epoch {
+//class Week extends day { //--> extends Epoch??
 
 	constructor(_epoch) {
 		
@@ -11,8 +11,8 @@ export default class Week extends BaseClass {
 
 		var {day, date, month, year}  = this;
 
-		const DAYSINMONTH = this.getDaysInMonth(month);
 		const WEEK = [0, 1, 2, 3, 4, 5, 6]; //DEVNOTE: hardcoding this sequence isn't workable for configurable base day
+		const DAYSINMONTH = this.getDaysInMonth();
 
 		//console.log(`${_epoch.toLocaleString()} is a ${"Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday".split(",")[day]} Day = ${day} Date = ${date} Week Number = ${this.weekNumber} Day Number = ${this.getOrdinalDate(month, date)} Offset = ${this.calendarYearOffset}`);
 
@@ -33,26 +33,5 @@ export default class Week extends BaseClass {
 		}
 
 		return WEEK;
-	}
-
-	// DEVNOTE: REF: Year.js and Month.js implementation
-	getWeek(calendarMonth) {
-		
-		return (
-			
-			//WEEKS
-			//splits and groups the month days into clusters of weeks
-			calendarMonth.slice().reduce((accumulator, curr) => {
-				const l = accumulator.length;
-
-				if(l === 0  || curr === BaseClass.config.baseDay) {
-					accumulator.push([curr]);
-				}else {
-					accumulator[l-1].push(curr);
-				}
-
-				return accumulator;
-			}, [])
-		);
 	}
 }

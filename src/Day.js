@@ -1,4 +1,4 @@
-//import BaseClass from './BaseClass'
+//import Epoch from './Epoch'
 
 
 export default class Day {

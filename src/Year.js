@@ -1,9 +1,9 @@
-import BaseClass from './BaseClass'
-import Month from './Month'
+import Epoch from './Epoch'
+//import Month from './Month'
 
 
-export default class Year extends BaseClass {
-//export default class Year extends Month { //--> extends Week //--> extends Day //--> extends BaseClass
+export default class Year extends Epoch {
+//export default class Year extends Month { //--> extends Week //--> extends Day //--> extends Epoch
 
 	constructor(_epoch) {
 
@@ -11,7 +11,7 @@ export default class Year extends BaseClass {
 
 		//YEAR
 		return (
-			BaseClass.LOOKUPTABLE.slice().reduce( (accumulator, daysInMonth, i) => {
+			Epoch.LOOKUPTABLE.slice().reduce( (accumulator, daysInMonth, i) => {
 
 				//--- MONTH Constructor Requirement = (Year day tally) & (No. of days in month)
 				//1.
@@ -27,15 +27,12 @@ export default class Year extends BaseClass {
 		);
 	}
 
-	//Scheduled for demolition -----------------> 1. Month Class
 	getMonth(daysInMonth, dayNumber) {
 
 		//MONTHS
 		return [...Array(daysInMonth)].map( (item, j) => ( (j+dayNumber) + this.calendarYearOffset )%7 );
 	}
-	//Scheduled for demolition -----------------> 1. Month Class
 
-	//Scheduled for demolition -----------------> 2. Week Class
 	getWeek(calendarMonth) {
 
 		return (
@@ -45,7 +42,7 @@ export default class Year extends BaseClass {
 			calendarMonth.slice().reduce((accumulator, curr) => {
 				const l = accumulator.length;
 
-				if(l === 0  || curr === BaseClass.config.baseDay) {
+				if(l === 0  || curr === Epoch.config.baseDay) {
 					accumulator.push([curr]);
 				}else {
 					accumulator[l-1].push(curr);
@@ -55,5 +52,4 @@ export default class Year extends BaseClass {
 			}, [])
 		);
 	}
-	//Scheduled for demolition -----------------> 2. Week Class
 }
